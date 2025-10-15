@@ -11,10 +11,20 @@ game:
   first_player: 1  # 1=BLACK, -1=WHITE
 
 network:
-  num_filters: 16
-  num_blocks: 6
-  policy_channels: 4
-  value_channels: 4
+  architecture: "basic"
+  basic:
+    num_filters: 16
+    num_blocks: 6
+    policy_channels: 4
+    value_channels: 4
+  katago:
+    num_filters: 128
+    num_blocks: 10
+    policy_channels: 32
+    policy_global_hidden: 256
+    value_hidden: 256
+    value_mid_hidden: 64
+    se_reduction: 4
 
 mcts:
   dirichlet_alpha: 0.15
