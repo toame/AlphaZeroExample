@@ -1,0 +1,36 @@
+game:
+  board_size: 3
+  axes:
+    X: "ABC"
+    Y: "123"
+  symbols:
+    empty: "_"
+    black: "O"
+    white: "X"
+  first_player: 1  # 1=BLACK, -1=WHITE
+
+network:
+  num_filters: 16
+  num_blocks: 6
+  policy_channels: 4
+  value_channels: 4
+
+mcts:
+  dirichlet_alpha: 0.15
+  dirichlet_weight: 0.25
+  puct_c: 2.0
+  temperature_init: 0.7
+  num_simulations_demo: 1000
+  num_simulations_demo_mid: 3000
+  num_simulations_train: 50
+
+training:
+  batch_size: 32
+  num_epochs: 30
+  lr: 0.001
+  weight_decay: 0.0001
+  momentum: 0.75
+  lr_decay: 0.85
+  num_games: 500
+  num_train_steps: 50
+  vs_random_matches: 100
