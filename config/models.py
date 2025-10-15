@@ -14,9 +14,19 @@ class GameSymbols(BaseModel):
 
 class GameConfig(BaseModel):
     board_size: int = 3
+    rule: Literal["tic_tac_toe", "connect6"] = "tic_tac_toe"
     axes: GameAxes = Field(default_factory=GameAxes)
     symbols: GameSymbols = Field(default_factory=GameSymbols)
     first_player: Literal[-1, 1] = 1
+
+    @field_validator("board_size")
+    @classmethod
+    def _board_size_rule_check(cls, v: int, info):
+        """ルールごとの最小盤面サイズを検証する。"""
+        rule = info.data.get("rule", "tic_tac_toe")
+        if rule == "connect6" and v < 6:
+            raise ValueError("connect6 ルールでは board_size を 6 以上に設定してください")
+        return v
 
     @field_validator("axes")
     @classmethod
