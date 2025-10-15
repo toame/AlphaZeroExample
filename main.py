@@ -132,5 +132,5 @@ if __name__ == "__main__":
     # 必要に応じてコメントアウトを外して実行してください。
     app_config = load_default_config()
     demo_network_outputs(app_config)
-    # demo_mcts(app_config)
-    # trained = self_play_and_train(app_config)
+    demo_mcts(app_config)
+    trained = self_play_and_train(app_config)
