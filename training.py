@@ -1,6 +1,7 @@
 # training.py
 from __future__ import annotations
 import dataclasses
+import logging
 import math
 import numpy as np
 import torch
@@ -9,6 +10,8 @@ from typing import Callable, Dict, List, Sequence
 from config import GameConfig, TrainingConfig
 from game import State
 from network import Net
+
+logger = logging.getLogger(__name__)
 
 Episode = tuple[List[int], int, List[np.ndarray]]
 
@@ -95,6 +98,13 @@ class Trainer:
         self.optimizer = optimizer
         self._sampler = sampler or EpisodeSampler(game_config)
         self._scheduler = scheduler
+        logger.info(
+            "Trainer を初期化: batch_size=%d epochs=%d lr=%.6f lr_decay=%.4f",
+            training_config.batch_size,
+            training_config.num_epochs,
+            training_config.lr,
+            training_config.lr_decay,
+        )
 
     def fit(self, episodes: Sequence[Episode]) -> TrainingResult:
         """保持しているネットワークを学習させる。"""
@@ -107,7 +117,15 @@ class Trainer:
         policy_loss_sum, value_loss_sum = 0.0, 0.0
 
         self.net.train()
-        for _ in range(self._training_config.num_epochs):
+        logger.info(
+            "学習を開始: episodes=%d batch_size=%d epochs=%d",
+            len(episodes),
+            batch_size,
+            self._training_config.num_epochs,
+        )
+        for epoch in range(self._training_config.num_epochs):
+            policy_loss_epoch, value_loss_epoch = 0.0, 0.0
+            batch_count_epoch = 0
             for _ in range(0, len(episodes), batch_size):
                 batch = self._sampler.sample_batch(episodes, batch_size)
                 policy_pred, value_pred = self.net(batch.x)
@@ -115,17 +133,37 @@ class Trainer:
                 policy_loss = torch.sum(-batch.policy_target * torch.log(policy_pred + 1e-12))
                 value_loss = torch.sum((batch.value_target - value_pred) ** 2)
 
-                policy_loss_sum += float(policy_loss.item())
-                value_loss_sum += float(value_loss.item())
+                policy_loss_value = float(policy_loss.item())
+                value_loss_value = float(value_loss.item())
+                policy_loss_sum += policy_loss_value
+                value_loss_sum += value_loss_value
+                policy_loss_epoch += policy_loss_value
+                value_loss_epoch += value_loss_value
+                batch_count_epoch += 1
 
                 self.optimizer.zero_grad()
                 (policy_loss + value_loss).backward()
                 self.optimizer.step()
 
+            lr_before = self.optimizer.param_groups[0]["lr"]
             if self._scheduler is not None:
                 self._scheduler(self.optimizer)
             else:
                 decay_learning_rate(self.optimizer, self._training_config.lr_decay)
+            lr_after = self.optimizer.param_groups[0]["lr"]
+
+            avg_policy = policy_loss_epoch / max(batch_count_epoch, 1)
+            avg_value = value_loss_epoch / max(batch_count_epoch, 1)
+            logger.info(
+                "エポック %d/%d 完了: policy_loss=%.6f value_loss=%.6f lr=%.6f→%.6f batches=%d",
+                epoch + 1,
+                self._training_config.num_epochs,
+                avg_policy,
+                avg_value,
+                lr_before,
+                lr_after,
+                batch_count_epoch,
+            )
 
         num_batches = self._training_config.num_epochs * batches_per_epoch
         return TrainingResult(
