@@ -41,16 +41,29 @@ class MCTSConfig(BaseModel):
     num_simulations_demo_mid: int = 3000
     num_simulations_train: int = 50
 
+class LRSchedulerConfig(BaseModel):
+    type: Literal["none", "cosine", "onecycle"] = "cosine"
+    cosine_min_lr: float = 1e-5
+    onecycle_pct_start: float = 0.3
+    onecycle_div_factor: float = 25.0
+    onecycle_final_div_factor: float = 1e4
+
+
 class TrainingConfig(BaseModel):
     batch_size: int = 32
     num_epochs: int = 30
     lr: float = 1e-3
     weight_decay: float = 1e-4
     momentum: float = 0.75
-    lr_decay: float = 0.85
     num_games: int = 500
     num_train_steps: int = 50
     vs_random_matches: int = 100
+    scheduler: LRSchedulerConfig = Field(default_factory=LRSchedulerConfig)
+    artifacts_dir: str = "artifacts"
+    enable_tensorboard: bool = True
+    metrics_filename: str = "training_metrics.csv"
+    latest_checkpoint: str = "latest.pt"
+    best_checkpoint: str = "best.pt"
 
 class AppConfig(BaseModel):
     game: GameConfig = Field(default_factory=GameConfig)
