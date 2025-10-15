@@ -26,11 +26,31 @@ class GameConfig(BaseModel):
             raise ValueError(f"axes.X/Y の長さは board_size={board_size} と一致させてください")
         return v
 
-class NetworkConfig(BaseModel):
+class BasicNetworkConfig(BaseModel):
+    """従来の AlphaZero 風ネットワーク設定。"""
+
     num_filters: int = 16
     num_blocks: int = 6
     policy_channels: int = 4
     value_channels: int = 4
+
+
+class KataGoNetworkConfig(BaseModel):
+    """KataGo 風の拡張ネットワーク設定。"""
+
+    num_filters: int = 128
+    num_blocks: int = 10
+    policy_channels: int = 32
+    policy_global_hidden: int = 256
+    value_hidden: int = 256
+    value_mid_hidden: int = 64
+    se_reduction: int = 4
+
+
+class NetworkConfig(BaseModel):
+    architecture: Literal["basic", "katago"] = "basic"
+    basic: BasicNetworkConfig = Field(default_factory=BasicNetworkConfig)
+    katago: KataGoNetworkConfig = Field(default_factory=KataGoNetworkConfig)
 
 class MCTSConfig(BaseModel):
     dirichlet_alpha: float = 0.15
