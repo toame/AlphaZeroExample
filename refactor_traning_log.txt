@@ -1,0 +1,844 @@
+2025-10-15 21:30:37,584 [INFO] training - Trainer を初期化: batch_size=32 epochs=30 lr=0.001000 lr_decay=0.8500
+2025-10-15 21:30:37,584 [INFO] app.training_loop - 自己対戦と学習を開始: total_games=500, train_interval=50, simulations=50
+2025-10-15 21:30:37,957 [INFO] app.training_loop - ランダム対戦による初期評価: [(-1, 38), (0, 3), (1, 59)]
+2025-10-15 21:30:38,316 [INFO] app.training_loop - ゲーム 1/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:30:38,552 [INFO] app.training_loop - ゲーム 2/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:30:38,880 [INFO] app.training_loop - ゲーム 3/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:30:39,167 [INFO] app.training_loop - ゲーム 4/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:30:39,423 [INFO] app.training_loop - ゲーム 5/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:30:39,694 [INFO] app.training_loop - ゲーム 6/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:30:39,956 [INFO] app.training_loop - ゲーム 7/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:30:40,273 [INFO] app.training_loop - ゲーム 8/500 完了: moves=9 reward=1 temperature=0.09395
+2025-10-15 21:30:40,602 [INFO] app.training_loop - ゲーム 9/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:30:40,906 [INFO] app.training_loop - ゲーム 10/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:30:41,269 [INFO] app.training_loop - ゲーム 11/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:30:41,552 [INFO] app.training_loop - ゲーム 12/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:30:41,829 [INFO] app.training_loop - ゲーム 13/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:30:42,131 [INFO] app.training_loop - ゲーム 14/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:30:42,428 [INFO] app.training_loop - ゲーム 15/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:30:42,667 [INFO] app.training_loop - ゲーム 16/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:30:42,918 [INFO] app.training_loop - ゲーム 17/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:30:43,197 [INFO] app.training_loop - ゲーム 18/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:30:43,537 [INFO] app.training_loop - ゲーム 19/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:30:43,826 [INFO] app.training_loop - ゲーム 20/500 完了: moves=8 reward=-1 temperature=0.11744
+2025-10-15 21:30:44,151 [INFO] app.training_loop - ゲーム 21/500 完了: moves=8 reward=-1 temperature=0.11744
+2025-10-15 21:30:44,433 [INFO] app.training_loop - ゲーム 22/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:30:44,802 [INFO] app.training_loop - ゲーム 23/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:30:45,115 [INFO] app.training_loop - ゲーム 24/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:30:45,410 [INFO] app.training_loop - ゲーム 25/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:30:45,684 [INFO] app.training_loop - ゲーム 26/500 完了: moves=8 reward=-1 temperature=0.11744
+2025-10-15 21:30:45,976 [INFO] app.training_loop - ゲーム 27/500 完了: moves=9 reward=1 temperature=0.09395
+2025-10-15 21:30:46,252 [INFO] app.training_loop - ゲーム 28/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:30:46,592 [INFO] app.training_loop - ゲーム 29/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:30:46,926 [INFO] app.training_loop - ゲーム 30/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:30:47,186 [INFO] app.training_loop - ゲーム 31/500 完了: moves=8 reward=-1 temperature=0.11744
+2025-10-15 21:30:47,561 [INFO] app.training_loop - ゲーム 32/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:30:47,888 [INFO] app.training_loop - ゲーム 33/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:30:48,297 [INFO] app.training_loop - ゲーム 34/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:30:48,920 [INFO] app.training_loop - ゲーム 35/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:30:49,259 [INFO] app.training_loop - ゲーム 36/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:30:49,562 [INFO] app.training_loop - ゲーム 37/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:30:49,837 [INFO] app.training_loop - ゲーム 38/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:30:50,117 [INFO] app.training_loop - ゲーム 39/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:30:50,424 [INFO] app.training_loop - ゲーム 40/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:30:50,700 [INFO] app.training_loop - ゲーム 41/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:30:50,946 [INFO] app.training_loop - ゲーム 42/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:30:51,220 [INFO] app.training_loop - ゲーム 43/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:30:51,478 [INFO] app.training_loop - ゲーム 44/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:30:51,794 [INFO] app.training_loop - ゲーム 45/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:30:52,070 [INFO] app.training_loop - ゲーム 46/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:30:52,334 [INFO] app.training_loop - ゲーム 47/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:30:52,593 [INFO] app.training_loop - ゲーム 48/500 完了: moves=8 reward=-1 temperature=0.11744
+2025-10-15 21:30:52,846 [INFO] app.training_loop - ゲーム 49/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:30:53,136 [INFO] app.training_loop - ゲーム 50/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:30:53,137 [INFO] app.training_loop - 学習を実行します: episodes=50 result_distribution=1:29, 0:16, -1:5
+2025-10-15 21:30:53,137 [INFO] training - 学習を開始: episodes=50 batch_size=32 epochs=30
+2025-10-15 21:30:53,162 [INFO] training - エポック 1/30 完了: policy_loss=71.472389 value_loss=24.123069 lr=0.001000→0.000850 batches=2
+2025-10-15 21:30:53,180 [INFO] training - エポック 2/30 完了: policy_loss=67.248390 value_loss=23.227662 lr=0.000850→0.000722 batches=2
+2025-10-15 21:30:53,198 [INFO] training - エポック 3/30 完了: policy_loss=68.225864 value_loss=16.416281 lr=0.000722→0.000614 batches=2
+2025-10-15 21:30:53,221 [INFO] training - エポック 4/30 完了: policy_loss=70.049618 value_loss=18.050891 lr=0.000614→0.000522 batches=2
+2025-10-15 21:30:53,240 [INFO] training - エポック 5/30 完了: policy_loss=65.700310 value_loss=20.347373 lr=0.000522→0.000444 batches=2
+2025-10-15 21:30:53,257 [INFO] training - エポック 6/30 完了: policy_loss=66.253792 value_loss=14.730594 lr=0.000444→0.000377 batches=2
+2025-10-15 21:30:53,277 [INFO] training - エポック 7/30 完了: policy_loss=64.427845 value_loss=14.936483 lr=0.000377→0.000321 batches=2
+2025-10-15 21:30:53,296 [INFO] training - エポック 8/30 完了: policy_loss=60.923552 value_loss=12.404224 lr=0.000321→0.000272 batches=2
+2025-10-15 21:30:53,314 [INFO] training - エポック 9/30 完了: policy_loss=66.292309 value_loss=14.306625 lr=0.000272→0.000232 batches=2
+2025-10-15 21:30:53,332 [INFO] training - エポック 10/30 完了: policy_loss=62.480633 value_loss=11.478465 lr=0.000232→0.000197 batches=2
+2025-10-15 21:30:53,352 [INFO] training - エポック 11/30 完了: policy_loss=62.028042 value_loss=10.682532 lr=0.000197→0.000167 batches=2
+2025-10-15 21:30:53,368 [INFO] training - エポック 12/30 完了: policy_loss=60.914114 value_loss=13.503352 lr=0.000167→0.000142 batches=2
+2025-10-15 21:30:53,385 [INFO] training - エポック 13/30 完了: policy_loss=60.715630 value_loss=11.078387 lr=0.000142→0.000121 batches=2
+2025-10-15 21:30:53,402 [INFO] training - エポック 14/30 完了: policy_loss=60.377493 value_loss=12.366862 lr=0.000121→0.000103 batches=2
+2025-10-15 21:30:53,418 [INFO] training - エポック 15/30 完了: policy_loss=60.631943 value_loss=11.526422 lr=0.000103→0.000087 batches=2
+2025-10-15 21:30:53,437 [INFO] training - エポック 16/30 完了: policy_loss=56.236422 value_loss=9.858326 lr=0.000087→0.000074 batches=2
+2025-10-15 21:30:53,452 [INFO] training - エポック 17/30 完了: policy_loss=59.704252 value_loss=9.836067 lr=0.000074→0.000063 batches=2
+2025-10-15 21:30:53,468 [INFO] training - エポック 18/30 完了: policy_loss=61.994574 value_loss=8.909030 lr=0.000063→0.000054 batches=2
+2025-10-15 21:30:53,485 [INFO] training - エポック 19/30 完了: policy_loss=61.360006 value_loss=11.246330 lr=0.000054→0.000046 batches=2
+2025-10-15 21:30:53,502 [INFO] training - エポック 20/30 完了: policy_loss=58.236263 value_loss=11.135564 lr=0.000046→0.000039 batches=2
+2025-10-15 21:30:53,520 [INFO] training - エポック 21/30 完了: policy_loss=59.498331 value_loss=12.375742 lr=0.000039→0.000033 batches=2
+2025-10-15 21:30:53,537 [INFO] training - エポック 22/30 完了: policy_loss=58.791313 value_loss=7.907074 lr=0.000033→0.000028 batches=2
+2025-10-15 21:30:53,554 [INFO] training - エポック 23/30 完了: policy_loss=57.435118 value_loss=7.562900 lr=0.000028→0.000024 batches=2
+2025-10-15 21:30:53,572 [INFO] training - エポック 24/30 完了: policy_loss=57.632275 value_loss=9.902168 lr=0.000024→0.000020 batches=2
+2025-10-15 21:30:53,591 [INFO] training - エポック 25/30 完了: policy_loss=58.042049 value_loss=8.036908 lr=0.000020→0.000017 batches=2
+2025-10-15 21:30:53,611 [INFO] training - エポック 26/30 完了: policy_loss=58.224581 value_loss=9.781322 lr=0.000017→0.000015 batches=2
+2025-10-15 21:30:53,630 [INFO] training - エポック 27/30 完了: policy_loss=59.926821 value_loss=10.896928 lr=0.000015→0.000012 batches=2
+2025-10-15 21:30:53,655 [INFO] training - エポック 28/30 完了: policy_loss=61.157709 value_loss=11.448562 lr=0.000012→0.000011 batches=2
+2025-10-15 21:30:53,675 [INFO] training - エポック 29/30 完了: policy_loss=57.427505 value_loss=12.576877 lr=0.000011→0.000009 batches=2
+2025-10-15 21:30:53,694 [INFO] training - エポック 30/30 完了: policy_loss=53.224485 value_loss=9.021233 lr=0.000009→0.000008 batches=2
+2025-10-15 21:30:53,695 [INFO] app.training_loop - 学習結果: policy_loss=61.554454 value_loss=12.655808
+2025-10-15 21:30:54,126 [INFO] app.training_loop - ランダム対戦評価: [(-1, 43), (0, 15), (1, 42)]
+2025-10-15 21:30:54,407 [INFO] app.training_loop - ゲーム 51/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:30:54,683 [INFO] app.training_loop - ゲーム 52/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:30:54,945 [INFO] app.training_loop - ゲーム 53/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:30:55,242 [INFO] app.training_loop - ゲーム 54/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:30:55,505 [INFO] app.training_loop - ゲーム 55/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:30:55,785 [INFO] app.training_loop - ゲーム 56/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:30:56,038 [INFO] app.training_loop - ゲーム 57/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:30:56,368 [INFO] app.training_loop - ゲーム 58/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:30:56,638 [INFO] app.training_loop - ゲーム 59/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:30:56,923 [INFO] app.training_loop - ゲーム 60/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:30:57,164 [INFO] app.training_loop - ゲーム 61/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:30:57,402 [INFO] app.training_loop - ゲーム 62/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:30:57,670 [INFO] app.training_loop - ゲーム 63/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:30:57,913 [INFO] app.training_loop - ゲーム 64/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:30:58,226 [INFO] app.training_loop - ゲーム 65/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:30:58,491 [INFO] app.training_loop - ゲーム 66/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:30:58,701 [INFO] app.training_loop - ゲーム 67/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:30:59,008 [INFO] app.training_loop - ゲーム 68/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:30:59,313 [INFO] app.training_loop - ゲーム 69/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:30:59,576 [INFO] app.training_loop - ゲーム 70/500 完了: moves=8 reward=-1 temperature=0.11744
+2025-10-15 21:30:59,812 [INFO] app.training_loop - ゲーム 71/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:31:00,113 [INFO] app.training_loop - ゲーム 72/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:00,401 [INFO] app.training_loop - ゲーム 73/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:00,614 [INFO] app.training_loop - ゲーム 74/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:31:00,870 [INFO] app.training_loop - ゲーム 75/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:01,135 [INFO] app.training_loop - ゲーム 76/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:01,399 [INFO] app.training_loop - ゲーム 77/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:31:01,675 [INFO] app.training_loop - ゲーム 78/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:01,957 [INFO] app.training_loop - ゲーム 79/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:02,254 [INFO] app.training_loop - ゲーム 80/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:31:02,592 [INFO] app.training_loop - ゲーム 81/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:02,857 [INFO] app.training_loop - ゲーム 82/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:31:03,225 [INFO] app.training_loop - ゲーム 83/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:03,556 [INFO] app.training_loop - ゲーム 84/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:31:03,952 [INFO] app.training_loop - ゲーム 85/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:31:04,241 [INFO] app.training_loop - ゲーム 86/500 完了: moves=6 reward=-1 temperature=0.18350
+2025-10-15 21:31:04,532 [INFO] app.training_loop - ゲーム 87/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:31:04,827 [INFO] app.training_loop - ゲーム 88/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:05,050 [INFO] app.training_loop - ゲーム 89/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:31:05,343 [INFO] app.training_loop - ゲーム 90/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:05,608 [INFO] app.training_loop - ゲーム 91/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:05,865 [INFO] app.training_loop - ゲーム 92/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:06,141 [INFO] app.training_loop - ゲーム 93/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:06,360 [INFO] app.training_loop - ゲーム 94/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:31:06,612 [INFO] app.training_loop - ゲーム 95/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:06,884 [INFO] app.training_loop - ゲーム 96/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:07,195 [INFO] app.training_loop - ゲーム 97/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:07,441 [INFO] app.training_loop - ゲーム 98/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:31:07,712 [INFO] app.training_loop - ゲーム 99/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:07,979 [INFO] app.training_loop - ゲーム 100/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:07,980 [INFO] app.training_loop - 学習を実行します: episodes=100 result_distribution=1:47, 0:46, -1:7
+2025-10-15 21:31:07,980 [INFO] training - 学習を開始: episodes=100 batch_size=32 epochs=30
+2025-10-15 21:31:08,015 [INFO] training - エポック 1/30 完了: policy_loss=60.065011 value_loss=14.029722 lr=0.000008→0.000006 batches=4
+2025-10-15 21:31:08,051 [INFO] training - エポック 2/30 完了: policy_loss=59.465700 value_loss=10.948047 lr=0.000006→0.000006 batches=4
+2025-10-15 21:31:08,086 [INFO] training - エポック 3/30 完了: policy_loss=59.978041 value_loss=13.949268 lr=0.000006→0.000005 batches=4
+2025-10-15 21:31:08,118 [INFO] training - エポック 4/30 完了: policy_loss=63.064644 value_loss=9.869660 lr=0.000005→0.000004 batches=4
+2025-10-15 21:31:08,153 [INFO] training - エポック 5/30 完了: policy_loss=60.772834 value_loss=10.252695 lr=0.000004→0.000003 batches=4
+2025-10-15 21:31:08,194 [INFO] training - エポック 6/30 完了: policy_loss=58.496851 value_loss=10.471292 lr=0.000003→0.000003 batches=4
+2025-10-15 21:31:08,235 [INFO] training - エポック 7/30 完了: policy_loss=58.682202 value_loss=9.535249 lr=0.000003→0.000002 batches=4
+2025-10-15 21:31:08,268 [INFO] training - エポック 8/30 完了: policy_loss=57.623302 value_loss=11.756454 lr=0.000002→0.000002 batches=4
+2025-10-15 21:31:08,302 [INFO] training - エポック 9/30 完了: policy_loss=59.725099 value_loss=9.680756 lr=0.000002→0.000002 batches=4
+2025-10-15 21:31:08,335 [INFO] training - エポック 10/30 完了: policy_loss=57.784231 value_loss=9.228870 lr=0.000002→0.000002 batches=4
+2025-10-15 21:31:08,371 [INFO] training - エポック 11/30 完了: policy_loss=56.133987 value_loss=11.183201 lr=0.000002→0.000001 batches=4
+2025-10-15 21:31:08,406 [INFO] training - エポック 12/30 完了: policy_loss=60.282873 value_loss=9.739135 lr=0.000001→0.000001 batches=4
+2025-10-15 21:31:08,439 [INFO] training - エポック 13/30 完了: policy_loss=57.936219 value_loss=11.261162 lr=0.000001→0.000001 batches=4
+2025-10-15 21:31:08,476 [INFO] training - エポック 14/30 完了: policy_loss=58.405874 value_loss=11.295090 lr=0.000001→0.000001 batches=4
+2025-10-15 21:31:08,510 [INFO] training - エポック 15/30 完了: policy_loss=59.019714 value_loss=10.216543 lr=0.000001→0.000001 batches=4
+2025-10-15 21:31:08,546 [INFO] training - エポック 16/30 完了: policy_loss=60.353738 value_loss=10.231712 lr=0.000001→0.000001 batches=4
+2025-10-15 21:31:08,582 [INFO] training - エポック 17/30 完了: policy_loss=59.203194 value_loss=10.231458 lr=0.000001→0.000000 batches=4
+2025-10-15 21:31:08,617 [INFO] training - エポック 18/30 完了: policy_loss=59.282004 value_loss=11.057510 lr=0.000000→0.000000 batches=4
+2025-10-15 21:31:08,649 [INFO] training - エポック 19/30 完了: policy_loss=58.397823 value_loss=10.400153 lr=0.000000→0.000000 batches=4
+2025-10-15 21:31:08,687 [INFO] training - エポック 20/30 完了: policy_loss=59.698704 value_loss=12.140234 lr=0.000000→0.000000 batches=4
+2025-10-15 21:31:08,725 [INFO] training - エポック 21/30 完了: policy_loss=57.626032 value_loss=10.506889 lr=0.000000→0.000000 batches=4
+2025-10-15 21:31:08,761 [INFO] training - エポック 22/30 完了: policy_loss=57.664952 value_loss=11.406658 lr=0.000000→0.000000 batches=4
+2025-10-15 21:31:08,797 [INFO] training - エポック 23/30 完了: policy_loss=58.284015 value_loss=11.526742 lr=0.000000→0.000000 batches=4
+2025-10-15 21:31:08,832 [INFO] training - エポック 24/30 完了: policy_loss=57.085940 value_loss=9.730835 lr=0.000000→0.000000 batches=4
+2025-10-15 21:31:08,866 [INFO] training - エポック 25/30 完了: policy_loss=60.259150 value_loss=11.258029 lr=0.000000→0.000000 batches=4
+2025-10-15 21:31:08,902 [INFO] training - エポック 26/30 完了: policy_loss=59.552296 value_loss=11.932399 lr=0.000000→0.000000 batches=4
+2025-10-15 21:31:08,936 [INFO] training - エポック 27/30 完了: policy_loss=58.966621 value_loss=12.115119 lr=0.000000→0.000000 batches=4
+2025-10-15 21:31:08,972 [INFO] training - エポック 28/30 完了: policy_loss=58.749586 value_loss=11.697187 lr=0.000000→0.000000 batches=4
+2025-10-15 21:31:09,008 [INFO] training - エポック 29/30 完了: policy_loss=60.605553 value_loss=11.420502 lr=0.000000→0.000000 batches=4
+2025-10-15 21:31:09,046 [INFO] training - エポック 30/30 完了: policy_loss=58.660740 value_loss=8.616480 lr=0.000000→0.000000 batches=4
+2025-10-15 21:31:09,046 [INFO] app.training_loop - 学習結果: policy_loss=59.060898 value_loss=10.922968
+2025-10-15 21:31:09,453 [INFO] app.training_loop - ランダム対戦評価: [(-1, 33), (0, 23), (1, 44)]
+2025-10-15 21:31:09,711 [INFO] app.training_loop - ゲーム 101/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:09,953 [INFO] app.training_loop - ゲーム 102/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:10,201 [INFO] app.training_loop - ゲーム 103/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:31:10,512 [INFO] app.training_loop - ゲーム 104/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:10,772 [INFO] app.training_loop - ゲーム 105/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:11,009 [INFO] app.training_loop - ゲーム 106/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:31:11,222 [INFO] app.training_loop - ゲーム 107/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:31:11,523 [INFO] app.training_loop - ゲーム 108/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:11,795 [INFO] app.training_loop - ゲーム 109/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:31:12,079 [INFO] app.training_loop - ゲーム 110/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:12,363 [INFO] app.training_loop - ゲーム 111/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:12,597 [INFO] app.training_loop - ゲーム 112/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:31:12,859 [INFO] app.training_loop - ゲーム 113/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:13,086 [INFO] app.training_loop - ゲーム 114/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:31:13,359 [INFO] app.training_loop - ゲーム 115/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:13,597 [INFO] app.training_loop - ゲーム 116/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:31:13,841 [INFO] app.training_loop - ゲーム 117/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:31:14,117 [INFO] app.training_loop - ゲーム 118/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:14,347 [INFO] app.training_loop - ゲーム 119/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:31:14,613 [INFO] app.training_loop - ゲーム 120/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:14,877 [INFO] app.training_loop - ゲーム 121/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:15,200 [INFO] app.training_loop - ゲーム 122/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:15,492 [INFO] app.training_loop - ゲーム 123/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:15,764 [INFO] app.training_loop - ゲーム 124/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:16,042 [INFO] app.training_loop - ゲーム 125/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:16,307 [INFO] app.training_loop - ゲーム 126/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:16,568 [INFO] app.training_loop - ゲーム 127/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:16,901 [INFO] app.training_loop - ゲーム 128/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:17,181 [INFO] app.training_loop - ゲーム 129/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:17,482 [INFO] app.training_loop - ゲーム 130/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:17,767 [INFO] app.training_loop - ゲーム 131/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:18,013 [INFO] app.training_loop - ゲーム 132/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:31:18,337 [INFO] app.training_loop - ゲーム 133/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:18,605 [INFO] app.training_loop - ゲーム 134/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:18,871 [INFO] app.training_loop - ゲーム 135/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:19,112 [INFO] app.training_loop - ゲーム 136/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:31:19,429 [INFO] app.training_loop - ゲーム 137/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:19,716 [INFO] app.training_loop - ゲーム 138/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:19,973 [INFO] app.training_loop - ゲーム 139/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:31:20,257 [INFO] app.training_loop - ゲーム 140/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:20,470 [INFO] app.training_loop - ゲーム 141/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:31:20,737 [INFO] app.training_loop - ゲーム 142/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:20,955 [INFO] app.training_loop - ゲーム 143/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:31:21,241 [INFO] app.training_loop - ゲーム 144/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:21,506 [INFO] app.training_loop - ゲーム 145/500 完了: moves=6 reward=-1 temperature=0.18350
+2025-10-15 21:31:21,777 [INFO] app.training_loop - ゲーム 146/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:31:22,016 [INFO] app.training_loop - ゲーム 147/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:22,300 [INFO] app.training_loop - ゲーム 148/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:22,568 [INFO] app.training_loop - ゲーム 149/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:22,807 [INFO] app.training_loop - ゲーム 150/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:31:22,807 [INFO] app.training_loop - 学習を実行します: episodes=150 result_distribution=1:63, 0:79, -1:8
+2025-10-15 21:31:22,807 [INFO] training - 学習を開始: episodes=150 batch_size=32 epochs=30
+2025-10-15 21:31:22,850 [INFO] training - エポック 1/30 完了: policy_loss=57.299168 value_loss=9.113731 lr=0.000000→0.000000 batches=5
+2025-10-15 21:31:22,895 [INFO] training - エポック 2/30 完了: policy_loss=58.843128 value_loss=12.060380 lr=0.000000→0.000000 batches=5
+2025-10-15 21:31:22,938 [INFO] training - エポック 3/30 完了: policy_loss=60.111696 value_loss=9.073449 lr=0.000000→0.000000 batches=5
+2025-10-15 21:31:22,978 [INFO] training - エポック 4/30 完了: policy_loss=57.666268 value_loss=12.346679 lr=0.000000→0.000000 batches=5
+2025-10-15 21:31:23,023 [INFO] training - エポック 5/30 完了: policy_loss=59.175925 value_loss=10.143905 lr=0.000000→0.000000 batches=5
+2025-10-15 21:31:23,062 [INFO] training - エポック 6/30 完了: policy_loss=56.320718 value_loss=11.136556 lr=0.000000→0.000000 batches=5
+2025-10-15 21:31:23,101 [INFO] training - エポック 7/30 完了: policy_loss=58.032601 value_loss=10.720856 lr=0.000000→0.000000 batches=5
+2025-10-15 21:31:23,142 [INFO] training - エポック 8/30 完了: policy_loss=60.053317 value_loss=10.556872 lr=0.000000→0.000000 batches=5
+2025-10-15 21:31:23,183 [INFO] training - エポック 9/30 完了: policy_loss=59.016360 value_loss=10.405388 lr=0.000000→0.000000 batches=5
+2025-10-15 21:31:23,236 [INFO] training - エポック 10/30 完了: policy_loss=57.976563 value_loss=9.266292 lr=0.000000→0.000000 batches=5
+2025-10-15 21:31:23,277 [INFO] training - エポック 11/30 完了: policy_loss=59.641997 value_loss=9.637154 lr=0.000000→0.000000 batches=5
+2025-10-15 21:31:23,322 [INFO] training - エポック 12/30 完了: policy_loss=57.450932 value_loss=10.059816 lr=0.000000→0.000000 batches=5
+2025-10-15 21:31:23,365 [INFO] training - エポック 13/30 完了: policy_loss=57.984575 value_loss=12.302081 lr=0.000000→0.000000 batches=5
+2025-10-15 21:31:23,408 [INFO] training - エポック 14/30 完了: policy_loss=57.788421 value_loss=9.918340 lr=0.000000→0.000000 batches=5
+2025-10-15 21:31:23,452 [INFO] training - エポック 15/30 完了: policy_loss=60.411740 value_loss=11.566926 lr=0.000000→0.000000 batches=5
+2025-10-15 21:31:23,494 [INFO] training - エポック 16/30 完了: policy_loss=57.296658 value_loss=8.535329 lr=0.000000→0.000000 batches=5
+2025-10-15 21:31:23,535 [INFO] training - エポック 17/30 完了: policy_loss=60.396538 value_loss=11.091622 lr=0.000000→0.000000 batches=5
+2025-10-15 21:31:23,579 [INFO] training - エポック 18/30 完了: policy_loss=58.994005 value_loss=11.623659 lr=0.000000→0.000000 batches=5
+2025-10-15 21:31:23,622 [INFO] training - エポック 19/30 完了: policy_loss=59.746589 value_loss=8.716572 lr=0.000000→0.000000 batches=5
+2025-10-15 21:31:23,662 [INFO] training - エポック 20/30 完了: policy_loss=59.622128 value_loss=11.301508 lr=0.000000→0.000000 batches=5
+2025-10-15 21:31:23,702 [INFO] training - エポック 21/30 完了: policy_loss=58.715025 value_loss=11.840256 lr=0.000000→0.000000 batches=5
+2025-10-15 21:31:23,746 [INFO] training - エポック 22/30 完了: policy_loss=59.641582 value_loss=10.488920 lr=0.000000→0.000000 batches=5
+2025-10-15 21:31:23,792 [INFO] training - エポック 23/30 完了: policy_loss=60.270926 value_loss=9.167931 lr=0.000000→0.000000 batches=5
+2025-10-15 21:31:23,837 [INFO] training - エポック 24/30 完了: policy_loss=59.978109 value_loss=10.226725 lr=0.000000→0.000000 batches=5
+2025-10-15 21:31:23,876 [INFO] training - エポック 25/30 完了: policy_loss=58.697583 value_loss=10.183715 lr=0.000000→0.000000 batches=5
+2025-10-15 21:31:23,915 [INFO] training - エポック 26/30 完了: policy_loss=57.982666 value_loss=7.958798 lr=0.000000→0.000000 batches=5
+2025-10-15 21:31:23,963 [INFO] training - エポック 27/30 完了: policy_loss=59.628508 value_loss=10.281868 lr=0.000000→0.000000 batches=5
+2025-10-15 21:31:24,010 [INFO] training - エポック 28/30 完了: policy_loss=57.339258 value_loss=9.390268 lr=0.000000→0.000000 batches=5
+2025-10-15 21:31:24,055 [INFO] training - エポック 29/30 完了: policy_loss=61.873277 value_loss=9.290775 lr=0.000000→0.000000 batches=5
+2025-10-15 21:31:24,097 [INFO] training - エポック 30/30 完了: policy_loss=57.766892 value_loss=9.406370 lr=0.000000→0.000000 batches=5
+2025-10-15 21:31:24,097 [INFO] app.training_loop - 学習結果: policy_loss=58.857438 value_loss=10.260425
+2025-10-15 21:31:24,515 [INFO] app.training_loop - ランダム対戦評価: [(-1, 25), (0, 21), (1, 54)]
+2025-10-15 21:31:24,801 [INFO] app.training_loop - ゲーム 151/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:31:25,106 [INFO] app.training_loop - ゲーム 152/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:25,343 [INFO] app.training_loop - ゲーム 153/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:31:25,612 [INFO] app.training_loop - ゲーム 154/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:31:25,832 [INFO] app.training_loop - ゲーム 155/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:31:26,112 [INFO] app.training_loop - ゲーム 156/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:26,384 [INFO] app.training_loop - ゲーム 157/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:31:26,669 [INFO] app.training_loop - ゲーム 158/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:26,972 [INFO] app.training_loop - ゲーム 159/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:27,272 [INFO] app.training_loop - ゲーム 160/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:27,503 [INFO] app.training_loop - ゲーム 161/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:31:27,759 [INFO] app.training_loop - ゲーム 162/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:28,022 [INFO] app.training_loop - ゲーム 163/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:28,339 [INFO] app.training_loop - ゲーム 164/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:28,606 [INFO] app.training_loop - ゲーム 165/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:28,886 [INFO] app.training_loop - ゲーム 166/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:29,112 [INFO] app.training_loop - ゲーム 167/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:31:29,405 [INFO] app.training_loop - ゲーム 168/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:29,663 [INFO] app.training_loop - ゲーム 169/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:31:29,937 [INFO] app.training_loop - ゲーム 170/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:30,225 [INFO] app.training_loop - ゲーム 171/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:30,502 [INFO] app.training_loop - ゲーム 172/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:30,730 [INFO] app.training_loop - ゲーム 173/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:31:31,026 [INFO] app.training_loop - ゲーム 174/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:31,263 [INFO] app.training_loop - ゲーム 175/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:31:31,528 [INFO] app.training_loop - ゲーム 176/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:31,816 [INFO] app.training_loop - ゲーム 177/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:31:32,050 [INFO] app.training_loop - ゲーム 178/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:31:32,325 [INFO] app.training_loop - ゲーム 179/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:32,574 [INFO] app.training_loop - ゲーム 180/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:31:32,870 [INFO] app.training_loop - ゲーム 181/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:33,139 [INFO] app.training_loop - ゲーム 182/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:33,427 [INFO] app.training_loop - ゲーム 183/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:33,693 [INFO] app.training_loop - ゲーム 184/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:33,912 [INFO] app.training_loop - ゲーム 185/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:31:34,202 [INFO] app.training_loop - ゲーム 186/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:34,475 [INFO] app.training_loop - ゲーム 187/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:31:34,731 [INFO] app.training_loop - ゲーム 188/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:31:34,991 [INFO] app.training_loop - ゲーム 189/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:35,284 [INFO] app.training_loop - ゲーム 190/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:35,574 [INFO] app.training_loop - ゲーム 191/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:35,893 [INFO] app.training_loop - ゲーム 192/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:36,124 [INFO] app.training_loop - ゲーム 193/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:31:36,412 [INFO] app.training_loop - ゲーム 194/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:36,701 [INFO] app.training_loop - ゲーム 195/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:36,989 [INFO] app.training_loop - ゲーム 196/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:37,201 [INFO] app.training_loop - ゲーム 197/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:31:37,416 [INFO] app.training_loop - ゲーム 198/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:31:37,684 [INFO] app.training_loop - ゲーム 199/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:37,994 [INFO] app.training_loop - ゲーム 200/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:37,994 [INFO] app.training_loop - 学習を実行します: episodes=200 result_distribution=1:82, 0:110, -1:8
+2025-10-15 21:31:37,995 [INFO] training - 学習を開始: episodes=200 batch_size=32 epochs=30
+2025-10-15 21:31:38,056 [INFO] training - エポック 1/30 完了: policy_loss=57.179152 value_loss=10.498465 lr=0.000000→0.000000 batches=7
+2025-10-15 21:31:38,118 [INFO] training - エポック 2/30 完了: policy_loss=59.250460 value_loss=10.167550 lr=0.000000→0.000000 batches=7
+2025-10-15 21:31:38,180 [INFO] training - エポック 3/30 完了: policy_loss=58.592152 value_loss=11.243187 lr=0.000000→0.000000 batches=7
+2025-10-15 21:31:38,254 [INFO] training - エポック 4/30 完了: policy_loss=58.196603 value_loss=10.279136 lr=0.000000→0.000000 batches=7
+2025-10-15 21:31:38,312 [INFO] training - エポック 5/30 完了: policy_loss=58.732332 value_loss=9.246975 lr=0.000000→0.000000 batches=7
+2025-10-15 21:31:38,377 [INFO] training - エポック 6/30 完了: policy_loss=59.305041 value_loss=10.416395 lr=0.000000→0.000000 batches=7
+2025-10-15 21:31:38,439 [INFO] training - エポック 7/30 完了: policy_loss=58.299405 value_loss=8.851188 lr=0.000000→0.000000 batches=7
+2025-10-15 21:31:38,496 [INFO] training - エポック 8/30 完了: policy_loss=59.685023 value_loss=10.566992 lr=0.000000→0.000000 batches=7
+2025-10-15 21:31:38,562 [INFO] training - エポック 9/30 完了: policy_loss=59.482586 value_loss=10.890707 lr=0.000000→0.000000 batches=7
+2025-10-15 21:31:38,630 [INFO] training - エポック 10/30 完了: policy_loss=60.023228 value_loss=10.200955 lr=0.000000→0.000000 batches=7
+2025-10-15 21:31:38,692 [INFO] training - エポック 11/30 完了: policy_loss=60.506298 value_loss=11.702783 lr=0.000000→0.000000 batches=7
+2025-10-15 21:31:38,755 [INFO] training - エポック 12/30 完了: policy_loss=59.353017 value_loss=10.060124 lr=0.000000→0.000000 batches=7
+2025-10-15 21:31:38,815 [INFO] training - エポック 13/30 完了: policy_loss=58.874684 value_loss=10.725240 lr=0.000000→0.000000 batches=7
+2025-10-15 21:31:38,882 [INFO] training - エポック 14/30 完了: policy_loss=58.539070 value_loss=9.651460 lr=0.000000→0.000000 batches=7
+2025-10-15 21:31:38,948 [INFO] training - エポック 15/30 完了: policy_loss=58.270249 value_loss=9.756001 lr=0.000000→0.000000 batches=7
+2025-10-15 21:31:39,007 [INFO] training - エポック 16/30 完了: policy_loss=58.988703 value_loss=11.886388 lr=0.000000→0.000000 batches=7
+2025-10-15 21:31:39,069 [INFO] training - エポック 17/30 完了: policy_loss=58.260330 value_loss=10.925142 lr=0.000000→0.000000 batches=7
+2025-10-15 21:31:39,123 [INFO] training - エポック 18/30 完了: policy_loss=57.075988 value_loss=9.940640 lr=0.000000→0.000000 batches=7
+2025-10-15 21:31:39,186 [INFO] training - エポック 19/30 完了: policy_loss=58.879001 value_loss=8.405540 lr=0.000000→0.000000 batches=7
+2025-10-15 21:31:39,258 [INFO] training - エポック 20/30 完了: policy_loss=59.526149 value_loss=10.076859 lr=0.000000→0.000000 batches=7
+2025-10-15 21:31:39,322 [INFO] training - エポック 21/30 完了: policy_loss=59.669788 value_loss=9.158893 lr=0.000000→0.000000 batches=7
+2025-10-15 21:31:39,378 [INFO] training - エポック 22/30 完了: policy_loss=58.708651 value_loss=9.453466 lr=0.000000→0.000000 batches=7
+2025-10-15 21:31:39,444 [INFO] training - エポック 23/30 完了: policy_loss=60.045022 value_loss=10.080487 lr=0.000000→0.000000 batches=7
+2025-10-15 21:31:39,500 [INFO] training - エポック 24/30 完了: policy_loss=58.204305 value_loss=9.498893 lr=0.000000→0.000000 batches=7
+2025-10-15 21:31:39,563 [INFO] training - エポック 25/30 完了: policy_loss=55.426618 value_loss=9.875252 lr=0.000000→0.000000 batches=7
+2025-10-15 21:31:39,619 [INFO] training - エポック 26/30 完了: policy_loss=59.064625 value_loss=9.143393 lr=0.000000→0.000000 batches=7
+2025-10-15 21:31:39,680 [INFO] training - エポック 27/30 完了: policy_loss=57.840895 value_loss=8.964361 lr=0.000000→0.000000 batches=7
+2025-10-15 21:31:39,744 [INFO] training - エポック 28/30 完了: policy_loss=57.758883 value_loss=9.653490 lr=0.000000→0.000000 batches=7
+2025-10-15 21:31:39,804 [INFO] training - エポック 29/30 完了: policy_loss=57.824261 value_loss=9.958744 lr=0.000000→0.000000 batches=7
+2025-10-15 21:31:39,863 [INFO] training - エポック 30/30 完了: policy_loss=59.336993 value_loss=8.124099 lr=0.000000→0.000000 batches=7
+2025-10-15 21:31:39,863 [INFO] app.training_loop - 学習結果: policy_loss=58.696650 value_loss=9.980094
+2025-10-15 21:31:40,287 [INFO] app.training_loop - ランダム対戦評価: [(-1, 30), (0, 22), (1, 48)]
+2025-10-15 21:31:40,615 [INFO] app.training_loop - ゲーム 201/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:40,889 [INFO] app.training_loop - ゲーム 202/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:41,163 [INFO] app.training_loop - ゲーム 203/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:41,447 [INFO] app.training_loop - ゲーム 204/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:41,722 [INFO] app.training_loop - ゲーム 205/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:41,942 [INFO] app.training_loop - ゲーム 206/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:31:42,180 [INFO] app.training_loop - ゲーム 207/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:31:42,463 [INFO] app.training_loop - ゲーム 208/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:42,741 [INFO] app.training_loop - ゲーム 209/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:43,045 [INFO] app.training_loop - ゲーム 210/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:43,348 [INFO] app.training_loop - ゲーム 211/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:43,622 [INFO] app.training_loop - ゲーム 212/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:43,884 [INFO] app.training_loop - ゲーム 213/500 完了: moves=6 reward=-1 temperature=0.18350
+2025-10-15 21:31:44,176 [INFO] app.training_loop - ゲーム 214/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:31:44,460 [INFO] app.training_loop - ゲーム 215/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:44,745 [INFO] app.training_loop - ゲーム 216/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:45,099 [INFO] app.training_loop - ゲーム 217/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:45,449 [INFO] app.training_loop - ゲーム 218/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:45,889 [INFO] app.training_loop - ゲーム 219/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:31:46,381 [INFO] app.training_loop - ゲーム 220/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:31:46,710 [INFO] app.training_loop - ゲーム 221/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:47,084 [INFO] app.training_loop - ゲーム 222/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:47,464 [INFO] app.training_loop - ゲーム 223/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:31:47,822 [INFO] app.training_loop - ゲーム 224/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:31:48,221 [INFO] app.training_loop - ゲーム 225/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:48,540 [INFO] app.training_loop - ゲーム 226/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:48,810 [INFO] app.training_loop - ゲーム 227/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:49,074 [INFO] app.training_loop - ゲーム 228/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:31:49,395 [INFO] app.training_loop - ゲーム 229/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:49,666 [INFO] app.training_loop - ゲーム 230/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:49,953 [INFO] app.training_loop - ゲーム 231/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:50,247 [INFO] app.training_loop - ゲーム 232/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:31:50,541 [INFO] app.training_loop - ゲーム 233/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:50,788 [INFO] app.training_loop - ゲーム 234/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:31:51,032 [INFO] app.training_loop - ゲーム 235/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:31:51,315 [INFO] app.training_loop - ゲーム 236/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:51,579 [INFO] app.training_loop - ゲーム 237/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:31:51,916 [INFO] app.training_loop - ゲーム 238/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:31:52,224 [INFO] app.training_loop - ゲーム 239/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:52,458 [INFO] app.training_loop - ゲーム 240/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:31:52,752 [INFO] app.training_loop - ゲーム 241/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:53,061 [INFO] app.training_loop - ゲーム 242/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:53,362 [INFO] app.training_loop - ゲーム 243/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:53,682 [INFO] app.training_loop - ゲーム 244/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:53,942 [INFO] app.training_loop - ゲーム 245/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:54,208 [INFO] app.training_loop - ゲーム 246/500 完了: moves=6 reward=-1 temperature=0.18350
+2025-10-15 21:31:54,528 [INFO] app.training_loop - ゲーム 247/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:31:54,784 [INFO] app.training_loop - ゲーム 248/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:31:55,057 [INFO] app.training_loop - ゲーム 249/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:55,367 [INFO] app.training_loop - ゲーム 250/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:55,367 [INFO] app.training_loop - 学習を実行します: episodes=250 result_distribution=1:98, 0:142, -1:10
+2025-10-15 21:31:55,367 [INFO] training - 学習を開始: episodes=250 batch_size=32 epochs=30
+2025-10-15 21:31:55,440 [INFO] training - エポック 1/30 完了: policy_loss=58.556087 value_loss=9.426228 lr=0.000000→0.000000 batches=8
+2025-10-15 21:31:55,509 [INFO] training - エポック 2/30 完了: policy_loss=59.275718 value_loss=9.605141 lr=0.000000→0.000000 batches=8
+2025-10-15 21:31:55,581 [INFO] training - エポック 3/30 完了: policy_loss=58.416584 value_loss=10.627242 lr=0.000000→0.000000 batches=8
+2025-10-15 21:31:55,654 [INFO] training - エポック 4/30 完了: policy_loss=58.860137 value_loss=10.015033 lr=0.000000→0.000000 batches=8
+2025-10-15 21:31:55,722 [INFO] training - エポック 5/30 完了: policy_loss=58.588405 value_loss=10.532618 lr=0.000000→0.000000 batches=8
+2025-10-15 21:31:55,791 [INFO] training - エポック 6/30 完了: policy_loss=58.816185 value_loss=12.728363 lr=0.000000→0.000000 batches=8
+2025-10-15 21:31:55,901 [INFO] training - エポック 7/30 完了: policy_loss=60.400984 value_loss=10.394038 lr=0.000000→0.000000 batches=8
+2025-10-15 21:31:55,980 [INFO] training - エポック 8/30 完了: policy_loss=58.918045 value_loss=10.504061 lr=0.000000→0.000000 batches=8
+2025-10-15 21:31:56,050 [INFO] training - エポック 9/30 完了: policy_loss=56.414276 value_loss=10.541482 lr=0.000000→0.000000 batches=8
+2025-10-15 21:31:56,126 [INFO] training - エポック 10/30 完了: policy_loss=59.643363 value_loss=10.786805 lr=0.000000→0.000000 batches=8
+2025-10-15 21:31:56,196 [INFO] training - エポック 11/30 完了: policy_loss=57.481831 value_loss=10.177943 lr=0.000000→0.000000 batches=8
+2025-10-15 21:31:56,273 [INFO] training - エポック 12/30 完了: policy_loss=57.277382 value_loss=10.616820 lr=0.000000→0.000000 batches=8
+2025-10-15 21:31:56,338 [INFO] training - エポック 13/30 完了: policy_loss=58.306320 value_loss=10.731248 lr=0.000000→0.000000 batches=8
+2025-10-15 21:31:56,408 [INFO] training - エポック 14/30 完了: policy_loss=58.601050 value_loss=10.130038 lr=0.000000→0.000000 batches=8
+2025-10-15 21:31:56,483 [INFO] training - エポック 15/30 完了: policy_loss=60.431984 value_loss=10.537194 lr=0.000000→0.000000 batches=8
+2025-10-15 21:31:56,552 [INFO] training - エポック 16/30 完了: policy_loss=59.226031 value_loss=10.787177 lr=0.000000→0.000000 batches=8
+2025-10-15 21:31:56,627 [INFO] training - エポック 17/30 完了: policy_loss=58.257141 value_loss=11.970793 lr=0.000000→0.000000 batches=8
+2025-10-15 21:31:56,694 [INFO] training - エポック 18/30 完了: policy_loss=58.643714 value_loss=8.708186 lr=0.000000→0.000000 batches=8
+2025-10-15 21:31:56,763 [INFO] training - エポック 19/30 完了: policy_loss=59.260802 value_loss=9.228769 lr=0.000000→0.000000 batches=8
+2025-10-15 21:31:56,835 [INFO] training - エポック 20/30 完了: policy_loss=60.301157 value_loss=9.805757 lr=0.000000→0.000000 batches=8
+2025-10-15 21:31:56,902 [INFO] training - エポック 21/30 完了: policy_loss=59.462783 value_loss=11.567812 lr=0.000000→0.000000 batches=8
+2025-10-15 21:31:56,971 [INFO] training - エポック 22/30 完了: policy_loss=57.721722 value_loss=12.559748 lr=0.000000→0.000000 batches=8
+2025-10-15 21:31:57,043 [INFO] training - エポック 23/30 完了: policy_loss=58.113544 value_loss=11.311280 lr=0.000000→0.000000 batches=8
+2025-10-15 21:31:57,119 [INFO] training - エポック 24/30 完了: policy_loss=57.751941 value_loss=11.635935 lr=0.000000→0.000000 batches=8
+2025-10-15 21:31:57,195 [INFO] training - エポック 25/30 完了: policy_loss=58.919518 value_loss=11.372987 lr=0.000000→0.000000 batches=8
+2025-10-15 21:31:57,274 [INFO] training - エポック 26/30 完了: policy_loss=58.037494 value_loss=10.839494 lr=0.000000→0.000000 batches=8
+2025-10-15 21:31:57,341 [INFO] training - エポック 27/30 完了: policy_loss=59.012242 value_loss=10.721638 lr=0.000000→0.000000 batches=8
+2025-10-15 21:31:57,413 [INFO] training - エポック 28/30 完了: policy_loss=59.170478 value_loss=11.246103 lr=0.000000→0.000000 batches=8
+2025-10-15 21:31:57,487 [INFO] training - エポック 29/30 完了: policy_loss=59.418222 value_loss=9.696761 lr=0.000000→0.000000 batches=8
+2025-10-15 21:31:57,559 [INFO] training - エポック 30/30 完了: policy_loss=58.008454 value_loss=12.698294 lr=0.000000→0.000000 batches=8
+2025-10-15 21:31:57,560 [INFO] app.training_loop - 学習結果: policy_loss=58.709786 value_loss=10.716833
+2025-10-15 21:31:57,943 [INFO] app.training_loop - ランダム対戦評価: [(-1, 35), (0, 16), (1, 49)]
+2025-10-15 21:31:58,226 [INFO] app.training_loop - ゲーム 251/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:58,456 [INFO] app.training_loop - ゲーム 252/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:31:58,713 [INFO] app.training_loop - ゲーム 253/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:58,991 [INFO] app.training_loop - ゲーム 254/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:59,269 [INFO] app.training_loop - ゲーム 255/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:59,545 [INFO] app.training_loop - ゲーム 256/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:31:59,787 [INFO] app.training_loop - ゲーム 257/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:00,009 [INFO] app.training_loop - ゲーム 258/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:32:00,276 [INFO] app.training_loop - ゲーム 259/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:32:00,566 [INFO] app.training_loop - ゲーム 260/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:00,834 [INFO] app.training_loop - ゲーム 261/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:01,113 [INFO] app.training_loop - ゲーム 262/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:01,397 [INFO] app.training_loop - ゲーム 263/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:01,656 [INFO] app.training_loop - ゲーム 264/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:32:01,941 [INFO] app.training_loop - ゲーム 265/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:02,239 [INFO] app.training_loop - ゲーム 266/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:02,543 [INFO] app.training_loop - ゲーム 267/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:32:02,800 [INFO] app.training_loop - ゲーム 268/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:03,087 [INFO] app.training_loop - ゲーム 269/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:03,347 [INFO] app.training_loop - ゲーム 270/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:03,647 [INFO] app.training_loop - ゲーム 271/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:32:03,936 [INFO] app.training_loop - ゲーム 272/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:04,213 [INFO] app.training_loop - ゲーム 273/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:04,509 [INFO] app.training_loop - ゲーム 274/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:04,759 [INFO] app.training_loop - ゲーム 275/500 完了: moves=6 reward=-1 temperature=0.18350
+2025-10-15 21:32:05,042 [INFO] app.training_loop - ゲーム 276/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:05,293 [INFO] app.training_loop - ゲーム 277/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:32:05,550 [INFO] app.training_loop - ゲーム 278/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:32:05,761 [INFO] app.training_loop - ゲーム 279/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:32:06,040 [INFO] app.training_loop - ゲーム 280/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:06,339 [INFO] app.training_loop - ゲーム 281/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:06,575 [INFO] app.training_loop - ゲーム 282/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:32:06,813 [INFO] app.training_loop - ゲーム 283/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:32:07,071 [INFO] app.training_loop - ゲーム 284/500 完了: moves=6 reward=-1 temperature=0.18350
+2025-10-15 21:32:07,322 [INFO] app.training_loop - ゲーム 285/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:32:07,602 [INFO] app.training_loop - ゲーム 286/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:07,886 [INFO] app.training_loop - ゲーム 287/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:32:08,115 [INFO] app.training_loop - ゲーム 288/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:32:08,453 [INFO] app.training_loop - ゲーム 289/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:08,722 [INFO] app.training_loop - ゲーム 290/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:32:08,950 [INFO] app.training_loop - ゲーム 291/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:32:09,203 [INFO] app.training_loop - ゲーム 292/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:09,489 [INFO] app.training_loop - ゲーム 293/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:09,718 [INFO] app.training_loop - ゲーム 294/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:32:09,987 [INFO] app.training_loop - ゲーム 295/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:32:10,245 [INFO] app.training_loop - ゲーム 296/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:32:10,509 [INFO] app.training_loop - ゲーム 297/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:10,788 [INFO] app.training_loop - ゲーム 298/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:11,161 [INFO] app.training_loop - ゲーム 299/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:11,468 [INFO] app.training_loop - ゲーム 300/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:32:11,468 [INFO] app.training_loop - 学習を実行します: episodes=300 result_distribution=1:118, 0:170, -1:12
+2025-10-15 21:32:11,468 [INFO] training - 学習を開始: episodes=300 batch_size=32 epochs=30
+2025-10-15 21:32:11,575 [INFO] training - エポック 1/30 完了: policy_loss=59.076736 value_loss=12.189348 lr=0.000000→0.000000 batches=10
+2025-10-15 21:32:11,670 [INFO] training - エポック 2/30 完了: policy_loss=58.360677 value_loss=9.913595 lr=0.000000→0.000000 batches=10
+2025-10-15 21:32:11,854 [INFO] training - エポック 3/30 完了: policy_loss=58.717736 value_loss=9.906271 lr=0.000000→0.000000 batches=10
+2025-10-15 21:32:11,950 [INFO] training - エポック 4/30 完了: policy_loss=59.141891 value_loss=11.206291 lr=0.000000→0.000000 batches=10
+2025-10-15 21:32:12,067 [INFO] training - エポック 5/30 完了: policy_loss=58.879219 value_loss=11.292644 lr=0.000000→0.000000 batches=10
+2025-10-15 21:32:12,161 [INFO] training - エポック 6/30 完了: policy_loss=60.520290 value_loss=10.764783 lr=0.000000→0.000000 batches=10
+2025-10-15 21:32:12,268 [INFO] training - エポック 7/30 完了: policy_loss=58.417853 value_loss=11.672466 lr=0.000000→0.000000 batches=10
+2025-10-15 21:32:12,359 [INFO] training - エポック 8/30 完了: policy_loss=59.652884 value_loss=11.672850 lr=0.000000→0.000000 batches=10
+2025-10-15 21:32:12,454 [INFO] training - エポック 9/30 完了: policy_loss=58.897306 value_loss=12.209476 lr=0.000000→0.000000 batches=10
+2025-10-15 21:32:12,546 [INFO] training - エポック 10/30 完了: policy_loss=58.045031 value_loss=10.127243 lr=0.000000→0.000000 batches=10
+2025-10-15 21:32:12,639 [INFO] training - エポック 11/30 完了: policy_loss=58.305155 value_loss=11.767487 lr=0.000000→0.000000 batches=10
+2025-10-15 21:32:12,728 [INFO] training - エポック 12/30 完了: policy_loss=59.073731 value_loss=12.445096 lr=0.000000→0.000000 batches=10
+2025-10-15 21:32:12,813 [INFO] training - エポック 13/30 完了: policy_loss=58.178626 value_loss=11.704531 lr=0.000000→0.000000 batches=10
+2025-10-15 21:32:12,901 [INFO] training - エポック 14/30 完了: policy_loss=59.459929 value_loss=10.541179 lr=0.000000→0.000000 batches=10
+2025-10-15 21:32:12,988 [INFO] training - エポック 15/30 完了: policy_loss=58.213947 value_loss=9.952896 lr=0.000000→0.000000 batches=10
+2025-10-15 21:32:13,069 [INFO] training - エポック 16/30 完了: policy_loss=59.312933 value_loss=10.262210 lr=0.000000→0.000000 batches=10
+2025-10-15 21:32:13,164 [INFO] training - エポック 17/30 完了: policy_loss=59.393990 value_loss=9.628130 lr=0.000000→0.000000 batches=10
+2025-10-15 21:32:13,265 [INFO] training - エポック 18/30 完了: policy_loss=60.070296 value_loss=10.904534 lr=0.000000→0.000000 batches=10
+2025-10-15 21:32:13,348 [INFO] training - エポック 19/30 完了: policy_loss=60.704249 value_loss=11.576819 lr=0.000000→0.000000 batches=10
+2025-10-15 21:32:13,440 [INFO] training - エポック 20/30 完了: policy_loss=59.407061 value_loss=12.175691 lr=0.000000→0.000000 batches=10
+2025-10-15 21:32:13,524 [INFO] training - エポック 21/30 完了: policy_loss=59.186226 value_loss=9.275378 lr=0.000000→0.000000 batches=10
+2025-10-15 21:32:13,610 [INFO] training - エポック 22/30 完了: policy_loss=58.805340 value_loss=12.250303 lr=0.000000→0.000000 batches=10
+2025-10-15 21:32:13,694 [INFO] training - エポック 23/30 完了: policy_loss=58.857950 value_loss=10.763791 lr=0.000000→0.000000 batches=10
+2025-10-15 21:32:13,776 [INFO] training - エポック 24/30 完了: policy_loss=60.372191 value_loss=10.878026 lr=0.000000→0.000000 batches=10
+2025-10-15 21:32:13,861 [INFO] training - エポック 25/30 完了: policy_loss=60.224193 value_loss=10.993853 lr=0.000000→0.000000 batches=10
+2025-10-15 21:32:13,951 [INFO] training - エポック 26/30 完了: policy_loss=59.726604 value_loss=10.539494 lr=0.000000→0.000000 batches=10
+2025-10-15 21:32:14,041 [INFO] training - エポック 27/30 完了: policy_loss=59.105352 value_loss=10.254897 lr=0.000000→0.000000 batches=10
+2025-10-15 21:32:14,131 [INFO] training - エポック 28/30 完了: policy_loss=58.736346 value_loss=10.473409 lr=0.000000→0.000000 batches=10
+2025-10-15 21:32:14,229 [INFO] training - エポック 29/30 完了: policy_loss=59.044297 value_loss=11.666857 lr=0.000000→0.000000 batches=10
+2025-10-15 21:32:14,321 [INFO] training - エポック 30/30 完了: policy_loss=58.279350 value_loss=12.719976 lr=0.000000→0.000000 batches=10
+2025-10-15 21:32:14,321 [INFO] app.training_loop - 学習結果: policy_loss=59.138913 value_loss=11.057651
+2025-10-15 21:32:14,751 [INFO] app.training_loop - ランダム対戦評価: [(-1, 28), (0, 18), (1, 54)]
+2025-10-15 21:32:15,027 [INFO] app.training_loop - ゲーム 301/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:15,339 [INFO] app.training_loop - ゲーム 302/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:15,650 [INFO] app.training_loop - ゲーム 303/500 完了: moves=8 reward=-1 temperature=0.11744
+2025-10-15 21:32:15,876 [INFO] app.training_loop - ゲーム 304/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:32:16,113 [INFO] app.training_loop - ゲーム 305/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:32:16,411 [INFO] app.training_loop - ゲーム 306/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:16,688 [INFO] app.training_loop - ゲーム 307/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:32:16,919 [INFO] app.training_loop - ゲーム 308/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:32:17,166 [INFO] app.training_loop - ゲーム 309/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:32:17,412 [INFO] app.training_loop - ゲーム 310/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:32:17,686 [INFO] app.training_loop - ゲーム 311/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:17,949 [INFO] app.training_loop - ゲーム 312/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:18,177 [INFO] app.training_loop - ゲーム 313/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:32:18,465 [INFO] app.training_loop - ゲーム 314/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:18,726 [INFO] app.training_loop - ゲーム 315/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:19,020 [INFO] app.training_loop - ゲーム 316/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:19,308 [INFO] app.training_loop - ゲーム 317/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:19,585 [INFO] app.training_loop - ゲーム 318/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:19,853 [INFO] app.training_loop - ゲーム 319/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:32:20,148 [INFO] app.training_loop - ゲーム 320/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:32:20,431 [INFO] app.training_loop - ゲーム 321/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:20,660 [INFO] app.training_loop - ゲーム 322/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:32:20,879 [INFO] app.training_loop - ゲーム 323/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:32:21,100 [INFO] app.training_loop - ゲーム 324/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:32:21,408 [INFO] app.training_loop - ゲーム 325/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:32:21,700 [INFO] app.training_loop - ゲーム 326/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:21,967 [INFO] app.training_loop - ゲーム 327/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:22,278 [INFO] app.training_loop - ゲーム 328/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:22,540 [INFO] app.training_loop - ゲーム 329/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:32:22,831 [INFO] app.training_loop - ゲーム 330/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:32:23,123 [INFO] app.training_loop - ゲーム 331/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:23,431 [INFO] app.training_loop - ゲーム 332/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:23,643 [INFO] app.training_loop - ゲーム 333/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:32:23,916 [INFO] app.training_loop - ゲーム 334/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:24,208 [INFO] app.training_loop - ゲーム 335/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:24,511 [INFO] app.training_loop - ゲーム 336/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:24,791 [INFO] app.training_loop - ゲーム 337/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:25,062 [INFO] app.training_loop - ゲーム 338/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:25,410 [INFO] app.training_loop - ゲーム 339/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:25,693 [INFO] app.training_loop - ゲーム 340/500 完了: moves=8 reward=-1 temperature=0.11744
+2025-10-15 21:32:25,957 [INFO] app.training_loop - ゲーム 341/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:32:26,228 [INFO] app.training_loop - ゲーム 342/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:32:26,488 [INFO] app.training_loop - ゲーム 343/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:32:26,752 [INFO] app.training_loop - ゲーム 344/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:27,009 [INFO] app.training_loop - ゲーム 345/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:32:27,286 [INFO] app.training_loop - ゲーム 346/500 完了: moves=8 reward=-1 temperature=0.11744
+2025-10-15 21:32:27,499 [INFO] app.training_loop - ゲーム 347/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:32:27,759 [INFO] app.training_loop - ゲーム 348/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:32:28,031 [INFO] app.training_loop - ゲーム 349/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:28,268 [INFO] app.training_loop - ゲーム 350/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:32:28,269 [INFO] app.training_loop - 学習を実行します: episodes=350 result_distribution=1:141, 0:194, -1:15
+2025-10-15 21:32:28,269 [INFO] training - 学習を開始: episodes=350 batch_size=32 epochs=30
+2025-10-15 21:32:28,382 [INFO] training - エポック 1/30 完了: policy_loss=58.511059 value_loss=11.846626 lr=0.000000→0.000000 batches=11
+2025-10-15 21:32:28,485 [INFO] training - エポック 2/30 完了: policy_loss=58.502915 value_loss=12.003348 lr=0.000000→0.000000 batches=11
+2025-10-15 21:32:28,590 [INFO] training - エポック 3/30 完了: policy_loss=58.721887 value_loss=10.873314 lr=0.000000→0.000000 batches=11
+2025-10-15 21:32:28,684 [INFO] training - エポック 4/30 完了: policy_loss=59.435413 value_loss=10.292572 lr=0.000000→0.000000 batches=11
+2025-10-15 21:32:28,781 [INFO] training - エポック 5/30 完了: policy_loss=57.995210 value_loss=12.860813 lr=0.000000→0.000000 batches=11
+2025-10-15 21:32:28,880 [INFO] training - エポック 6/30 完了: policy_loss=59.377568 value_loss=11.346854 lr=0.000000→0.000000 batches=11
+2025-10-15 21:32:28,978 [INFO] training - エポック 7/30 完了: policy_loss=58.760095 value_loss=9.574026 lr=0.000000→0.000000 batches=11
+2025-10-15 21:32:29,079 [INFO] training - エポック 8/30 完了: policy_loss=59.286237 value_loss=12.151461 lr=0.000000→0.000000 batches=11
+2025-10-15 21:32:29,218 [INFO] training - エポック 9/30 完了: policy_loss=59.229010 value_loss=10.653435 lr=0.000000→0.000000 batches=11
+2025-10-15 21:32:29,324 [INFO] training - エポック 10/30 完了: policy_loss=58.864348 value_loss=11.279595 lr=0.000000→0.000000 batches=11
+2025-10-15 21:32:29,423 [INFO] training - エポック 11/30 完了: policy_loss=59.363483 value_loss=9.709638 lr=0.000000→0.000000 batches=11
+2025-10-15 21:32:29,519 [INFO] training - エポック 12/30 完了: policy_loss=58.250232 value_loss=11.121055 lr=0.000000→0.000000 batches=11
+2025-10-15 21:32:29,618 [INFO] training - エポック 13/30 完了: policy_loss=58.152361 value_loss=10.981344 lr=0.000000→0.000000 batches=11
+2025-10-15 21:32:29,716 [INFO] training - エポック 14/30 完了: policy_loss=58.510700 value_loss=10.564444 lr=0.000000→0.000000 batches=11
+2025-10-15 21:32:29,809 [INFO] training - エポック 15/30 完了: policy_loss=58.664620 value_loss=10.990067 lr=0.000000→0.000000 batches=11
+2025-10-15 21:32:29,908 [INFO] training - エポック 16/30 完了: policy_loss=58.389086 value_loss=11.308599 lr=0.000000→0.000000 batches=11
+2025-10-15 21:32:29,999 [INFO] training - エポック 17/30 完了: policy_loss=57.807944 value_loss=10.436179 lr=0.000000→0.000000 batches=11
+2025-10-15 21:32:30,101 [INFO] training - エポック 18/30 完了: policy_loss=60.031530 value_loss=11.241961 lr=0.000000→0.000000 batches=11
+2025-10-15 21:32:30,192 [INFO] training - エポック 19/30 完了: policy_loss=60.394705 value_loss=11.369344 lr=0.000000→0.000000 batches=11
+2025-10-15 21:32:30,297 [INFO] training - エポック 20/30 完了: policy_loss=58.508350 value_loss=10.964045 lr=0.000000→0.000000 batches=11
+2025-10-15 21:32:30,396 [INFO] training - エポック 21/30 完了: policy_loss=59.001907 value_loss=12.344351 lr=0.000000→0.000000 batches=11
+2025-10-15 21:32:30,491 [INFO] training - エポック 22/30 完了: policy_loss=58.970852 value_loss=10.977110 lr=0.000000→0.000000 batches=11
+2025-10-15 21:32:30,583 [INFO] training - エポック 23/30 完了: policy_loss=57.660246 value_loss=10.293727 lr=0.000000→0.000000 batches=11
+2025-10-15 21:32:30,679 [INFO] training - エポック 24/30 完了: policy_loss=58.334977 value_loss=11.473928 lr=0.000000→0.000000 batches=11
+2025-10-15 21:32:30,787 [INFO] training - エポック 25/30 完了: policy_loss=58.128497 value_loss=10.950150 lr=0.000000→0.000000 batches=11
+2025-10-15 21:32:30,889 [INFO] training - エポック 26/30 完了: policy_loss=59.253203 value_loss=11.351005 lr=0.000000→0.000000 batches=11
+2025-10-15 21:32:30,987 [INFO] training - エポック 27/30 完了: policy_loss=58.378547 value_loss=10.615365 lr=0.000000→0.000000 batches=11
+2025-10-15 21:32:31,082 [INFO] training - エポック 28/30 完了: policy_loss=58.924881 value_loss=12.323046 lr=0.000000→0.000000 batches=11
+2025-10-15 21:32:31,175 [INFO] training - エポック 29/30 完了: policy_loss=59.183029 value_loss=11.291427 lr=0.000000→0.000000 batches=11
+2025-10-15 21:32:31,281 [INFO] training - エポック 30/30 完了: policy_loss=59.102180 value_loss=11.464183 lr=0.000000→0.000000 batches=11
+2025-10-15 21:32:31,281 [INFO] app.training_loop - 学習結果: policy_loss=58.789836 value_loss=11.155100
+2025-10-15 21:32:31,706 [INFO] app.training_loop - ランダム対戦評価: [(-1, 32), (0, 13), (1, 55)]
+2025-10-15 21:32:31,979 [INFO] app.training_loop - ゲーム 351/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:32,256 [INFO] app.training_loop - ゲーム 352/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:32,470 [INFO] app.training_loop - ゲーム 353/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:32:32,681 [INFO] app.training_loop - ゲーム 354/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:32:32,917 [INFO] app.training_loop - ゲーム 355/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:32:33,189 [INFO] app.training_loop - ゲーム 356/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:32:33,524 [INFO] app.training_loop - ゲーム 357/500 完了: moves=8 reward=-1 temperature=0.11744
+2025-10-15 21:32:33,756 [INFO] app.training_loop - ゲーム 358/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:32:34,038 [INFO] app.training_loop - ゲーム 359/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:34,289 [INFO] app.training_loop - ゲーム 360/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:32:34,571 [INFO] app.training_loop - ゲーム 361/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:34,851 [INFO] app.training_loop - ゲーム 362/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:35,118 [INFO] app.training_loop - ゲーム 363/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:35,375 [INFO] app.training_loop - ゲーム 364/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:32:35,669 [INFO] app.training_loop - ゲーム 365/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:35,945 [INFO] app.training_loop - ゲーム 366/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:36,167 [INFO] app.training_loop - ゲーム 367/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:32:36,401 [INFO] app.training_loop - ゲーム 368/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:32:36,672 [INFO] app.training_loop - ゲーム 369/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:36,885 [INFO] app.training_loop - ゲーム 370/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:32:37,130 [INFO] app.training_loop - ゲーム 371/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:32:37,380 [INFO] app.training_loop - ゲーム 372/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:32:37,625 [INFO] app.training_loop - ゲーム 373/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:32:37,890 [INFO] app.training_loop - ゲーム 374/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:32:38,131 [INFO] app.training_loop - ゲーム 375/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:32:38,454 [INFO] app.training_loop - ゲーム 376/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:38,745 [INFO] app.training_loop - ゲーム 377/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:38,996 [INFO] app.training_loop - ゲーム 378/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:32:39,299 [INFO] app.training_loop - ゲーム 379/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:39,522 [INFO] app.training_loop - ゲーム 380/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:32:39,812 [INFO] app.training_loop - ゲーム 381/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:40,099 [INFO] app.training_loop - ゲーム 382/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:40,412 [INFO] app.training_loop - ゲーム 383/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:40,715 [INFO] app.training_loop - ゲーム 384/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:40,990 [INFO] app.training_loop - ゲーム 385/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:41,287 [INFO] app.training_loop - ゲーム 386/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:32:41,558 [INFO] app.training_loop - ゲーム 387/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:41,873 [INFO] app.training_loop - ゲーム 388/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:42,139 [INFO] app.training_loop - ゲーム 389/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:42,444 [INFO] app.training_loop - ゲーム 390/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:42,749 [INFO] app.training_loop - ゲーム 391/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:42,995 [INFO] app.training_loop - ゲーム 392/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:32:43,287 [INFO] app.training_loop - ゲーム 393/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:43,558 [INFO] app.training_loop - ゲーム 394/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:32:43,836 [INFO] app.training_loop - ゲーム 395/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:44,078 [INFO] app.training_loop - ゲーム 396/500 完了: moves=6 reward=-1 temperature=0.18350
+2025-10-15 21:32:44,386 [INFO] app.training_loop - ゲーム 397/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:44,667 [INFO] app.training_loop - ゲーム 398/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:32:44,935 [INFO] app.training_loop - ゲーム 399/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:45,211 [INFO] app.training_loop - ゲーム 400/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:32:45,211 [INFO] app.training_loop - 学習を実行します: episodes=400 result_distribution=1:163, 0:220, -1:17
+2025-10-15 21:32:45,211 [INFO] training - 学習を開始: episodes=400 batch_size=32 epochs=30
+2025-10-15 21:32:45,327 [INFO] training - エポック 1/30 完了: policy_loss=58.755859 value_loss=10.470999 lr=0.000000→0.000000 batches=13
+2025-10-15 21:32:45,439 [INFO] training - エポック 2/30 完了: policy_loss=58.328277 value_loss=11.789763 lr=0.000000→0.000000 batches=13
+2025-10-15 21:32:45,549 [INFO] training - エポック 3/30 完了: policy_loss=58.407764 value_loss=10.816204 lr=0.000000→0.000000 batches=13
+2025-10-15 21:32:45,669 [INFO] training - エポック 4/30 完了: policy_loss=57.618307 value_loss=12.255200 lr=0.000000→0.000000 batches=13
+2025-10-15 21:32:45,779 [INFO] training - エポック 5/30 完了: policy_loss=59.305872 value_loss=10.965695 lr=0.000000→0.000000 batches=13
+2025-10-15 21:32:45,882 [INFO] training - エポック 6/30 完了: policy_loss=59.548140 value_loss=11.141381 lr=0.000000→0.000000 batches=13
+2025-10-15 21:32:45,990 [INFO] training - エポック 7/30 完了: policy_loss=58.886161 value_loss=11.284560 lr=0.000000→0.000000 batches=13
+2025-10-15 21:32:46,095 [INFO] training - エポック 8/30 完了: policy_loss=59.497532 value_loss=10.690515 lr=0.000000→0.000000 batches=13
+2025-10-15 21:32:46,210 [INFO] training - エポック 9/30 完了: policy_loss=58.249908 value_loss=11.490561 lr=0.000000→0.000000 batches=13
+2025-10-15 21:32:46,327 [INFO] training - エポック 10/30 完了: policy_loss=59.928996 value_loss=11.866292 lr=0.000000→0.000000 batches=13
+2025-10-15 21:32:46,446 [INFO] training - エポック 11/30 完了: policy_loss=59.134573 value_loss=12.767210 lr=0.000000→0.000000 batches=13
+2025-10-15 21:32:46,559 [INFO] training - エポック 12/30 完了: policy_loss=59.842251 value_loss=10.998127 lr=0.000000→0.000000 batches=13
+2025-10-15 21:32:46,670 [INFO] training - エポック 13/30 完了: policy_loss=57.501011 value_loss=10.048735 lr=0.000000→0.000000 batches=13
+2025-10-15 21:32:46,780 [INFO] training - エポック 14/30 完了: policy_loss=60.282759 value_loss=10.693425 lr=0.000000→0.000000 batches=13
+2025-10-15 21:32:46,889 [INFO] training - エポック 15/30 完了: policy_loss=60.310521 value_loss=10.950727 lr=0.000000→0.000000 batches=13
+2025-10-15 21:32:47,004 [INFO] training - エポック 16/30 完了: policy_loss=58.504041 value_loss=9.545357 lr=0.000000→0.000000 batches=13
+2025-10-15 21:32:47,122 [INFO] training - エポック 17/30 完了: policy_loss=58.445777 value_loss=10.735872 lr=0.000000→0.000000 batches=13
+2025-10-15 21:32:47,241 [INFO] training - エポック 18/30 完了: policy_loss=59.540118 value_loss=11.155719 lr=0.000000→0.000000 batches=13
+2025-10-15 21:32:47,354 [INFO] training - エポック 19/30 完了: policy_loss=57.030557 value_loss=12.372880 lr=0.000000→0.000000 batches=13
+2025-10-15 21:32:47,465 [INFO] training - エポック 20/30 完了: policy_loss=58.492206 value_loss=10.198270 lr=0.000000→0.000000 batches=13
+2025-10-15 21:32:47,578 [INFO] training - エポック 21/30 完了: policy_loss=59.594163 value_loss=11.532676 lr=0.000000→0.000000 batches=13
+2025-10-15 21:32:47,696 [INFO] training - エポック 22/30 完了: policy_loss=58.562652 value_loss=11.925410 lr=0.000000→0.000000 batches=13
+2025-10-15 21:32:47,810 [INFO] training - エポック 23/30 完了: policy_loss=59.342081 value_loss=11.085465 lr=0.000000→0.000000 batches=13
+2025-10-15 21:32:47,926 [INFO] training - エポック 24/30 完了: policy_loss=59.599226 value_loss=9.788798 lr=0.000000→0.000000 batches=13
+2025-10-15 21:32:48,035 [INFO] training - エポック 25/30 完了: policy_loss=58.252571 value_loss=11.953914 lr=0.000000→0.000000 batches=13
+2025-10-15 21:32:48,146 [INFO] training - エポック 26/30 完了: policy_loss=59.637537 value_loss=10.491334 lr=0.000000→0.000000 batches=13
+2025-10-15 21:32:48,263 [INFO] training - エポック 27/30 完了: policy_loss=59.334905 value_loss=9.859889 lr=0.000000→0.000000 batches=13
+2025-10-15 21:32:48,367 [INFO] training - エポック 28/30 完了: policy_loss=57.472829 value_loss=10.933510 lr=0.000000→0.000000 batches=13
+2025-10-15 21:32:48,479 [INFO] training - エポック 29/30 完了: policy_loss=59.404564 value_loss=11.856535 lr=0.000000→0.000000 batches=13
+2025-10-15 21:32:48,589 [INFO] training - エポック 30/30 完了: policy_loss=58.391927 value_loss=10.816443 lr=0.000000→0.000000 batches=13
+2025-10-15 21:32:48,590 [INFO] app.training_loop - 学習結果: policy_loss=58.906769 value_loss=11.082715
+2025-10-15 21:32:49,018 [INFO] app.training_loop - ランダム対戦評価: [(-1, 36), (0, 17), (1, 47)]
+2025-10-15 21:32:49,283 [INFO] app.training_loop - ゲーム 401/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:32:49,525 [INFO] app.training_loop - ゲーム 402/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:32:49,808 [INFO] app.training_loop - ゲーム 403/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:50,070 [INFO] app.training_loop - ゲーム 404/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:32:50,341 [INFO] app.training_loop - ゲーム 405/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:50,619 [INFO] app.training_loop - ゲーム 406/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:50,894 [INFO] app.training_loop - ゲーム 407/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:51,137 [INFO] app.training_loop - ゲーム 408/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:51,435 [INFO] app.training_loop - ゲーム 409/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:51,689 [INFO] app.training_loop - ゲーム 410/500 完了: moves=6 reward=-1 temperature=0.18350
+2025-10-15 21:32:51,956 [INFO] app.training_loop - ゲーム 411/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:52,247 [INFO] app.training_loop - ゲーム 412/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:52,483 [INFO] app.training_loop - ゲーム 413/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:32:52,748 [INFO] app.training_loop - ゲーム 414/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:52,970 [INFO] app.training_loop - ゲーム 415/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:32:53,202 [INFO] app.training_loop - ゲーム 416/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:32:53,448 [INFO] app.training_loop - ゲーム 417/500 完了: moves=6 reward=-1 temperature=0.18350
+2025-10-15 21:32:53,756 [INFO] app.training_loop - ゲーム 418/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:54,030 [INFO] app.training_loop - ゲーム 419/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:54,270 [INFO] app.training_loop - ゲーム 420/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:32:54,541 [INFO] app.training_loop - ゲーム 421/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:54,807 [INFO] app.training_loop - ゲーム 422/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:55,101 [INFO] app.training_loop - ゲーム 423/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:55,337 [INFO] app.training_loop - ゲーム 424/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:32:55,589 [INFO] app.training_loop - ゲーム 425/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:55,860 [INFO] app.training_loop - ゲーム 426/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:56,139 [INFO] app.training_loop - ゲーム 427/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:56,428 [INFO] app.training_loop - ゲーム 428/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:56,703 [INFO] app.training_loop - ゲーム 429/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:56,970 [INFO] app.training_loop - ゲーム 430/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:57,220 [INFO] app.training_loop - ゲーム 431/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:32:57,495 [INFO] app.training_loop - ゲーム 432/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:57,797 [INFO] app.training_loop - ゲーム 433/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:58,070 [INFO] app.training_loop - ゲーム 434/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:58,349 [INFO] app.training_loop - ゲーム 435/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:58,613 [INFO] app.training_loop - ゲーム 436/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:32:58,884 [INFO] app.training_loop - ゲーム 437/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:59,117 [INFO] app.training_loop - ゲーム 438/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:32:59,385 [INFO] app.training_loop - ゲーム 439/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:59,634 [INFO] app.training_loop - ゲーム 440/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:32:59,913 [INFO] app.training_loop - ゲーム 441/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:33:00,194 [INFO] app.training_loop - ゲーム 442/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:33:00,472 [INFO] app.training_loop - ゲーム 443/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:33:00,763 [INFO] app.training_loop - ゲーム 444/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:33:01,016 [INFO] app.training_loop - ゲーム 445/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:33:01,318 [INFO] app.training_loop - ゲーム 446/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:33:01,569 [INFO] app.training_loop - ゲーム 447/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:33:01,857 [INFO] app.training_loop - ゲーム 448/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:33:02,067 [INFO] app.training_loop - ゲーム 449/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:33:02,310 [INFO] app.training_loop - ゲーム 450/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:33:02,311 [INFO] app.training_loop - 学習を実行します: episodes=450 result_distribution=1:176, 0:255, -1:19
+2025-10-15 21:33:02,311 [INFO] training - 学習を開始: episodes=450 batch_size=32 epochs=30
+2025-10-15 21:33:02,436 [INFO] training - エポック 1/30 完了: policy_loss=58.550383 value_loss=10.541649 lr=0.000000→0.000000 batches=15
+2025-10-15 21:33:02,565 [INFO] training - エポック 2/30 完了: policy_loss=59.118984 value_loss=11.358252 lr=0.000000→0.000000 batches=15
+2025-10-15 21:33:02,690 [INFO] training - エポック 3/30 完了: policy_loss=59.449935 value_loss=11.842247 lr=0.000000→0.000000 batches=15
+2025-10-15 21:33:02,811 [INFO] training - エポック 4/30 完了: policy_loss=60.607661 value_loss=11.646758 lr=0.000000→0.000000 batches=15
+2025-10-15 21:33:02,940 [INFO] training - エポック 5/30 完了: policy_loss=57.004627 value_loss=10.490333 lr=0.000000→0.000000 batches=15
+2025-10-15 21:33:03,067 [INFO] training - エポック 6/30 完了: policy_loss=59.742130 value_loss=12.820178 lr=0.000000→0.000000 batches=15
+2025-10-15 21:33:03,204 [INFO] training - エポック 7/30 完了: policy_loss=57.637070 value_loss=11.058062 lr=0.000000→0.000000 batches=15
+2025-10-15 21:33:03,349 [INFO] training - エポック 8/30 完了: policy_loss=58.352414 value_loss=11.923895 lr=0.000000→0.000000 batches=15
+2025-10-15 21:33:03,484 [INFO] training - エポック 9/30 完了: policy_loss=60.368183 value_loss=11.438420 lr=0.000000→0.000000 batches=15
+2025-10-15 21:33:03,613 [INFO] training - エポック 10/30 完了: policy_loss=59.599167 value_loss=11.444498 lr=0.000000→0.000000 batches=15
+2025-10-15 21:33:03,738 [INFO] training - エポック 11/30 完了: policy_loss=57.723460 value_loss=10.720301 lr=0.000000→0.000000 batches=15
+2025-10-15 21:33:03,864 [INFO] training - エポック 12/30 完了: policy_loss=57.714795 value_loss=12.343721 lr=0.000000→0.000000 batches=15
+2025-10-15 21:33:03,997 [INFO] training - エポック 13/30 完了: policy_loss=59.129926 value_loss=10.963020 lr=0.000000→0.000000 batches=15
+2025-10-15 21:33:04,122 [INFO] training - エポック 14/30 完了: policy_loss=59.027508 value_loss=10.610978 lr=0.000000→0.000000 batches=15
+2025-10-15 21:33:04,264 [INFO] training - エポック 15/30 完了: policy_loss=57.919244 value_loss=10.522283 lr=0.000000→0.000000 batches=15
+2025-10-15 21:33:04,408 [INFO] training - エポック 16/30 完了: policy_loss=58.873453 value_loss=11.942063 lr=0.000000→0.000000 batches=15
+2025-10-15 21:33:04,543 [INFO] training - エポック 17/30 完了: policy_loss=58.533907 value_loss=10.858532 lr=0.000000→0.000000 batches=15
+2025-10-15 21:33:04,685 [INFO] training - エポック 18/30 完了: policy_loss=58.405112 value_loss=10.669481 lr=0.000000→0.000000 batches=15
+2025-10-15 21:33:04,816 [INFO] training - エポック 19/30 完了: policy_loss=59.194883 value_loss=10.814327 lr=0.000000→0.000000 batches=15
+2025-10-15 21:33:04,940 [INFO] training - エポック 20/30 完了: policy_loss=58.994039 value_loss=11.068306 lr=0.000000→0.000000 batches=15
+2025-10-15 21:33:05,063 [INFO] training - エポック 21/30 完了: policy_loss=59.294176 value_loss=11.483318 lr=0.000000→0.000000 batches=15
+2025-10-15 21:33:05,198 [INFO] training - エポック 22/30 完了: policy_loss=59.034533 value_loss=11.123398 lr=0.000000→0.000000 batches=15
+2025-10-15 21:33:05,331 [INFO] training - エポック 23/30 完了: policy_loss=57.689893 value_loss=11.316367 lr=0.000000→0.000000 batches=15
+2025-10-15 21:33:05,453 [INFO] training - エポック 24/30 完了: policy_loss=58.950735 value_loss=12.359046 lr=0.000000→0.000000 batches=15
+2025-10-15 21:33:05,589 [INFO] training - エポック 25/30 完了: policy_loss=59.128121 value_loss=11.385353 lr=0.000000→0.000000 batches=15
+2025-10-15 21:33:05,708 [INFO] training - エポック 26/30 完了: policy_loss=59.121187 value_loss=11.755001 lr=0.000000→0.000000 batches=15
+2025-10-15 21:33:05,837 [INFO] training - エポック 27/30 完了: policy_loss=58.813318 value_loss=10.015557 lr=0.000000→0.000000 batches=15
+2025-10-15 21:33:05,960 [INFO] training - エポック 28/30 完了: policy_loss=57.440691 value_loss=10.759853 lr=0.000000→0.000000 batches=15
+2025-10-15 21:33:06,083 [INFO] training - エポック 29/30 完了: policy_loss=57.989052 value_loss=10.141419 lr=0.000000→0.000000 batches=15
+2025-10-15 21:33:06,221 [INFO] training - エポック 30/30 完了: policy_loss=58.378321 value_loss=11.165383 lr=0.000000→0.000000 batches=15
+2025-10-15 21:33:06,221 [INFO] app.training_loop - 学習結果: policy_loss=58.726230 value_loss=11.219400
+2025-10-15 21:33:06,623 [INFO] app.training_loop - ランダム対戦評価: [(-1, 33), (0, 20), (1, 47)]
+2025-10-15 21:33:06,912 [INFO] app.training_loop - ゲーム 451/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:33:07,145 [INFO] app.training_loop - ゲーム 452/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:33:07,388 [INFO] app.training_loop - ゲーム 453/500 完了: moves=6 reward=-1 temperature=0.18350
+2025-10-15 21:33:07,650 [INFO] app.training_loop - ゲーム 454/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:33:07,930 [INFO] app.training_loop - ゲーム 455/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:33:08,202 [INFO] app.training_loop - ゲーム 456/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:33:08,489 [INFO] app.training_loop - ゲーム 457/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:33:08,754 [INFO] app.training_loop - ゲーム 458/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:33:09,027 [INFO] app.training_loop - ゲーム 459/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:33:09,314 [INFO] app.training_loop - ゲーム 460/500 完了: moves=6 reward=-1 temperature=0.18350
+2025-10-15 21:33:09,590 [INFO] app.training_loop - ゲーム 461/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:33:09,817 [INFO] app.training_loop - ゲーム 462/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:33:10,081 [INFO] app.training_loop - ゲーム 463/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:33:10,346 [INFO] app.training_loop - ゲーム 464/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:33:10,605 [INFO] app.training_loop - ゲーム 465/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:33:10,865 [INFO] app.training_loop - ゲーム 466/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:33:11,179 [INFO] app.training_loop - ゲーム 467/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:33:11,469 [INFO] app.training_loop - ゲーム 468/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:33:11,746 [INFO] app.training_loop - ゲーム 469/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:33:11,999 [INFO] app.training_loop - ゲーム 470/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:33:12,278 [INFO] app.training_loop - ゲーム 471/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:33:12,516 [INFO] app.training_loop - ゲーム 472/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:33:12,802 [INFO] app.training_loop - ゲーム 473/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:33:13,092 [INFO] app.training_loop - ゲーム 474/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:33:13,392 [INFO] app.training_loop - ゲーム 475/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:33:13,651 [INFO] app.training_loop - ゲーム 476/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:33:13,861 [INFO] app.training_loop - ゲーム 477/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:33:14,066 [INFO] app.training_loop - ゲーム 478/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:33:14,291 [INFO] app.training_loop - ゲーム 479/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:33:14,542 [INFO] app.training_loop - ゲーム 480/500 完了: moves=6 reward=-1 temperature=0.18350
+2025-10-15 21:33:14,809 [INFO] app.training_loop - ゲーム 481/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:33:15,068 [INFO] app.training_loop - ゲーム 482/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:33:15,368 [INFO] app.training_loop - ゲーム 483/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:33:15,654 [INFO] app.training_loop - ゲーム 484/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:33:15,926 [INFO] app.training_loop - ゲーム 485/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:33:16,238 [INFO] app.training_loop - ゲーム 486/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:33:16,503 [INFO] app.training_loop - ゲーム 487/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:33:16,779 [INFO] app.training_loop - ゲーム 488/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:33:17,053 [INFO] app.training_loop - ゲーム 489/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:33:17,310 [INFO] app.training_loop - ゲーム 490/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:33:17,595 [INFO] app.training_loop - ゲーム 491/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:33:17,853 [INFO] app.training_loop - ゲーム 492/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:33:18,125 [INFO] app.training_loop - ゲーム 493/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:33:18,399 [INFO] app.training_loop - ゲーム 494/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:33:18,665 [INFO] app.training_loop - ゲーム 495/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:33:18,911 [INFO] app.training_loop - ゲーム 496/500 完了: moves=5 reward=1 temperature=0.22938
+2025-10-15 21:33:19,176 [INFO] app.training_loop - ゲーム 497/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:33:19,462 [INFO] app.training_loop - ゲーム 498/500 完了: moves=9 reward=0 temperature=0.09395
+2025-10-15 21:33:19,719 [INFO] app.training_loop - ゲーム 499/500 完了: moves=6 reward=-1 temperature=0.18350
+2025-10-15 21:33:19,989 [INFO] app.training_loop - ゲーム 500/500 完了: moves=7 reward=1 temperature=0.14680
+2025-10-15 21:33:19,989 [INFO] app.training_loop - 学習を実行します: episodes=500 result_distribution=1:189, 0:288, -1:23
+2025-10-15 21:33:19,989 [INFO] training - 学習を開始: episodes=500 batch_size=32 epochs=30
+2025-10-15 21:33:20,131 [INFO] training - エポック 1/30 完了: policy_loss=59.905158 value_loss=11.661846 lr=0.000000→0.000000 batches=16
+2025-10-15 21:33:20,275 [INFO] training - エポック 2/30 完了: policy_loss=59.152324 value_loss=10.327756 lr=0.000000→0.000000 batches=16
+2025-10-15 21:33:20,422 [INFO] training - エポック 3/30 完了: policy_loss=58.645479 value_loss=10.169612 lr=0.000000→0.000000 batches=16
+2025-10-15 21:33:20,561 [INFO] training - エポック 4/30 完了: policy_loss=59.769057 value_loss=11.245104 lr=0.000000→0.000000 batches=16
+2025-10-15 21:33:20,701 [INFO] training - エポック 5/30 完了: policy_loss=58.232683 value_loss=9.293325 lr=0.000000→0.000000 batches=16
+2025-10-15 21:33:20,839 [INFO] training - エポック 6/30 完了: policy_loss=59.105596 value_loss=10.874459 lr=0.000000→0.000000 batches=16
+2025-10-15 21:33:20,968 [INFO] training - エポック 7/30 完了: policy_loss=60.302458 value_loss=11.127062 lr=0.000000→0.000000 batches=16
+2025-10-15 21:33:21,114 [INFO] training - エポック 8/30 完了: policy_loss=58.313374 value_loss=11.259210 lr=0.000000→0.000000 batches=16
+2025-10-15 21:33:21,265 [INFO] training - エポック 9/30 完了: policy_loss=58.456820 value_loss=11.310744 lr=0.000000→0.000000 batches=16
+2025-10-15 21:33:21,406 [INFO] training - エポック 10/30 完了: policy_loss=58.760759 value_loss=10.175408 lr=0.000000→0.000000 batches=16
+2025-10-15 21:33:21,544 [INFO] training - エポック 11/30 完了: policy_loss=58.830026 value_loss=11.036481 lr=0.000000→0.000000 batches=16
+2025-10-15 21:33:21,674 [INFO] training - エポック 12/30 完了: policy_loss=58.594018 value_loss=9.637388 lr=0.000000→0.000000 batches=16
+2025-10-15 21:33:21,814 [INFO] training - エポック 13/30 完了: policy_loss=59.445449 value_loss=11.436845 lr=0.000000→0.000000 batches=16
+2025-10-15 21:33:21,953 [INFO] training - エポック 14/30 完了: policy_loss=59.418335 value_loss=10.444688 lr=0.000000→0.000000 batches=16
+2025-10-15 21:33:22,088 [INFO] training - エポック 15/30 完了: policy_loss=58.183601 value_loss=10.482694 lr=0.000000→0.000000 batches=16
+2025-10-15 21:33:22,230 [INFO] training - エポック 16/30 完了: policy_loss=58.340710 value_loss=10.923492 lr=0.000000→0.000000 batches=16
+2025-10-15 21:33:22,374 [INFO] training - エポック 17/30 完了: policy_loss=58.678615 value_loss=12.400760 lr=0.000000→0.000000 batches=16
+2025-10-15 21:33:22,519 [INFO] training - エポック 18/30 完了: policy_loss=58.530557 value_loss=12.382567 lr=0.000000→0.000000 batches=16
+2025-10-15 21:33:22,647 [INFO] training - エポック 19/30 完了: policy_loss=59.606639 value_loss=12.491514 lr=0.000000→0.000000 batches=16
+2025-10-15 21:33:22,786 [INFO] training - エポック 20/30 完了: policy_loss=59.752221 value_loss=11.733934 lr=0.000000→0.000000 batches=16
+2025-10-15 21:33:22,925 [INFO] training - エポック 21/30 完了: policy_loss=58.459543 value_loss=11.822271 lr=0.000000→0.000000 batches=16
+2025-10-15 21:33:23,069 [INFO] training - エポック 22/30 完了: policy_loss=59.042831 value_loss=11.766542 lr=0.000000→0.000000 batches=16
+2025-10-15 21:33:23,211 [INFO] training - エポック 23/30 完了: policy_loss=59.669011 value_loss=12.053339 lr=0.000000→0.000000 batches=16
+2025-10-15 21:33:23,355 [INFO] training - エポック 24/30 完了: policy_loss=57.913262 value_loss=10.611794 lr=0.000000→0.000000 batches=16
+2025-10-15 21:33:23,489 [INFO] training - エポック 25/30 完了: policy_loss=59.144145 value_loss=10.619234 lr=0.000000→0.000000 batches=16
+2025-10-15 21:33:23,629 [INFO] training - エポック 26/30 完了: policy_loss=59.189365 value_loss=11.092445 lr=0.000000→0.000000 batches=16
+2025-10-15 21:33:23,766 [INFO] training - エポック 27/30 完了: policy_loss=59.974691 value_loss=10.909565 lr=0.000000→0.000000 batches=16
+2025-10-15 21:33:23,899 [INFO] training - エポック 28/30 完了: policy_loss=58.240613 value_loss=12.289849 lr=0.000000→0.000000 batches=16
+2025-10-15 21:33:24,028 [INFO] training - エポック 29/30 完了: policy_loss=59.090286 value_loss=11.507876 lr=0.000000→0.000000 batches=16
+2025-10-15 21:33:24,166 [INFO] training - エポック 30/30 完了: policy_loss=59.318657 value_loss=10.896704 lr=0.000000→0.000000 batches=16
+2025-10-15 21:33:24,166 [INFO] app.training_loop - 学習結果: policy_loss=59.002209 value_loss=11.132817
+2025-10-15 21:33:24,568 [INFO] app.training_loop - ランダム対戦評価: [(-1, 28), (0, 16), (1, 56)]
+2025-10-15 21:33:24,568 [INFO] app.training_loop - 自己対戦と学習が完了しました
