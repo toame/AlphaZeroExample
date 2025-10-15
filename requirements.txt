@@ -1,0 +1,10 @@
+# Core
+numpy>=1.24
+torch>=2.2
+
+# Config & validation
+PyYAML>=6.0
+pydantic>=2.5
+
+# Typing backports (harmless on 3.11+)
+typing-extensions>=4.8
