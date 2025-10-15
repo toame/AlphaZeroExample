@@ -193,12 +193,45 @@ class Net(nn.Module):
     def forward(self, x: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
         return self.model(x)
 
+    def _ensure_batch_tensor(self, features: np.ndarray | torch.Tensor) -> torch.Tensor:
+        """特徴量を推論用テンソルに変換する。"""
+
+        if isinstance(features, np.ndarray):
+            if features.dtype != np.float32:
+                features = features.astype(np.float32, copy=False)
+            return torch.from_numpy(features)
+        if isinstance(features, torch.Tensor):
+            return features
+        raise TypeError("features には numpy.ndarray か torch.Tensor を指定してください")
+
     @torch.no_grad()
-    def predict(self, state: State) -> tuple[np.ndarray, float]:
+    def predict_from_feature(self, feature: np.ndarray) -> tuple[np.ndarray, float]:
+        """単一特徴量から方策と価値を推論する。"""
+
+        if feature.ndim != 3:
+            raise ValueError("feature は (C, H, W) の 3 次元配列である必要があります")
         self.eval()
-        x = torch.from_numpy(state.feature()).unsqueeze(0)
+        x = self._ensure_batch_tensor(feature).unsqueeze(0)
         policy, value = self.forward(x)
         return policy.cpu().numpy()[0], float(value.cpu().numpy()[0][0])
+
+    @torch.no_grad()
+    def predict_batch(self, features: np.ndarray | torch.Tensor) -> tuple[np.ndarray, np.ndarray]:
+        """複数特徴量をまとめて推論する。"""
+
+        batch = self._ensure_batch_tensor(features)
+        if batch.ndim != 4:
+            raise ValueError("features は (N, C, H, W) の 4 次元配列である必要があります")
+        self.eval()
+        policy, value = self.forward(batch)
+        return policy.cpu().numpy(), value.cpu().numpy().reshape(-1)
+
+    @torch.no_grad()
+    def predict(self, state: State) -> tuple[np.ndarray, float]:
+        """状態から方策と価値を推論する。"""
+
+        feature = state.feature()
+        return self.predict_from_feature(feature)
 
 
 if __name__ == "__main__":
