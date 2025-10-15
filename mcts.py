@@ -53,34 +53,49 @@ class Tree:
         self._progress_callback = progress_callback
 
     def search(self, state: State, depth: int) -> float:
-        if state.terminal():
-            return float(state.terminal_reward())
+        """モンテカルロ木探索の 1 プレイアウトを実行する。"""
 
-        key = state.record_string()
-        if key not in self.nodes:
-            p, v = self.net.predict(state)
-            self.nodes[key] = Node(p, v)
-            return float(v)
+        path: List[tuple[Node, int]] = []
+        current_depth = depth
 
-        node = self.nodes[key]
-        p = node.p.copy()
-        if depth == 0:
-            p = (1.0 - self._config.dirichlet_weight) * p + self._config.dirichlet_weight * np.random.dirichlet(
-                [self._config.dirichlet_alpha] * len(p)
-            )
+        while True:
+            if state.terminal():
+                value = float(state.terminal_reward())
+                break
 
-        best_action, best_ucb = None, -float("inf")
-        for action in state.legal_actions():
-            n = 1 + node.n[action]
-            q_sum = node.q_sum_all / node.n_all + node.q_sum[action]
-            ucb = q_sum / n + self._config.puct_c * np.sqrt(node.n_all) * p[action] / n
-            if ucb > best_ucb:
-                best_action, best_ucb = action, ucb
+            key = state.record_string()
+            if key not in self.nodes:
+                p, v = self.net.predict(state)
+                self.nodes[key] = Node(p, v)
+                value = float(v)
+                break
 
-        state.play(best_action)  # type: ignore[arg-type]
-        q_new = -self.search(state, depth + 1)
-        node.update(best_action, q_new)  # type: ignore[arg-type]
-        return float(q_new)
+            node = self.nodes[key]
+            p = node.p.copy()
+            if current_depth == 0:
+                p = (1.0 - self._config.dirichlet_weight) * p + self._config.dirichlet_weight * np.random.dirichlet(
+                    [self._config.dirichlet_alpha] * len(p)
+                )
+
+            best_action, best_ucb = None, -float("inf")
+            for action in state.legal_actions():
+                n = 1 + node.n[action]
+                q_sum = node.q_sum_all / node.n_all + node.q_sum[action]
+                ucb = q_sum / n + self._config.puct_c * np.sqrt(node.n_all) * p[action] / n
+                if ucb > best_ucb:
+                    best_action, best_ucb = action, ucb
+
+            assert best_action is not None, "合法手が存在しない状態で探索が進行しました。"
+            path.append((node, best_action))
+            state.play(best_action)
+            current_depth += 1
+
+        backup_value = value
+        for node, action in reversed(path):
+            backup_value = -backup_value
+            node.update(action, backup_value)
+
+        return float(backup_value)
 
     def think(
         self,
@@ -121,10 +136,14 @@ class Tree:
                         ),
                     )
 
-        root_n = self.nodes[state.record_string()].n
-        n = root_n + 1
-        n = (n / np.max(n)) ** (1.0 / (temperature + 1e-8))
-        return n / n.sum()
+        root_n = self.nodes[state.record_string()].n.astype(np.float64)
+        max_visit = np.max(root_n)
+        if max_visit == 0:
+            probs = np.ones_like(root_n, dtype=np.float64) / len(root_n)
+        else:
+            scaled = (root_n / max_visit) ** (1.0 / (temperature + 1e-8))
+            probs = scaled / scaled.sum()
+        return probs
 
     def pv(self, state: State) -> List[int]:
         s = copy.deepcopy(state)
