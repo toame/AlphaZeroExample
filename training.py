@@ -106,6 +106,17 @@ class Trainer:
             training_config.lr_decay,
         )
 
+    def _reset_optimizer(self) -> None:
+        """学習率と内部状態を初期化して再学習時の停滞を防ぐ。"""
+
+        for param_group in self.optimizer.param_groups:
+            param_group["lr"] = self._training_config.lr
+        # 以前のモーメンタム等を破棄し、学習再開時に影響を残さない。
+        for state in self.optimizer.state.values():
+            for key, value in list(state.items()):
+                if isinstance(value, torch.Tensor):
+                    value.zero_()
+
     def fit(self, episodes: Sequence[Episode]) -> TrainingResult:
         """保持しているネットワークを学習させる。"""
 
@@ -116,6 +127,7 @@ class Trainer:
         batches_per_epoch = max(math.ceil(len(episodes) / batch_size), 1)
         policy_loss_sum, value_loss_sum = 0.0, 0.0
 
+        self._reset_optimizer()
         self.net.train()
         logger.info(
             "学習を開始: episodes=%d batch_size=%d epochs=%d",
