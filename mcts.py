@@ -3,9 +3,10 @@ from __future__ import annotations
 import copy
 import time
 import numpy as np
-from typing import Dict
+from dataclasses import dataclass
+from typing import Callable, Dict, List
+from config import MCTSConfig
 from game import State
-from config.loader import cfg
 
 class Node:
     """ある1状態の探索結果を保存するノード。"""
@@ -23,14 +24,33 @@ class Node:
         self.n_all += 1
         self.q_sum_all += q_new
 
+@dataclass(frozen=True)
+class SearchReport:
+    """探索途中経過を外部に知らせるための情報。"""
+
+    elapsed: float
+    best_action: int | None
+    best_q: float | None
+    best_n: int | None
+    total_simulations: int
+    pv: List[int]
+
+ProgressCallback = Callable[[State, SearchReport], None]
+
 class Tree:
     """モンテカルロ木探索本体。"""
-    def __init__(self, net) -> None:
+
+    def __init__(
+        self,
+        net,
+        config: MCTSConfig,
+        *,
+        progress_callback: ProgressCallback | None = None,
+    ) -> None:
         self.net = net
         self.nodes: Dict[str, Node] = {}
-        self.dirichlet_alpha = cfg.mcts.dirichlet_alpha
-        self.dirichlet_weight = cfg.mcts.dirichlet_weight
-        self.puct_c = cfg.mcts.puct_c
+        self._config = config
+        self._progress_callback = progress_callback
 
     def search(self, state: State, depth: int) -> float:
         if state.terminal():
@@ -45,15 +65,15 @@ class Tree:
         node = self.nodes[key]
         p = node.p.copy()
         if depth == 0:
-            p = (1.0 - self.dirichlet_weight) * p + self.dirichlet_weight * np.random.dirichlet(
-                [self.dirichlet_alpha] * len(p)
+            p = (1.0 - self._config.dirichlet_weight) * p + self._config.dirichlet_weight * np.random.dirichlet(
+                [self._config.dirichlet_alpha] * len(p)
             )
 
         best_action, best_ucb = None, -float("inf")
         for action in state.legal_actions():
             n = 1 + node.n[action]
             q_sum = node.q_sum_all / node.n_all + node.q_sum[action]
-            ucb = q_sum / n + self.puct_c * np.sqrt(node.n_all) * p[action] / n
+            ucb = q_sum / n + self._config.puct_c * np.sqrt(node.n_all) * p[action] / n
             if ucb > best_ucb:
                 best_action, best_ucb = action, ucb
 
@@ -62,39 +82,51 @@ class Tree:
         node.update(best_action, q_new)  # type: ignore[arg-type]
         return float(q_new)
 
-    def think(self, state: State, num_simulations: int, temperature: float | None = None, show: bool = False) -> np.ndarray:
+    def think(
+        self,
+        state: State,
+        num_simulations: int,
+        temperature: float | None = None,
+        *,
+        progress_callback: ProgressCallback | None = None,
+    ) -> np.ndarray:
         if temperature is None:
-            temperature = cfg.mcts.temperature_init
-        if show:
-            print(state)
+            temperature = self._config.temperature_init
+        callback = progress_callback or self._progress_callback
         start, prev_time = time.time(), 0.0
         for _ in range(num_simulations):
             self.search(copy.deepcopy(state), depth=0)
-            if show:
+            if callback is not None:
                 tmp_time = time.time() - start
                 if int(tmp_time) > int(prev_time):
                     prev_time = tmp_time
                     root = self.nodes[state.record_string()]
                     pv = self.pv(state)
-                    if pv:
-                        print(
-                            "%.2f sec. best %s. q = %.4f. n = %d / %d. pv = %s"
-                            % (
-                                tmp_time,
-                                state.action2str(pv[0]),
-                                root.q_sum[pv[0]] / max(root.n[pv[0]], 1),
-                                root.n[pv[0]],
-                                root.n_all,
-                                " ".join([state.action2str(a) for a in pv]),
-                            )
-                        )
+                    best_action = pv[0] if pv else None
+                    best_q = None
+                    best_n = None
+                    if best_action is not None:
+                        visits = max(root.n[best_action], 1)
+                        best_q = root.q_sum[best_action] / visits
+                        best_n = root.n[best_action]
+                    callback(
+                        state,
+                        SearchReport(
+                            elapsed=tmp_time,
+                            best_action=best_action,
+                            best_q=best_q,
+                            best_n=best_n,
+                            total_simulations=root.n_all,
+                            pv=pv,
+                        ),
+                    )
 
         root_n = self.nodes[state.record_string()].n
         n = root_n + 1
         n = (n / np.max(n)) ** (1.0 / (temperature + 1e-8))
         return n / n.sum()
 
-    def pv(self, state: State):
+    def pv(self, state: State) -> List[int]:
         s = copy.deepcopy(state)
         pv_seq = []
         while True:

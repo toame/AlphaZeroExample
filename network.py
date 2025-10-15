@@ -4,8 +4,8 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from config import GameConfig, NetworkConfig
 from game import State
-from config.loader import cfg
 
 class Conv(nn.Module):
     def __init__(self, filters0: int, filters1: int, kernel_size: int, bn: bool = False) -> None:
@@ -29,16 +29,20 @@ class ResidualBlock(nn.Module):
 
 class Net(nn.Module):
     """AlphaZero 風ネット（小型）。方策 p と価値 v を出力。"""
-    def __init__(self) -> None:
-        super().__init__()
-        state = State()
-        self.input_shape = state.feature().shape  # (2, N, N)
-        self.board_size = self.input_shape[1] * self.input_shape[2]
 
-        num_filters = cfg.network.num_filters
-        num_blocks = cfg.network.num_blocks
-        self.pol_ch = cfg.network.policy_channels
-        self.val_ch = cfg.network.value_channels
+    def __init__(self, game_config: GameConfig, net_config: NetworkConfig) -> None:
+        super().__init__()
+        self._game_config = game_config
+        self._net_config = net_config
+
+        board_len = game_config.board_size
+        self.input_shape = (2, board_len, board_len)
+        self.board_size = board_len * board_len
+
+        num_filters = net_config.num_filters
+        num_blocks = net_config.num_blocks
+        self.pol_ch = net_config.policy_channels
+        self.val_ch = net_config.value_channels
 
         self.layer0 = Conv(self.input_shape[0], num_filters, 3, bn=True)
         self.blocks = nn.ModuleList([ResidualBlock(num_filters) for _ in range(num_blocks)])
@@ -70,6 +74,9 @@ class Net(nn.Module):
         return p.cpu().numpy()[0], float(v.cpu().numpy()[0][0])
 
 if __name__ == "__main__":
+    from config.loader import load_default_config
     from training import show_net
-    net = Net()
-    show_net(net, State())
+
+    cfg = load_default_config()
+    net = Net(cfg.game, cfg.network)
+    show_net(net, State(cfg.game))

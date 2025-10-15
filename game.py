@@ -2,21 +2,26 @@
 from __future__ import annotations
 import numpy as np
 from typing import List
-from config.loader import cfg
+from config import GameConfig
 
 BLACK, WHITE = 1, -1  # 先手・後手
 
 class State:
     """N×N の○×ゲーム盤面。"""
-    def __init__(self) -> None:
-        g = cfg.game
-        self.size: int = g.board_size
-        self.X: str = g.axes.X
-        self.Y: str = g.axes.Y
-        self.C = {0: g.symbols.empty, BLACK: g.symbols.black, WHITE: g.symbols.white}
+
+    def __init__(self, config: GameConfig) -> None:
+        self._config = config
+        self.size: int = config.board_size
+        self.X: str = config.axes.X
+        self.Y: str = config.axes.Y
+        self.C = {
+            0: config.symbols.empty,
+            BLACK: config.symbols.black,
+            WHITE: config.symbols.white,
+        }
 
         self.board = np.zeros((self.size, self.size), dtype=np.int8)  # (x, y)
-        self.color: int = g.first_player
+        self.color: int = config.first_player
         self.win_color: int = 0
         self.record: List[int] = []
 
@@ -72,9 +77,16 @@ class State:
         return [a for a in range(self.size * self.size) if self.board[a // self.size, a % self.size] == 0]
 
     def feature(self) -> np.ndarray:
-        return np.stack([self.board == self.color, self.board == -self.color]).astype(np.float32)
+        """現在手番視点での特徴量（2×N×N、float32）を返す。"""
+        return np.stack([
+            self.board == self.color,
+            self.board == -self.color,
+        ]).astype(np.float32)
 
 if __name__ == "__main__":
-    s = State().play("B1")
+    from config.loader import load_default_config
+
+    config = load_default_config().game
+    s = State(config).play("B1")
     print(s)
     print("input feature\n", s.feature())

@@ -1,63 +1,106 @@
 # main.py
 from __future__ import annotations
 import numpy as np
+from config import AppConfig
+from config.loader import load_default_config
 from game import State
+from mcts import SearchReport, Tree
 from network import Net
-from mcts import Tree
-from training import show_net, train, vs_random
-from config.loader import cfg
+from training import (
+    Trainer,
+    create_default_optimizer,
+    show_net,
+    vs_random,
+)
 
-def demo_network_outputs() -> None:
+def demo_network_outputs(cfg: AppConfig) -> None:
+    game_cfg = cfg.game
+    net_cfg = cfg.network
+
     print("initial state")
-    show_net(Net(), State())
+    show_net(Net(game_cfg, net_cfg), State(game_cfg))
 
     print("WIN by put")
-    show_net(Net(), State().play("A1 C1 A2 C2"))
+    show_net(Net(game_cfg, net_cfg), State(game_cfg).play("A1 C1 A2 C2"))
 
     print("LOSE by opponent's double reach")
-    show_net(Net(), State().play("B2 A2 A3 C1 B3"))
+    show_net(Net(game_cfg, net_cfg), State(game_cfg).play("B2 A2 A3 C1 B3"))
 
     print("WIN through double reach")
-    show_net(Net(), State().play("B2 A2 A3 C1"))
+    show_net(Net(game_cfg, net_cfg), State(game_cfg).play("B2 A2 A3 C1"))
 
     print("strategic WIN by following double")
-    show_net(Net(), State().play("B1 A3"))
+    show_net(Net(game_cfg, net_cfg), State(game_cfg).play("B1 A3"))
 
-def demo_mcts() -> None:
-    M = cfg.mcts
-    demo = M.num_simulations_demo
-    demo_mid = M.num_simulations_demo_mid
+def demo_mcts(cfg: AppConfig) -> None:
+    mcts_cfg = cfg.mcts
+    game_cfg = cfg.game
+    net_cfg = cfg.network
+    demo = mcts_cfg.num_simulations_demo
+    demo_mid = mcts_cfg.num_simulations_demo_mid
 
-    tree = Tree(Net())
-    tree.think(State(), demo, show=True)
+    def reporter(state: State, report: SearchReport) -> None:
+        if report.best_action is None:
+            return
+        pv_text = " ".join([state.action2str(a) for a in report.pv])
+        best = state.action2str(report.best_action)
+        print(
+            "%.2f sec. best %s. q = %.4f. n = %d / %d. pv = %s"
+            % (
+                report.elapsed,
+                best,
+                report.best_q or 0.0,
+                report.best_n or 0,
+                report.total_simulations,
+                pv_text,
+            )
+        )
 
-    tree = Tree(Net())
-    tree.think(State().play("A1 C1 A2 C2"), demo_mid, show=True)
+    tree = Tree(Net(game_cfg, net_cfg), mcts_cfg, progress_callback=reporter)
+    initial_state = State(game_cfg)
+    print(initial_state)
+    tree.think(initial_state, demo)
 
-    tree = Tree(Net())
-    tree.think(State().play("B2 A2 A3 C1 B3"), demo_mid, show=True)
+    tree = Tree(Net(game_cfg, net_cfg), mcts_cfg, progress_callback=reporter)
+    mid_state = State(game_cfg).play("A1 C1 A2 C2")
+    print(mid_state)
+    tree.think(mid_state, demo_mid)
 
-    tree = Tree(Net())
-    tree.think(State().play("B2 A2 A3 C1"), demo_mid, show=True)
+    tree = Tree(Net(game_cfg, net_cfg), mcts_cfg, progress_callback=reporter)
+    losing_state = State(game_cfg).play("B2 A2 A3 C1 B3")
+    print(losing_state)
+    tree.think(losing_state, demo_mid)
 
-def self_play_and_train():
-    T = cfg.training
-    M = cfg.mcts
-    num_games = T.num_games
-    num_train_steps = T.num_train_steps
-    num_simulations = M.num_simulations_train
+    tree = Tree(Net(game_cfg, net_cfg), mcts_cfg, progress_callback=reporter)
+    winning_state = State(game_cfg).play("B2 A2 A3 C1")
+    print(winning_state)
+    tree.think(winning_state, demo_mid)
 
-    net = Net()
+def self_play_and_train(cfg: AppConfig) -> Net:
+    game_cfg = cfg.game
+    net_cfg = cfg.network
+    train_cfg = cfg.training
+    mcts_cfg = cfg.mcts
+    num_games = train_cfg.num_games
+    num_train_steps = train_cfg.num_train_steps
+    num_simulations = mcts_cfg.num_simulations_train
+
+    net = Net(game_cfg, net_cfg)
+    optimizer = create_default_optimizer(net, train_cfg)
+    trainer = Trainer(game_cfg, train_cfg, net, optimizer)
     episodes = []
     result_distribution = {1: 0, 0: 0, -1: 0}
 
-    print("vs_random = ", sorted(vs_random(net).items()))
+    print(
+        "vs_random = ",
+        sorted(vs_random(net, game_cfg, train_cfg.vs_random_matches).items()),
+    )
 
     for g in range(num_games):
         record, p_targets = [], []
-        state = State()
-        tree = Tree(net)
-        temperature = M.temperature_init
+        state = State(game_cfg)
+        tree = Tree(net, mcts_cfg)
+        temperature = mcts_cfg.temperature_init
         while not state.terminal():
             p_target = tree.think(state, num_simulations, temperature)
             action = np.random.choice(np.arange(len(p_target)), p=p_target)
@@ -73,14 +116,21 @@ def self_play_and_train():
         print(g, " ", end="")
         if (g + 1) % num_train_steps == 0:
             print("generated = ", sorted(result_distribution.items()))
-            net = train(episodes)
-            print("vs_random = ", sorted(vs_random(net).items()))
+            result = trainer.fit(episodes)
+            print(
+                f"train loss policy={result.policy_loss:.6f} value={result.value_loss:.6f}"
+            )
+            print(
+                "vs_random = ",
+                sorted(vs_random(net, game_cfg, train_cfg.vs_random_matches).items()),
+            )
 
     print("finished")
     return net
 
 if __name__ == "__main__":
     # 必要に応じてコメントアウトを外して実行してください。
-    demo_network_outputs()
-    # demo_mcts()
-    # trained = self_play_and_train()
+    app_config = load_default_config()
+    demo_network_outputs(app_config)
+    # demo_mcts(app_config)
+    # trained = self_play_and_train(app_config)

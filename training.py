@@ -1,78 +1,153 @@
 # training.py
 from __future__ import annotations
+import dataclasses
+import math
 import numpy as np
 import torch
 import torch.optim as optim
-from typing import Dict, List, Tuple
+from typing import Callable, Dict, List, Sequence
+from config import GameConfig, TrainingConfig
 from game import State
 from network import Net
-from config.loader import cfg
 
-T = cfg.training
-BATCH_SIZE = T.batch_size
-NUM_EPOCHS = T.num_epochs
-LR = T.lr
-WEIGHT_DECAY = T.weight_decay
-MOMENTUM = T.momentum
-LR_DECAY = T.lr_decay
+Episode = tuple[List[int], int, List[np.ndarray]]
 
-def gen_target(ep: Tuple[List[int], int, List[np.ndarray]]) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
-    turn_idx = np.random.randint(len(ep[0]))
-    state = State()
-    for a in ep[0][:turn_idx]:
-        state.play(a)
-    v = ep[1]
-    x = state.feature()
-    p_target = ep[2][turn_idx]
-    v_target = np.array([v if turn_idx % 2 == 0 else -v], dtype=np.float32)
-    return x, p_target.astype(np.float32), v_target
+@dataclasses.dataclass
+class TrainingBatch:
+    """学習用に整形した特徴量とターゲット。"""
 
-def train(episodes: List[Tuple[List[int], int, List[np.ndarray]]]) -> Net:
-    net = Net()
-    optimizer = optim.SGD(net.parameters(), lr=LR, weight_decay=WEIGHT_DECAY, momentum=MOMENTUM)
+    x: torch.Tensor
+    policy_target: torch.Tensor
+    value_target: torch.Tensor
 
-    for epoch in range(NUM_EPOCHS):
-        p_loss_sum, v_loss_sum = 0.0, 0.0
-        net.train()
-        for _ in range(0, len(episodes), BATCH_SIZE):
-            batch = [gen_target(episodes[np.random.randint(len(episodes))]) for _ in range(BATCH_SIZE)]
-            x, p_target, v_target = zip(*batch)
-            x = torch.FloatTensor(np.array(x))
-            p_target = torch.FloatTensor(np.array(p_target))
-            v_target = torch.FloatTensor(np.array(v_target))
+@dataclasses.dataclass
+class TrainingResult:
+    """学習 1 回分の指標。"""
 
-            p, v = net(x)
-            p_loss = torch.sum(-p_target * torch.log(p + 1e-12))
-            v_loss = torch.sum((v_target - v) ** 2)
+    policy_loss: float
+    value_loss: float
 
-            p_loss_sum += float(p_loss.item())
-            v_loss_sum += float(v_loss.item())
+class EpisodeSampler:
+    """エピソードからランダムにバッチを生成するユーティリティ。"""
 
-            optimizer.zero_grad()
-            (p_loss + v_loss).backward()
-            optimizer.step()
+    def __init__(self, game_config: GameConfig, rng: np.random.Generator | None = None) -> None:
+        self._game_config = game_config
+        self._rng = rng or np.random.default_rng()
 
-        for param_group in optimizer.param_groups:
-            param_group["lr"] *= LR_DECAY
+    def sample_batch(self, episodes: Sequence[Episode], batch_size: int) -> TrainingBatch:
+        if not episodes:
+            raise ValueError("学習用エピソードが空のためバッチを生成できません")
 
-    print(f"p_loss {p_loss_sum / max(len(episodes),1):.6f} v_loss {v_loss_sum / max(len(episodes),1):.6f}")
-    return net
+        x_list, policy_targets, value_targets = [], [], []
+        for _ in range(batch_size):
+            ep = episodes[self._rng.integers(len(episodes))]
+            turn_idx = int(self._rng.integers(len(ep[0])))
+            state = State(self._game_config)
+            for action in ep[0][:turn_idx]:
+                state.play(action)
 
-def vs_random(net: Net, n: int | None = None) -> Dict[int, int]:
-    if n is None:
-        n = T.vs_random_matches
+            v = ep[1]
+            p_target = ep[2][turn_idx]
+            # 奇数ターンでは価値の符号を反転させる。
+            value = v if turn_idx % 2 == 0 else -v
+
+            x_list.append(state.feature())
+            policy_targets.append(p_target.astype(np.float32))
+            value_targets.append(np.array([value], dtype=np.float32))
+
+        x = torch.from_numpy(np.array(x_list, dtype=np.float32))
+        policy_tensor = torch.from_numpy(np.array(policy_targets, dtype=np.float32))
+        value_tensor = torch.from_numpy(np.array(value_targets, dtype=np.float32))
+        return TrainingBatch(x=x, policy_target=policy_tensor, value_target=value_tensor)
+
+def create_default_optimizer(net: Net, config: TrainingConfig) -> optim.Optimizer:
+    """デフォルトの最適化手法（SGD）を生成する。"""
+
+    return optim.SGD(
+        net.parameters(),
+        lr=config.lr,
+        weight_decay=config.weight_decay,
+        momentum=config.momentum,
+    )
+
+def decay_learning_rate(optimizer: optim.Optimizer, decay: float) -> None:
+    """単純な学習率減衰を適用する。"""
+
+    for param_group in optimizer.param_groups:
+        param_group["lr"] *= decay
+
+class Trainer:
+    """ネットワーク学習ループを管理するクラス。"""
+
+    def __init__(
+        self,
+        game_config: GameConfig,
+        training_config: TrainingConfig,
+        net: Net,
+        optimizer: optim.Optimizer,
+        *,
+        sampler: EpisodeSampler | None = None,
+        scheduler: Callable[[optim.Optimizer], None] | None = None,
+    ) -> None:
+        self._game_config = game_config
+        self._training_config = training_config
+        self.net = net
+        self.optimizer = optimizer
+        self._sampler = sampler or EpisodeSampler(game_config)
+        self._scheduler = scheduler
+
+    def fit(self, episodes: Sequence[Episode]) -> TrainingResult:
+        """保持しているネットワークを学習させる。"""
+
+        if not episodes:
+            raise ValueError("学習用エピソードが空です")
+
+        batch_size = self._training_config.batch_size
+        batches_per_epoch = max(math.ceil(len(episodes) / batch_size), 1)
+        policy_loss_sum, value_loss_sum = 0.0, 0.0
+
+        self.net.train()
+        for _ in range(self._training_config.num_epochs):
+            for _ in range(0, len(episodes), batch_size):
+                batch = self._sampler.sample_batch(episodes, batch_size)
+                policy_pred, value_pred = self.net(batch.x)
+
+                policy_loss = torch.sum(-batch.policy_target * torch.log(policy_pred + 1e-12))
+                value_loss = torch.sum((batch.value_target - value_pred) ** 2)
+
+                policy_loss_sum += float(policy_loss.item())
+                value_loss_sum += float(value_loss.item())
+
+                self.optimizer.zero_grad()
+                (policy_loss + value_loss).backward()
+                self.optimizer.step()
+
+            if self._scheduler is not None:
+                self._scheduler(self.optimizer)
+            else:
+                decay_learning_rate(self.optimizer, self._training_config.lr_decay)
+
+        num_batches = self._training_config.num_epochs * batches_per_epoch
+        return TrainingResult(
+            policy_loss=policy_loss_sum / num_batches,
+            value_loss=value_loss_sum / num_batches,
+        )
+
+def vs_random(net: Net, game_config: GameConfig, matches: int) -> Dict[int, int]:
+    """ランダムプレイヤーと対戦して戦績を計測する。"""
+
     results: Dict[int, int] = {}
-    for i in range(n):
+    for i in range(matches):
         first_turn = i % 2 == 0
         turn = first_turn
-        state = State()
+        state = State(game_config)
         while not state.terminal():
             if turn:
                 p, _ = net.predict(state)
                 legal = state.legal_actions()
                 action = sorted([(a, p[a]) for a in legal], key=lambda x: -x[1])[0][0]
             else:
-                action = np.random.choice(state.legal_actions())
+                action = int(np.random.choice(state.legal_actions()))
             state.play(action)
             turn = not turn
         r = state.terminal_reward() if turn else -state.terminal_reward()
@@ -80,6 +155,8 @@ def vs_random(net: Net, n: int | None = None) -> Dict[int, int]:
     return results
 
 def show_net(net: Net, state: State) -> None:
+    """ネットワークの推論結果を表示する補助関数。"""
+
     print(state)
     p, v = net.predict(state)
     n = state.size
