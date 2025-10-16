@@ -66,6 +66,7 @@ class Tree:
             key = state.record_string()
             if key not in self.nodes:
                 p, v = self.net.predict(state)
+                p = self._apply_move_filters(state, p)
                 self.nodes[key] = Node(p, v)
                 value = float(v)
                 break
@@ -136,7 +137,15 @@ class Tree:
                         ),
                     )
 
-        root_n = self.nodes[state.record_string()].n.astype(np.float64)
+        root_key = state.record_string()
+        root_node = self.nodes[root_key]
+        root_n = root_node.n.astype(np.float64)
+        winning_actions = self._find_immediate_wins(state)
+        if winning_actions:
+            probs = np.zeros_like(root_n, dtype=np.float64)
+            for action in winning_actions:
+                probs[action] = 1.0 / len(winning_actions)
+            return probs
         max_visit = np.max(root_n)
         if max_visit == 0:
             probs = np.ones_like(root_n, dtype=np.float64) / len(root_n)
@@ -157,3 +166,73 @@ class Tree:
             pv_seq.append(best_action)
             s.play(best_action)
         return pv_seq
+
+    def _apply_move_filters(self, state: State, policy: np.ndarray) -> np.ndarray:
+        """ネットワーク出力に合法手フィルタと近接バイアスを適用する。"""
+
+        filtered = np.zeros_like(policy, dtype=np.float64)
+        legal_actions = state.legal_actions()
+        if not legal_actions:
+            return filtered
+
+        legal_mask = np.zeros_like(policy, dtype=np.float64)
+        legal_mask[legal_actions] = 1.0
+        filtered = policy.astype(np.float64) * legal_mask
+
+        if filtered.sum() <= 0.0:
+            filtered = legal_mask
+
+        if self._should_apply_proximity_bias(state):
+            filtered = self._apply_proximity_bias(state, filtered)
+
+        total = filtered.sum()
+        if total <= 0.0:
+            filtered = legal_mask
+            total = filtered.sum()
+        return filtered / total
+
+    def _should_apply_proximity_bias(self, state: State) -> bool:
+        """近接バイアスの適用タイミングを判定する。"""
+
+        move_index = len(state.record) + 1
+        return move_index >= 3
+
+    def _apply_proximity_bias(self, state: State, policy: np.ndarray) -> np.ndarray:
+        """既存の石に近い合法手へ確率を寄せる。"""
+
+        occupied = np.argwhere(state.board != 0)
+        if occupied.size == 0:
+            return policy
+
+        biased = np.zeros_like(policy, dtype=np.float64)
+        for action in state.legal_actions():
+            x = action // state.size
+            y = action % state.size
+            distance = np.min(np.abs(occupied[:, 0] - x) + np.abs(occupied[:, 1] - y))
+            weight = np.exp(-1.2 * float(distance))
+            biased[action] = policy[action] * weight
+
+        total = biased.sum()
+        if total <= 0.0:
+            weights = np.zeros_like(policy, dtype=np.float64)
+            for action in state.legal_actions():
+                x = action // state.size
+                y = action % state.size
+                distance = np.min(np.abs(occupied[:, 0] - x) + np.abs(occupied[:, 1] - y))
+                weights[action] = np.exp(-1.2 * float(distance))
+            total_weight = weights.sum()
+            if total_weight > 0.0:
+                return weights / total_weight
+            return policy
+        return biased / total
+
+    def _find_immediate_wins(self, state: State) -> List[int]:
+        """現在手番が即勝できる手を列挙する。"""
+
+        winning_actions: List[int] = []
+        for action in state.legal_actions():
+            next_state = copy.deepcopy(state)
+            next_state.play(action)
+            if next_state.win_color == state.color:
+                winning_actions.append(action)
+        return winning_actions
