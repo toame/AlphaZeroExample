@@ -209,6 +209,11 @@ class RandomMCTSAgent:
             return []
         if self._candidate_radius is None:
             return legal
+        # 石数が一定以上の局面では候補手の抽出を省略し、全合法手から選ぶ。
+        # 盤面が広く埋まると候補手の算出コストが大きくなるため、
+        # 探索を継続することを優先して閾値を設けている。
+        if len(state.record) > state.size * 2:
+            return legal
 
         candidates = set()
         size = state.size
@@ -250,7 +255,13 @@ class RandomMCTSAgent:
     def _select_random_action(self, state: State) -> Optional[int]:
         """ランダムロールアウト用の候補手から 1 手選択する。"""
 
-        candidates = self._select_candidates(state)
-        if not candidates:
+        legal = state.legal_actions()
+        if not legal:
             return None
-        return self._rng.choice(list(candidates))
+        if self._candidate_radius is None:
+            return self._rng.choice(legal)
+
+        candidates = list(self._select_candidates(state))
+        if not candidates:
+            candidates = legal
+        return self._rng.choice(candidates)
