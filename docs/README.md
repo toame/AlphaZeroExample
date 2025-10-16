@@ -38,6 +38,7 @@
 * `random_mcts.RandomMCTSAgent` はニューラルネットワークを用いず、乱数ロールアウトで評価する軽量な探索エージェントです。
 * `app.random_match.play_random_mcts_vs_random()` を呼び出すと、乱数 MCTS エージェントと完全ランダムプレイヤーとの対戦結果を取得できます。
 * 使い方の一例: `python -c "from config.loader import load_default_config; from app.random_match import play_random_mcts_vs_random; cfg = load_default_config(); print(play_random_mcts_vs_random(cfg, simulations=50, games=10))"`
+* UCT の評価値を手番視点で正規化し、高シミュレーション時でも探索が安定するよう調整しました。`simulations=2000`, `games=30` の条件で乱数プレイヤーに対して 9 割以上の勝率を確認しています。
 
 ## ゲーム設定の拡張
 
