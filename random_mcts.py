@@ -331,10 +331,14 @@ class RandomMCTSAgent:
             return True
 
         # connect6 では同一ターンに複数手を打てるため、ターン中に残り手数が
-        # 少ない場合は早めに防御判定を行い、受け漏れを防ぐ。
+        # 少ない場合は早めに防御判定を行い、受け漏れを防ぐ。ただし合法手が
+        # 極端に多い序盤で同じ判定を行うと 1 手ごとに 300 以上の候補を精査
+        # することになり、シミュレーションが大幅に遅延してしまう。そこで
+        # 序盤のように合法手が多すぎる局面では防御判定をスキップし、候補手
+        # がある程度に絞られている場合のみ早期判定を有効にする。
         stones_remaining = getattr(state, "_stones_remaining", 1)
         if stones_remaining <= 1:
-            return True
+            return len(legal_actions) <= self._forced_loss_check_limit * 2
 
         return False
 
@@ -491,6 +495,11 @@ class RandomMCTSAgent:
         """パスすると相手が即勝する局面では受けの手に絞り込む。"""
 
         if getattr(state, "_stones_remaining", 1) <= 0:
+            return None
+
+        # 序盤など合法手が極端に多い場合は全候補を精査すると計算量が膨大に
+        # なるため、受け判定を諦めて通常の候補手抽出に委ねる。
+        if len(legal_actions) > self._forced_loss_check_limit * 2:
             return None
 
         opponent_wins = self._find_opponent_immediate_wins_if_pass(state)
