@@ -9,6 +9,7 @@ from typing import Dict, List
 import numpy as np
 
 from app.artifacts import CheckpointManager, MetricsRecorder
+from app.temperature import TemperatureController
 from config import AppConfig
 from game import State
 from mcts import Tree
@@ -95,10 +96,12 @@ def self_play_and_train(cfg: AppConfig) -> Net:
             players: List[int] = []
             state = State(game_cfg)
             tree = Tree(net, mcts_cfg)
-            temperature = mcts_cfg.temperature_init
+            temperature_controller = TemperatureController(mcts_cfg.temperature)
+            temperature_controller.reset()
 
             while not state.terminal():
                 feature = state.feature()
+                temperature = temperature_controller.step()
                 p_target = tree.think(state, num_simulations, temperature)
                 action = int(np.random.choice(np.arange(len(p_target)), p=p_target))
                 players.append(state.color)
@@ -110,9 +113,8 @@ def self_play_and_train(cfg: AppConfig) -> Net:
                     )
                 )
                 state.play(action)
-                temperature *= 0.8
 
-            final_temperature = temperature
+            final_temperature = temperature_controller.last_temperature
             winner = state.win_color
             for step, player in zip(steps, players):
                 step.value_target = _value_from_perspective(player, winner)

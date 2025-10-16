@@ -106,7 +106,7 @@ class Tree:
         progress_callback: ProgressCallback | None = None,
     ) -> np.ndarray:
         if temperature is None:
-            temperature = self._config.temperature_init
+            temperature = self._config.temperature.initial
         callback = progress_callback or self._progress_callback
         start, prev_time = time.time(), 0.0
         for _ in range(num_simulations):
