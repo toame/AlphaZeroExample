@@ -85,3 +85,110 @@ def test_random_mcts_detects_forced_loss() -> None:
     agent = RandomMCTSAgent(cfg.game, seed=0)
     value = agent._detect_forced_outcome(state, state.color)
     assert value == -1.0
+
+
+def test_random_mcts_checks_forced_defense_in_sparse_area() -> None:
+    """合法手が多くても局所的な危険があれば防御判定を実行する。"""
+
+    game_cfg = GameConfig(rule="connect6", board_size=19)
+    state = State(game_cfg)
+    size = state.size
+
+    # 初手から互いに石を配置しつつ、白番が横一列に 5 連を作る局面を構築する。
+    opening_sequence = [
+        size * 0 + 0,  # 先手の初手
+        size * 9 + 4,
+        size * 9 + 5,
+        size * 1 + 0,
+        size * 1 + 1,
+        size * 9 + 6,
+        size * 9 + 7,
+        size * 2 + 0,
+        size * 2 + 1,
+        size * 9 + 8,
+        size * 8 + 4,
+    ]
+    for action in opening_sequence:
+        state.play(action)
+
+    agent = RandomMCTSAgent(
+        game_cfg,
+        seed=0,
+        candidate_radius=2,
+        initial_radius=3,
+    )
+    legal = state.legal_actions()
+
+    # 広い盤面で合法手は 300 以上残っているが、候補手は局所に集中する。
+    assert len(legal) > agent._forced_loss_check_limit * 2
+    analysis_candidates = agent._collect_candidate_actions(
+        state, legal, use_initial_radius=False
+    )
+    assert len(analysis_candidates) <= agent._forced_loss_check_limit * 2
+
+    assert agent._should_check_forced_defense(state, legal, analysis_candidates)
+    defensive = agent._find_forced_defense_actions(state, legal)
+    assert defensive is not None
+
+    expected_defense = {size * 9 + 3, size * 9 + 9}
+    assert expected_defense.issubset(set(defensive))
+
+
+def test_random_mcts_detects_connect6_open_four_finish() -> None:
+    """開放四を作ったターンで両端を詰めれば勝てることを検出する。"""
+
+    game_cfg = GameConfig(rule="connect6", board_size=19)
+    state = State(game_cfg)
+    size = state.size
+    row = 6
+    start = 7
+
+    stones = []
+    for offset in range(4):
+        idx = row * size + (start + offset)
+        stones.append(idx)
+        x, y = divmod(idx, size)
+        state.board[x, y] = 1
+
+    state.record = stones
+    state.turn_index = len(stones)
+    state.color = 1
+    state.win_color = 0
+    state._stones_remaining = 2
+
+    agent = RandomMCTSAgent(game_cfg, seed=0)
+    winning = agent._find_immediate_wins(state)
+
+    expected = {row * size + (start - 1), row * size + (start + 4)}
+    assert expected.issubset(set(winning))
+
+
+def test_random_mcts_forced_defense_blocks_open_four() -> None:
+    """相手の開放四に対し両端を受けとして提示する。"""
+
+    game_cfg = GameConfig(rule="connect6", board_size=19)
+    state = State(game_cfg)
+    size = state.size
+    row = 10
+    start = 5
+
+    stones = []
+    for offset in range(4):
+        idx = row * size + (start + offset)
+        stones.append(idx)
+        x, y = divmod(idx, size)
+        state.board[x, y] = -1
+
+    state.record = stones
+    state.turn_index = len(stones)
+    state.color = 1
+    state.win_color = 0
+    state._stones_remaining = 2
+
+    agent = RandomMCTSAgent(game_cfg, seed=0)
+    legal = state.legal_actions()
+    defensive = agent._find_forced_defense_actions(state, legal)
+
+    assert defensive is not None
+    expected = {row * size + (start - 1), row * size + (start + 4)}
+    assert expected.issubset(set(defensive))

@@ -2,11 +2,10 @@
 
 from __future__ import annotations
 
-import itertools
 import math
 import random
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Sequence
+from typing import Dict, Iterable, List, Optional, Sequence, Tuple
 
 from config import GameConfig
 from game import State
@@ -59,6 +58,10 @@ class RandomMCTSAgent:
         self._candidate_radius = candidate_radius
         self._initial_radius = initial_radius
         self._last_report: Optional[RandomSearchReport] = None
+        if game_config.rule == "connect6":
+            self._connect_length = 6
+        else:
+            self._connect_length = 3
         # 強制敗北判定は合法手が多すぎる局面で行うと計算量が跳ね上がるため、
         # ある程度盤面が進んだ局面のみに限定して実行する。
         self._forced_loss_check_limit = 30
@@ -241,31 +244,29 @@ class RandomMCTSAgent:
         node.visits += 1
         node.value_sum += value
 
-    def _select_candidates(self, state: State) -> Sequence[int]:
-        """盤面に応じて探索対象の候補手を抽出する。"""
+    def _collect_candidate_actions(
+        self,
+        state: State,
+        legal_actions: Sequence[int],
+        *,
+        use_initial_radius: bool = True,
+    ) -> List[int]:
+        """候補抽出ロジックを共通化した内部ヘルパー。"""
 
-        legal = state.legal_actions()
-        if not legal:
+        if not legal_actions:
             return []
 
-        if self._should_check_forced_defense(state, legal):
-            defensive = self._find_forced_defense_actions(state, legal)
-            if defensive is not None:
-                return defensive
-
         if self._candidate_radius is None:
-            return legal
-        # 石数が一定以上の局面では候補手の抽出を省略し、全合法手から選ぶ。
-        # 盤面が広く埋まると候補手の算出コストが大きくなるため、
-        # 探索を継続することを優先して閾値を設けている。
-        if len(state.record) > state.size * 2:
-            return legal
+            return list(legal_actions)
 
-        candidates = set()
+        if len(state.record) > state.size * 2:
+            return list(legal_actions)
+
+        candidates: set[int] = set()
         size = state.size
 
         if state.record:
-            radius = max(self._candidate_radius, 0)
+            radius = max(int(self._candidate_radius), 0)
             for action in state.record:
                 x = action // size
                 y = action % size
@@ -279,10 +280,11 @@ class RandomMCTSAgent:
                             continue
                         candidates.add(nx * size + ny)
         else:
-            radius = self._initial_radius
-            if radius is None:
-                radius = self._candidate_radius
-            radius = max(radius or 0, 0)
+            if use_initial_radius and self._initial_radius is not None:
+                radius = int(self._initial_radius)
+            else:
+                radius = int(self._candidate_radius or 0)
+            radius = max(radius, 0)
             center = size // 2
             for dx in range(-radius, radius + 1):
                 for dy in range(-radius, radius + 1):
@@ -295,8 +297,26 @@ class RandomMCTSAgent:
                     candidates.add(nx * size + ny)
 
         if not candidates:
-            return legal
+            return list(legal_actions)
         return sorted(candidates)
+
+    def _select_candidates(self, state: State) -> Sequence[int]:
+        """盤面に応じて探索対象の候補手を抽出する。"""
+
+        legal = state.legal_actions()
+        if not legal:
+            return []
+
+        analysis_candidates = self._collect_candidate_actions(
+            state, legal, use_initial_radius=False
+        )
+        if self._should_check_forced_defense(state, legal, analysis_candidates):
+            defensive = self._find_forced_defense_actions(state, legal)
+            if defensive is not None:
+                return defensive
+
+        candidates = self._collect_candidate_actions(state, legal)
+        return candidates
 
     def _select_random_action(self, state: State) -> Optional[int]:
         """ランダムロールアウト用の候補手から 1 手選択する。"""
@@ -304,21 +324,25 @@ class RandomMCTSAgent:
         legal = state.legal_actions()
         if not legal:
             return None
+        analysis_candidates = self._collect_candidate_actions(
+            state, legal, use_initial_radius=False
+        )
         defensive: Optional[Sequence[int]] = None
-        if self._should_check_forced_defense(state, legal):
+        if self._should_check_forced_defense(state, legal, analysis_candidates):
             defensive = self._find_forced_defense_actions(state, legal)
 
         if defensive:
             pool = list(defensive)
-        elif self._candidate_radius is None:
-            pool = legal
         else:
-            candidates = list(self._select_candidates(state))
-            pool = candidates or legal
+            candidates = self._collect_candidate_actions(state, legal)
+            pool = list(candidates) if candidates else list(legal)
         return self._rng.choice(pool)
 
     def _should_check_forced_defense(
-        self, state: State, legal_actions: Sequence[int]
+        self,
+        state: State,
+        legal_actions: Sequence[int],
+        candidate_scope: Optional[Sequence[int]] = None,
     ) -> bool:
         """防御判定を行うべきかを簡易に判定する。"""
 
@@ -330,6 +354,9 @@ class RandomMCTSAgent:
         if len(state.record) >= state.size * 2:
             return True
 
+        if not state.record:
+            return len(legal_actions) <= self._forced_loss_check_limit
+
         # connect6 では同一ターンに複数手を打てるため、ターン中に残り手数が
         # 少ない場合は早めに防御判定を行い、受け漏れを防ぐ。ただし合法手が
         # 極端に多い序盤で同じ判定を行うと 1 手ごとに 300 以上の候補を精査
@@ -337,10 +364,71 @@ class RandomMCTSAgent:
         # 序盤のように合法手が多すぎる局面では防御判定をスキップし、候補手
         # がある程度に絞られている場合のみ早期判定を有効にする。
         stones_remaining = getattr(state, "_stones_remaining", 1)
-        if stones_remaining <= 1:
-            return len(legal_actions) <= self._forced_loss_check_limit * 2
+
+        scope = (
+            list(candidate_scope)
+            if candidate_scope is not None
+            else self._collect_candidate_actions(
+                state, legal_actions, use_initial_radius=False
+            )
+        )
+        candidate_count = len(scope)
+
+        if candidate_count <= self._forced_loss_check_limit:
+            return True
+
+        if (
+            candidate_count <= self._forced_loss_check_limit * 2
+            and candidate_count < len(legal_actions)
+        ):
+            return True
+
+        if self._candidate_radius is None:
+            relevant_empty = self._estimate_relevant_empty_points(state)
+            if relevant_empty <= self._forced_loss_check_limit:
+                return True
+            if stones_remaining <= 1 and relevant_empty <= self._forced_loss_check_limit * 2:
+                return True
 
         return False
+
+    def _estimate_relevant_empty_points(self, state: State) -> int:
+        """石が存在する領域を囲う矩形内の空点数を概算する。"""
+
+        if not state.record:
+            return len(state.legal_actions())
+
+        size = state.size
+        min_x = size - 1
+        max_x = 0
+        min_y = size - 1
+        max_y = 0
+
+        for action in state.record:
+            x = action // size
+            y = action % size
+            if x < min_x:
+                min_x = x
+            if x > max_x:
+                max_x = x
+            if y < min_y:
+                min_y = y
+            if y > max_y:
+                max_y = y
+
+        margin = 2
+        min_x = max(min_x - margin, 0)
+        max_x = min(max_x + margin, size - 1)
+        min_y = max(min_y - margin, 0)
+        max_y = min(max_y + margin, size - 1)
+
+        empty_points = 0
+        board = state.board
+        for x in range(min_x, max_x + 1):
+            for y in range(min_y, max_y + 1):
+                if board[x, y] == 0:
+                    empty_points += 1
+        return empty_points
 
     def _detect_forced_outcome(self, state: State, target_player: int) -> Optional[float]:
         """強制的な勝敗が決まっているかを判定し、値を返す。"""
@@ -374,66 +462,18 @@ class RandomMCTSAgent:
         """現在手番が同一ターン内で確実に勝てる手を列挙する。"""
 
         actions = list(legal_actions) if legal_actions is not None else state.legal_actions()
-        if (
-            use_candidate_filter
-            and len(actions) > self._forced_loss_check_limit
-            and self._candidate_radius is not None
-        ):
-            # 序盤など合法手が極端に多い局面では候補手に絞って高速化する。
-            candidate_actions = list(self._select_candidates(state))
-            if candidate_actions:
-                candidate_set = set(candidate_actions)
-                filtered = [action for action in actions if action in candidate_set]
-                if filtered:
-                    actions = filtered
         if not actions:
             return []
 
-        winning_actions: List[int] = []
         stones_to_place = getattr(state, "_stones_remaining", 1)
+        if stones_to_place <= 0:
+            return []
 
-        for action in actions:
-            next_state = state.copy()
-            next_state.play(action)
-            if next_state.win_color == state.color:
-                winning_actions.append(action)
-
-        if winning_actions or stones_to_place <= 1:
-            return winning_actions
-
-        # 合法手が多すぎる局面で多手順の即勝ち探索を行うと計算量が爆発する。
-        # connect6 では序盤に同一ターンで勝てる局面は現れないため、
-        # 一定以上の手数が残っている場合は探索を打ち切り、
-        # それ以外の状況だけ詳細に調べる。
-        if len(actions) > self._forced_loss_check_limit:
-            return winning_actions
-
-        winning_first_actions = set()
-        for action in actions:
-            if action in winning_first_actions:
-                continue
-            next_state = state.copy()
-            next_state.play(action)
-            remaining = stones_to_place - 1
-            if remaining <= 0:
-                continue
-            follow_actions = next_state.legal_actions()
-            if not follow_actions:
-                continue
-            for combo in itertools.combinations(follow_actions, remaining):
-                branch_state = next_state.copy()
-                for follow_action in combo:
-                    branch_state.play(follow_action)
-                    if branch_state.win_color == state.color:
-                        winning_first_actions.add(action)
-                        break
-                if action in winning_first_actions:
-                    break
-
-        for action in actions:
-            if action in winning_first_actions:
-                winning_actions.append(action)
-        return winning_actions
+        winning_pool = self._collect_line_based_winning_actions(
+            state, state.color, stones_to_place
+        )
+        target_set = set(actions)
+        return sorted(a for a in winning_pool if a in target_set)
 
     def _is_forced_loss(
         self,
@@ -497,11 +537,6 @@ class RandomMCTSAgent:
         if getattr(state, "_stones_remaining", 1) <= 0:
             return None
 
-        # 序盤など合法手が極端に多い場合は全候補を精査すると計算量が膨大に
-        # なるため、受け判定を諦めて通常の候補手抽出に委ねる。
-        if len(legal_actions) > self._forced_loss_check_limit * 2:
-            return None
-
         opponent_wins = self._find_opponent_immediate_wins_if_pass(state)
         if not opponent_wins:
             return None
@@ -518,4 +553,101 @@ class RandomMCTSAgent:
         if getattr(pass_state, "_stones_remaining", 0) > 0:
             pass_state._stones_remaining = 0
         pass_state._end_turn()
-        return self._find_immediate_wins(pass_state, use_candidate_filter=False)
+        opponent_legal = pass_state.legal_actions()
+        candidates = self._collect_candidate_actions(
+            pass_state, opponent_legal, use_initial_radius=False
+        )
+        use_filter = len(candidates) < len(opponent_legal)
+        target_actions: Sequence[int]
+        if use_filter and candidates:
+            target_actions = candidates
+        else:
+            target_actions = opponent_legal
+            use_filter = False
+        return self._find_immediate_wins(
+            pass_state,
+            target_actions,
+            use_candidate_filter=use_filter,
+        )
+
+    # --- 線分解析ロジック ---
+
+    def _collect_line_based_winning_actions(
+        self, state: State, color: int, stones_to_place: int
+    ) -> set[int]:
+        """指定した色が同一ターンで勝てる交点を線分単位で列挙する。"""
+
+        if stones_to_place <= 0:
+            return set()
+
+        size = state.size
+        board = state.board
+        connect = self._connect_length
+        winning: set[int] = set()
+
+        for line in self._iterate_lines(size):
+            if len(line) < connect:
+                continue
+            values = [board[x, y] for x, y in line]
+            for i in range(len(line) - connect + 1):
+                segment_coords = line[i : i + connect]
+                segment_values = values[i : i + connect]
+                if any(v == -color for v in segment_values):
+                    continue
+                empties: List[Tuple[int, int]] = [
+                    segment_coords[j]
+                    for j, v in enumerate(segment_values)
+                    if v == 0
+                ]
+                if not empties:
+                    # 既に勝っている場合は勝ち確定として扱う。
+                    for x, y in segment_coords:
+                        winning.add(x * size + y)
+                    continue
+                if len(empties) > stones_to_place:
+                    continue
+                for ex, ey in empties:
+                    winning.add(ex * size + ey)
+        return winning
+
+    def _iterate_lines(self, size: int) -> Iterable[List[Tuple[int, int]]]:
+        """縦横斜めの各線分の座標列を生成する。"""
+
+        for x in range(size):
+            yield [(x, y) for y in range(size)]
+        for y in range(size):
+            yield [(x, y) for x in range(size)]
+
+        for start in range(size):
+            coords: List[Tuple[int, int]] = []
+            x, y = start, 0
+            while 0 <= x < size and 0 <= y < size:
+                coords.append((x, y))
+                x += 1
+                y += 1
+            yield coords
+        for start in range(1, size):
+            coords = []
+            x, y = 0, start
+            while 0 <= x < size and 0 <= y < size:
+                coords.append((x, y))
+                x += 1
+                y += 1
+            yield coords
+
+        for start in range(size):
+            coords = []
+            x, y = start, size - 1
+            while 0 <= x < size and 0 <= y < size:
+                coords.append((x, y))
+                x += 1
+                y -= 1
+            yield coords
+        for start in range(1, size):
+            coords = []
+            x, y = 0, size - 1 - start
+            while 0 <= x < size and 0 <= y < size:
+                coords.append((x, y))
+                x += 1
+                y -= 1
+            yield coords
