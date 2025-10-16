@@ -9,6 +9,7 @@ from typing import Dict, List
 import numpy as np
 
 from app.artifacts import CheckpointManager, MetricsRecorder
+from app.game_records import GameRecordSaver, build_game_record
 from app.temperature import TemperatureController
 from config import AppConfig
 from game import State
@@ -75,6 +76,17 @@ def self_play_and_train(cfg: AppConfig) -> Net:
         train_cfg.latest_checkpoint,
         train_cfg.best_checkpoint,
     )
+    record_saver: GameRecordSaver | None = None
+    if train_cfg.save_game_records:
+        record_saver = GameRecordSaver(
+            base_dir=metrics_dir / train_cfg.game_record_dirname,
+            interval=train_cfg.game_record_interval,
+        )
+        logger.info(
+            "棋譜を %s に %d 局ごとに保存します",
+            metrics_dir / train_cfg.game_record_dirname,
+            train_cfg.game_record_interval,
+        )
     episodes: List[Episode] = []
     result_distribution: Dict[int, int] = {1: 0, 0: 0, -1: 0}
 
@@ -122,6 +134,16 @@ def self_play_and_train(cfg: AppConfig) -> Net:
 
             result_key = int(_value_from_perspective(game_cfg.first_player, winner))
             result_distribution[result_key] += 1
+
+            game_number = game_index + 1
+            if record_saver and record_saver.should_save(game_number):
+                record = build_game_record(game_number, state, game_cfg)
+                record_path = record_saver.save(record)
+                logger.info(
+                    "棋譜を保存しました: game=%d path=%s",
+                    game_number,
+                    record_path,
+                )
 
             logger.info(
                 "ゲーム %d/%d 完了: moves=%d winner=%d temperature=%.5f",

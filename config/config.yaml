@@ -60,3 +60,6 @@ training:
   metrics_filename: "training_metrics.csv"
   latest_checkpoint: "latest.pt"
   best_checkpoint: "best.pt"
+  save_game_records: true
+  game_record_interval: 5
+  game_record_dirname: "game_records"
