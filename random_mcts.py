@@ -248,9 +248,10 @@ class RandomMCTSAgent:
         if not legal:
             return []
 
-        defensive = self._find_forced_defense_actions(state, legal)
-        if defensive is not None:
-            return defensive
+        if self._should_check_forced_defense(state, legal):
+            defensive = self._find_forced_defense_actions(state, legal)
+            if defensive is not None:
+                return defensive
 
         if self._candidate_radius is None:
             return legal
@@ -303,7 +304,10 @@ class RandomMCTSAgent:
         legal = state.legal_actions()
         if not legal:
             return None
-        defensive = self._find_forced_defense_actions(state, legal)
+        defensive: Optional[Sequence[int]] = None
+        if self._should_check_forced_defense(state, legal):
+            defensive = self._find_forced_defense_actions(state, legal)
+
         if defensive:
             pool = list(defensive)
         elif self._candidate_radius is None:
@@ -312,6 +316,27 @@ class RandomMCTSAgent:
             candidates = list(self._select_candidates(state))
             pool = candidates or legal
         return self._rng.choice(pool)
+
+    def _should_check_forced_defense(
+        self, state: State, legal_actions: Sequence[int]
+    ) -> bool:
+        """防御判定を行うべきかを簡易に判定する。"""
+
+        # 序盤は合法手が極端に多く、毎回の防御判定コストが高すぎるため、
+        # ある程度盤面が進行したときにのみ詳細な判定を行う。
+        if len(legal_actions) <= self._forced_loss_check_limit:
+            return True
+
+        if len(state.record) >= state.size * 2:
+            return True
+
+        # connect6 では同一ターンに複数手を打てるため、ターン中に残り手数が
+        # 少ない場合は早めに防御判定を行い、受け漏れを防ぐ。
+        stones_remaining = getattr(state, "_stones_remaining", 1)
+        if stones_remaining <= 1:
+            return True
+
+        return False
 
     def _detect_forced_outcome(self, state: State, target_player: int) -> Optional[float]:
         """強制的な勝敗が決まっているかを判定し、値を返す。"""
