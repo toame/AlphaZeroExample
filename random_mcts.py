@@ -221,7 +221,7 @@ class RandomMCTSAgent:
             forced_value = self._detect_forced_outcome(rollout_state, target_player)
             if forced_value is not None:
                 return forced_value
-            action = self._select_random_action(rollout_state)
+            action = self._select_rollout_action(rollout_state)
             if action is None:
                 break
             rollout_state.play(action)
@@ -260,7 +260,14 @@ class RandomMCTSAgent:
             return list(legal_actions)
 
         if len(state.record) > state.size * 2:
-            return list(legal_actions)
+            # 序盤を過ぎても候補半径による絞り込みを維持し、終盤での全探索化を防ぐ。
+            # 盤面全体を合法手と同じ回数だけ走査すると、シミュレーションごとの
+            # 計算コストが急激に跳ね上がるため、既存の石を包含する矩形領域に
+            # 凝縮した候補集合を先に試みる。
+            radius = max(int(self._candidate_radius), 0)
+            bbox_candidates = self._collect_bbox_candidates(state, radius)
+            if bbox_candidates:
+                return bbox_candidates
 
         candidates: set[int] = set()
         size = state.size
@@ -300,6 +307,36 @@ class RandomMCTSAgent:
             return list(legal_actions)
         return sorted(candidates)
 
+    def _collect_bbox_candidates(self, state: State, radius: int) -> List[int]:
+        """既存の石を囲む矩形領域から空点候補を抽出する。"""
+
+        if not state.record:
+            return []
+
+        size = state.size
+        board = state.board
+
+        xs = [action // size for action in state.record]
+        ys = [action % size for action in state.record]
+
+        if not xs or not ys:
+            return []
+
+        margin = max(radius + 1, 2)
+        min_x = max(min(xs) - margin, 0)
+        max_x = min(max(xs) + margin, size - 1)
+        min_y = max(min(ys) - margin, 0)
+        max_y = min(max(ys) + margin, size - 1)
+
+        candidates: List[int] = []
+        for x in range(min_x, max_x + 1):
+            for y in range(min_y, max_y + 1):
+                if board[x, y] != 0:
+                    continue
+                candidates.append(x * size + y)
+
+        return sorted(candidates)
+
     def _select_candidates(self, state: State) -> Sequence[int]:
         """盤面に応じて探索対象の候補手を抽出する。"""
 
@@ -337,6 +374,14 @@ class RandomMCTSAgent:
             candidates = self._collect_candidate_actions(state, legal)
             pool = list(candidates) if candidates else list(legal)
         return self._rng.choice(pool)
+
+    def _select_rollout_action(self, state: State) -> Optional[int]:
+        """ロールアウト中の手を単純な一様分布で選択する。"""
+
+        legal = state.legal_actions()
+        if not legal:
+            return None
+        return self._rng.choice(legal)
 
     def _should_check_forced_defense(
         self,
