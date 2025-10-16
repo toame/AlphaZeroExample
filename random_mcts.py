@@ -316,10 +316,9 @@ class RandomMCTSAgent:
         if not legal_actions:
             return None
 
-        if len(legal_actions) <= self._forced_loss_check_limit * 2:
-            winning_actions = self._find_immediate_wins(state, legal_actions)
-            if winning_actions:
-                return 1.0 if state.color == target_player else -1.0
+        winning_actions = self._find_immediate_wins(state, legal_actions)
+        if winning_actions:
+            return 1.0 if state.color == target_player else -1.0
 
         if len(legal_actions) > self._forced_loss_check_limit:
             return None
