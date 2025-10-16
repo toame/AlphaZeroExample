@@ -1,6 +1,7 @@
 # mcts.py
 from __future__ import annotations
 import copy
+import itertools
 import time
 import numpy as np
 from dataclasses import dataclass
@@ -230,9 +231,39 @@ class Tree:
         """現在手番が即勝できる手を列挙する。"""
 
         winning_actions: List[int] = []
-        for action in state.legal_actions():
+        stones_to_place = getattr(state, "_stones_remaining", 1)
+        legal_actions = state.legal_actions()
+
+        # まず単独で勝てる手を探索し、見つかった場合はそれを優先して返す
+        for action in legal_actions:
             next_state = copy.deepcopy(state)
             next_state.play(action)
             if next_state.win_color == state.color:
+                winning_actions.append(action)
+        if winning_actions or stones_to_place <= 1:
+            return winning_actions
+
+        # connect6 などで同一ターン内に複数石を置く場合の確定勝ちを検出する
+        winning_first_actions = set()
+        for action in legal_actions:
+            if action in winning_first_actions:
+                continue
+            next_state = copy.deepcopy(state)
+            next_state.play(action)
+            remaining = stones_to_place - 1
+            if remaining <= 0:
+                continue
+            for combo in itertools.combinations(next_state.legal_actions(), remaining):
+                branch_state = copy.deepcopy(next_state)
+                for follow_action in combo:
+                    branch_state.play(follow_action)
+                    if branch_state.win_color == state.color:
+                        winning_first_actions.add(action)
+                        break
+                if action in winning_first_actions:
+                    break
+
+        for action in legal_actions:
+            if action in winning_first_actions:
                 winning_actions.append(action)
         return winning_actions
