@@ -247,6 +247,12 @@ class RandomMCTSAgent:
         legal = state.legal_actions()
         if not legal:
             return []
+
+        if self._should_check_forced_defense(state, legal):
+            defensive = self._find_forced_defense_actions(state, legal)
+            if defensive is not None:
+                return defensive
+
         if self._candidate_radius is None:
             return legal
         # 石数が一定以上の局面では候補手の抽出を省略し、全合法手から選ぶ。
@@ -298,13 +304,39 @@ class RandomMCTSAgent:
         legal = state.legal_actions()
         if not legal:
             return None
-        if self._candidate_radius is None:
-            return self._rng.choice(legal)
+        defensive: Optional[Sequence[int]] = None
+        if self._should_check_forced_defense(state, legal):
+            defensive = self._find_forced_defense_actions(state, legal)
 
-        candidates = list(self._select_candidates(state))
-        if not candidates:
-            candidates = legal
-        return self._rng.choice(candidates)
+        if defensive:
+            pool = list(defensive)
+        elif self._candidate_radius is None:
+            pool = legal
+        else:
+            candidates = list(self._select_candidates(state))
+            pool = candidates or legal
+        return self._rng.choice(pool)
+
+    def _should_check_forced_defense(
+        self, state: State, legal_actions: Sequence[int]
+    ) -> bool:
+        """防御判定を行うべきかを簡易に判定する。"""
+
+        # 序盤は合法手が極端に多く、毎回の防御判定コストが高すぎるため、
+        # ある程度盤面が進行したときにのみ詳細な判定を行う。
+        if len(legal_actions) <= self._forced_loss_check_limit:
+            return True
+
+        if len(state.record) >= state.size * 2:
+            return True
+
+        # connect6 では同一ターンに複数手を打てるため、ターン中に残り手数が
+        # 少ない場合は早めに防御判定を行い、受け漏れを防ぐ。
+        stones_remaining = getattr(state, "_stones_remaining", 1)
+        if stones_remaining <= 1:
+            return True
+
+        return False
 
     def _detect_forced_outcome(self, state: State, target_player: int) -> Optional[float]:
         """強制的な勝敗が決まっているかを判定し、値を返す。"""
@@ -328,12 +360,19 @@ class RandomMCTSAgent:
             return -1.0 if state.color == target_player else 1.0
         return None
 
-    def _find_immediate_wins(self, state: State, legal_actions: Sequence[int] | None = None) -> List[int]:
+    def _find_immediate_wins(
+        self,
+        state: State,
+        legal_actions: Sequence[int] | None = None,
+        *,
+        use_candidate_filter: bool = True,
+    ) -> List[int]:
         """現在手番が同一ターン内で確実に勝てる手を列挙する。"""
 
         actions = list(legal_actions) if legal_actions is not None else state.legal_actions()
         if (
-            len(actions) > self._forced_loss_check_limit
+            use_candidate_filter
+            and len(actions) > self._forced_loss_check_limit
             and self._candidate_radius is not None
         ):
             # 序盤など合法手が極端に多い局面では候補手に絞って高速化する。
@@ -445,3 +484,29 @@ class RandomMCTSAgent:
                     return False
 
         return True
+
+    def _find_forced_defense_actions(
+        self, state: State, legal_actions: Sequence[int]
+    ) -> Optional[List[int]]:
+        """パスすると相手が即勝する局面では受けの手に絞り込む。"""
+
+        if getattr(state, "_stones_remaining", 1) <= 0:
+            return None
+
+        opponent_wins = self._find_opponent_immediate_wins_if_pass(state)
+        if not opponent_wins:
+            return None
+
+        defensive = sorted(set(legal_actions) & set(opponent_wins))
+        if defensive:
+            return defensive
+        return None
+
+    def _find_opponent_immediate_wins_if_pass(self, state: State) -> List[int]:
+        """このターンで何も打たなければ相手が確実に勝つ手を列挙する。"""
+
+        pass_state = state.copy()
+        if getattr(pass_state, "_stones_remaining", 0) > 0:
+            pass_state._stones_remaining = 0
+        pass_state._end_turn()
+        return self._find_immediate_wins(pass_state, use_candidate_filter=False)
