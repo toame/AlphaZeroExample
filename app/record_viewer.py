@@ -7,7 +7,8 @@ from typing import List, Optional
 
 from config import AppConfig, GameConfig
 from config.loader import load_default_config
-from game import State
+
+from alphazero import State
 from .game_records import GameRecord, load_game_record
 
 

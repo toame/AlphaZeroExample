@@ -9,7 +9,8 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 from config import GameConfig, NetworkConfig
-from game import State
+
+from .game import State
 
 if TYPE_CHECKING:
     from config.models import BasicNetworkConfig, KataGoNetworkConfig

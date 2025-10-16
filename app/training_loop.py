@@ -12,13 +12,14 @@ from app.artifacts import CheckpointManager, MetricsRecorder
 from app.game_records import GameRecordSaver, build_game_record
 from app.temperature import TemperatureController
 from config import AppConfig
-from game import State
-from mcts import Tree
-from network import Net
-from training import (
+
+from alphazero import (
     Episode,
     EpisodeStep,
+    Net,
+    State,
     Trainer,
+    Tree,
     create_default_optimizer,
     create_scheduler_factory,
     vs_random,

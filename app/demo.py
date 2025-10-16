@@ -6,10 +6,8 @@ import logging
 from typing import Callable
 
 from config import AppConfig
-from game import State
-from mcts import SearchReport, Tree
-from network import Net
-from training import show_net
+
+from alphazero import SearchReport, State, Tree, Net, show_net
 
 logger = logging.getLogger(__name__)
 

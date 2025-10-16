@@ -7,7 +7,8 @@ import numpy as np
 from dataclasses import dataclass
 from typing import Callable, Dict, List
 from config import MCTSConfig
-from game import State
+
+from .game import State
 
 class Node:
     """ある1状態の探索結果を保存するノード。"""

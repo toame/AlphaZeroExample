@@ -13,7 +13,8 @@ import torch
 from app.artifacts import CheckpointManager, MetricsRecorder
 from app.training_loop import _value_from_perspective
 from config import GameConfig, TrainingConfig
-from training import Episode, EpisodeSampler, EpisodeStep, Trainer
+
+from alphazero import Episode, EpisodeSampler, EpisodeStep, Trainer
 
 
 class DummyNet(torch.nn.Module):

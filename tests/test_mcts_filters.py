@@ -6,8 +6,8 @@ import numpy as np
 
 from config import GameConfig, MCTSConfig
 from config.models import GameAxes
-from game import State
-from mcts import Tree
+
+from alphazero import State, Tree
 
 
 class _UniformNet:

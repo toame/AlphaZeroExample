@@ -4,7 +4,8 @@ from __future__ import annotations
 from pathlib import Path
 
 from config import GameConfig
-from game import State
+
+from alphazero import State
 from app.game_records import GameRecord, GameRecordSaver, build_game_record, load_game_record
 
 

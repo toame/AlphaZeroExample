@@ -10,8 +10,9 @@ import torch
 import torch.optim as optim
 from torch.optim import lr_scheduler
 from config import GameConfig, TrainingConfig
-from game import State
-from network import Net
+
+from .game import State
+from .network import Net
 
 logger = logging.getLogger(__name__)
 

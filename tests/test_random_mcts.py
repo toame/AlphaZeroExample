@@ -4,8 +4,8 @@ from __future__ import annotations
 
 from app.random_match import play_random_mcts_vs_random
 from config.loader import load_default_config
-from game import State
-from random_mcts import RandomMCTSAgent
+
+from alphazero import RandomMCTSAgent, State
 
 
 def test_random_mcts_selects_legal_action() -> None:

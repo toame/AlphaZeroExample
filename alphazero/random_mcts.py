@@ -9,7 +9,8 @@ from dataclasses import dataclass, field
 from typing import Dict, List, Optional
 
 from config import GameConfig
-from game import State
+
+from .game import State
 
 
 @dataclass

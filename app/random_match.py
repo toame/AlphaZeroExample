@@ -7,8 +7,8 @@ import random
 from typing import Dict, Optional
 
 from config import AppConfig
-from game import State
-from random_mcts import RandomMCTSAgent
+
+from alphazero import RandomMCTSAgent, State
 
 logger = logging.getLogger(__name__)
 

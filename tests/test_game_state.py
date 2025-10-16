@@ -7,7 +7,8 @@ import pytest
 
 from config import GameConfig
 from config.models import GameAxes
-from game import BLACK, WHITE, State
+
+from alphazero import BLACK, WHITE, State
 
 
 def _make_connect6_config(board_size: int = 19) -> GameConfig:
