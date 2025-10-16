@@ -316,9 +316,10 @@ class RandomMCTSAgent:
         if not legal_actions:
             return None
 
-        winning_actions = self._find_immediate_wins(state, legal_actions)
-        if winning_actions:
-            return 1.0 if state.color == target_player else -1.0
+        if len(legal_actions) <= self._forced_loss_check_limit * 2:
+            winning_actions = self._find_immediate_wins(state, legal_actions)
+            if winning_actions:
+                return 1.0 if state.color == target_player else -1.0
 
         if len(legal_actions) > self._forced_loss_check_limit:
             return None
@@ -331,6 +332,17 @@ class RandomMCTSAgent:
         """現在手番が同一ターン内で確実に勝てる手を列挙する。"""
 
         actions = list(legal_actions) if legal_actions is not None else state.legal_actions()
+        if (
+            len(actions) > self._forced_loss_check_limit
+            and self._candidate_radius is not None
+        ):
+            # 序盤など合法手が極端に多い局面では候補手に絞って高速化する。
+            candidate_actions = list(self._select_candidates(state))
+            if candidate_actions:
+                candidate_set = set(candidate_actions)
+                filtered = [action for action in actions if action in candidate_set]
+                if filtered:
+                    actions = filtered
         if not actions:
             return []
 
@@ -344,6 +356,13 @@ class RandomMCTSAgent:
                 winning_actions.append(action)
 
         if winning_actions or stones_to_place <= 1:
+            return winning_actions
+
+        # 合法手が多すぎる局面で多手順の即勝ち探索を行うと計算量が爆発する。
+        # connect6 では序盤に同一ターンで勝てる局面は現れないため、
+        # 一定以上の手数が残っている場合は探索を打ち切り、
+        # それ以外の状況だけ詳細に調べる。
+        if len(actions) > self._forced_loss_check_limit:
             return winning_actions
 
         winning_first_actions = set()
