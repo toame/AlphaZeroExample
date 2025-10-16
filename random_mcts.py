@@ -6,7 +6,7 @@ import copy
 import math
 import random
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Sequence
 
 from config import GameConfig
 from game import State
@@ -38,11 +38,15 @@ class RandomMCTSAgent:
         exploration_c: float = 1.4,
         rollout_limit: Optional[int] = None,
         seed: Optional[int] = None,
+        candidate_radius: Optional[int] = None,
+        initial_radius: Optional[int] = None,
     ) -> None:
         self._c = exploration_c
         self._rollout_limit = rollout_limit
         self._rng = random.Random(seed)
         self._root: Optional[RandomNode] = None
+        self._candidate_radius = candidate_radius
+        self._initial_radius = initial_radius
 
     def select_action(self, state: State, num_simulations: int) -> int:
         """指定回数の探索から最善手を選択する。"""
@@ -108,7 +112,7 @@ class RandomMCTSAgent:
             visits=0,
             value_sum=0.0,
             children={},
-            untried_actions=list(state.legal_actions()),
+            untried_actions=list(self._select_candidates(state)),
         )
 
     def _select_child_action(self, node: RandomNode) -> int:
@@ -146,10 +150,9 @@ class RandomMCTSAgent:
         rollout_state = copy.deepcopy(state)
         steps = 0
         while not rollout_state.terminal():
-            legal = rollout_state.legal_actions()
-            if not legal:
+            action = self._select_random_action(rollout_state)
+            if action is None:
                 break
-            action = self._rng.choice(legal)
             rollout_state.play(action)
             steps += 1
             if self._rollout_limit is not None and steps >= self._rollout_limit:
@@ -169,3 +172,57 @@ class RandomMCTSAgent:
 
         node.visits += 1
         node.value_sum += value
+
+    def _select_candidates(self, state: State) -> Sequence[int]:
+        """盤面に応じて探索対象の候補手を抽出する。"""
+
+        legal = state.legal_actions()
+        if not legal:
+            return []
+        if self._candidate_radius is None:
+            return legal
+
+        candidates = set()
+        size = state.size
+
+        if state.record:
+            radius = max(self._candidate_radius, 0)
+            for action in state.record:
+                x = action // size
+                y = action % size
+                for dx in range(-radius, radius + 1):
+                    for dy in range(-radius, radius + 1):
+                        nx = x + dx
+                        ny = y + dy
+                        if not (0 <= nx < size and 0 <= ny < size):
+                            continue
+                        if state.board[nx, ny] != 0:
+                            continue
+                        candidates.add(nx * size + ny)
+        else:
+            radius = self._initial_radius
+            if radius is None:
+                radius = self._candidate_radius
+            radius = max(radius or 0, 0)
+            center = size // 2
+            for dx in range(-radius, radius + 1):
+                for dy in range(-radius, radius + 1):
+                    nx = center + dx
+                    ny = center + dy
+                    if not (0 <= nx < size and 0 <= ny < size):
+                        continue
+                    if state.board[nx, ny] != 0:
+                        continue
+                    candidates.add(nx * size + ny)
+
+        if not candidates:
+            return legal
+        return sorted(candidates)
+
+    def _select_random_action(self, state: State) -> Optional[int]:
+        """ランダムロールアウト用の候補手から 1 手選択する。"""
+
+        candidates = self._select_candidates(state)
+        if not candidates:
+            return None
+        return self._rng.choice(list(candidates))

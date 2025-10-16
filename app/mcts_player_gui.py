@@ -7,7 +7,7 @@ import random
 import tkinter as tk
 from typing import Optional
 
-from config import AppConfig
+from config import AppConfig, GameConfig
 from config.loader import load_default_config
 from game import State
 from random_mcts import RandomMCTSAgent
@@ -97,6 +97,9 @@ class _MCTSMatchGUI:
         return RandomMCTSAgent(
             self._config.game,
             seed=self._rng.randrange(1 << 30) if self._seed is not None else None,
+            candidate_radius=2,
+            initial_radius=3,
+            rollout_limit=120,
         )
 
     def _on_restart(self) -> None:
@@ -266,7 +269,9 @@ class _MCTSMatchGUI:
             self._status_var.set(f"対局終了: {result}")
             return
         if self._state.color == self._human_color:
-            self._status_var.set("あなたの手番です。キャンバスをクリックしてください")
+            self._status_var.set(
+                "あなたの手番です。connect6 では初手は 1 石、以降は 2 石を続けて置きます"
+            )
         else:
             self._status_var.set("MCTS が思考しています")
 
@@ -280,12 +285,24 @@ def launch_mcts_vs_player_gui(
 ) -> None:
     """乱数 MCTS と人間が対局する GUI を起動する。"""
 
-    cfg = config or load_default_config()
+    cfg = _prepare_connect6_config(config or load_default_config())
     color = human_color or cfg.game.first_player
     if color not in (1, -1):
         raise ValueError("human_color には 1 (先手) または -1 (後手) を指定してください")
     gui = _MCTSMatchGUI(cfg, simulations=simulations, human_color=color, seed=seed)
     gui.run()
+
+
+def _prepare_connect6_config(config: AppConfig) -> AppConfig:
+    """GUI 用に connect6 設定へ調整した `AppConfig` を返す。"""
+
+    game_cfg = GameConfig(
+        rule="connect6",
+        board_size=19,
+        symbols=config.game.symbols,
+        first_player=config.game.first_player,
+    )
+    return config.model_copy(update={"game": game_cfg}, deep=True)
 
 
 if __name__ == "__main__":  # pragma: no cover - GUI の手動起動用
