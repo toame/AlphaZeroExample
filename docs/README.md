@@ -33,6 +33,12 @@
 * 3 手目以降は既存の石に近い交点へ確率を寄せるフィルタを導入し、初期自己対戦でも自然な布石が現れやすくなりました。
 * 即勝できる合法手を検出した場合は探索結果を上書きし、必ず勝ち筋を選択するようにしました。
 
+## 乱数モンテカルロ木探索のデモ
+
+* `random_mcts.RandomMCTSAgent` はニューラルネットワークを用いず、乱数ロールアウトで評価する軽量な探索エージェントです。
+* `app.random_match.play_random_mcts_vs_random()` を呼び出すと、乱数 MCTS エージェントと完全ランダムプレイヤーとの対戦結果を取得できます。
+* 使い方の一例: `python -c "from config.loader import load_default_config; from app.random_match import play_random_mcts_vs_random; cfg = load_default_config(); print(play_random_mcts_vs_random(cfg, simulations=50, games=10))"`
+
 ## ゲーム設定の拡張
 
 * `config/config.yaml` の `game.rule` で「三目並べ (tic_tac_toe)」と「六目並べ (connect6)」を切り替えられるようになりました。
