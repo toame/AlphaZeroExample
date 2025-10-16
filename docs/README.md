@@ -14,6 +14,20 @@
 * 学習済みモデルは最新・ベストの 2 系統で自動保存され、長時間学習の途中停止に備えています。
 * `Trainer.fit` は学習開始時にオプティマイザの学習率と内部状態を初期化し、繰り返し学習でも学習率が極端に低下しないようになりました。
 
+## 自己対戦時の温度制御
+
+* 温度調整ロジックは `app.temperature.TemperatureController` に切り出され、ウォームアップ期間・指数減衰・終盤の滑らかな遷移・ゲームごとのノイズ付与をまとめて扱います。
+* `config/config.yaml` の `mcts.temperature` セクションで以下のパラメータを調整できます。
+  * `initial`: ゲーム開始直後の温度。
+  * `warmup_moves`: 初期温度を維持する手数。
+  * `decay_rate`: ウォームアップ後に掛ける減衰率。
+  * `min_value`: 温度の下限。
+  * `endgame_move`: 終盤への遷移を開始する手数（`null` で無効化）。
+  * `endgame_temperature`: 終盤で目標とする温度。
+  * `endgame_slope`: 終盤遷移の滑らかさ（大きいほど緩やか）。
+  * `noise_scale`: ゲームごとに付与するガウスノイズの標準偏差。
+* 自己対戦ループからは `TemperatureController.step()` を呼び出すだけで適切な温度が得られ、探索の多様性と収束性を両立できます。
+
 ## ゲーム設定の拡張
 
 * `config/config.yaml` の `game.rule` で「三目並べ (tic_tac_toe)」と「六目並べ (connect6)」を切り替えられるようになりました。

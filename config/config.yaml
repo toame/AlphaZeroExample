@@ -30,7 +30,15 @@ mcts:
   dirichlet_alpha: 0.15
   dirichlet_weight: 0.25
   puct_c: 2.0
-  temperature_init: 0.7
+  temperature:
+    initial: 0.7
+    warmup_moves: 2
+    decay_rate: 0.85
+    min_value: 0.05
+    endgame_move: 16
+    endgame_temperature: 0.02
+    endgame_slope: 3.0
+    noise_scale: 0.01
   num_simulations_demo: 1000
   num_simulations_demo_mid: 3000
   num_simulations_train: 50

@@ -62,11 +62,52 @@ class NetworkConfig(BaseModel):
     basic: BasicNetworkConfig = Field(default_factory=BasicNetworkConfig)
     katago: KataGoNetworkConfig = Field(default_factory=KataGoNetworkConfig)
 
+class TemperatureScheduleConfig(BaseModel):
+    """自己対戦時の温度調整に関する設定。"""
+
+    initial: float = 0.7
+    warmup_moves: int = 2
+    decay_rate: float = 0.85
+    min_value: float = 0.05
+    endgame_move: int | None = 16
+    endgame_temperature: float = 0.02
+    endgame_slope: float = 3.0
+    noise_scale: float = 0.01
+
+    @field_validator("warmup_moves")
+    @classmethod
+    def _warmup_non_negative(cls, v: int) -> int:
+        if v < 0:
+            raise ValueError("warmup_moves は 0 以上に設定してください")
+        return v
+
+    @field_validator("decay_rate")
+    @classmethod
+    def _decay_positive(cls, v: float) -> float:
+        if v <= 0.0:
+            raise ValueError("decay_rate は正の値に設定してください")
+        return v
+
+    @field_validator("min_value", "endgame_temperature", "noise_scale")
+    @classmethod
+    def _non_negative(cls, v: float) -> float:
+        if v < 0.0:
+            raise ValueError("min_value/endgame_temperature/noise_scale は 0 以上に設定してください")
+        return v
+
+    @field_validator("endgame_slope")
+    @classmethod
+    def _slope_positive(cls, v: float) -> float:
+        if v <= 0.0:
+            raise ValueError("endgame_slope は正の値に設定してください")
+        return v
+
+
 class MCTSConfig(BaseModel):
     dirichlet_alpha: float = 0.15
     dirichlet_weight: float = 0.25
     puct_c: float = 2.0
-    temperature_init: float = 0.7
+    temperature: TemperatureScheduleConfig = Field(default_factory=TemperatureScheduleConfig)
     num_simulations_demo: int = 1000
     num_simulations_demo_mid: int = 3000
     num_simulations_train: int = 50

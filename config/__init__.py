@@ -5,5 +5,6 @@ from .models import (
     LRSchedulerConfig,
     NetworkConfig,
     MCTSConfig,
+    TemperatureScheduleConfig,
     TrainingConfig,
 )
