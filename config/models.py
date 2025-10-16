@@ -79,6 +79,31 @@ class LRSchedulerConfig(BaseModel):
     onecycle_final_div_factor: float = 1e4
 
 
+class ReplayBufferConfig(BaseModel):
+    capacity: int = 500
+    warmup_size: int = 128
+    sample_size: int = 256
+    recent_ratio: float = 0.2
+
+    @field_validator("capacity", "warmup_size", "sample_size")
+    @classmethod
+    def _positive(cls, v: int) -> int:
+        """容量やサンプル数が正の値か検証する。"""
+
+        if v <= 0:
+            raise ValueError("replay buffer の容量やサンプル数は 1 以上に設定してください")
+        return v
+
+    @field_validator("recent_ratio")
+    @classmethod
+    def _ratio_range(cls, v: float) -> float:
+        """割合が 0.0 から 1.0 の範囲内か検証する。"""
+
+        if not 0.0 <= v <= 1.0:
+            raise ValueError("recent_ratio は 0.0 以上 1.0 以下に設定してください")
+        return v
+
+
 class TrainingConfig(BaseModel):
     batch_size: int = 32
     num_epochs: int = 30
@@ -94,6 +119,7 @@ class TrainingConfig(BaseModel):
     metrics_filename: str = "training_metrics.csv"
     latest_checkpoint: str = "latest.pt"
     best_checkpoint: str = "best.pt"
+    replay_buffer: ReplayBufferConfig = Field(default_factory=ReplayBufferConfig)
 
 class AppConfig(BaseModel):
     game: GameConfig = Field(default_factory=GameConfig)
