@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from app.random_match import play_random_mcts_vs_random
+from config import GameConfig
 from config.loader import load_default_config
 from game import State
 from random_mcts import RandomMCTSAgent
@@ -25,3 +26,19 @@ def test_play_random_mcts_vs_random_runs() -> None:
     results = play_random_mcts_vs_random(cfg, simulations=5, games=3, seed=42)
     assert set(results.keys()) == {"mcts_win", "random_win", "draw"}
     assert sum(results.values()) == 3
+
+
+def test_random_mcts_connect6_can_select_action() -> None:
+    """connect6 盤面でも候補制限付き探索が動作することを確認する。"""
+
+    game_cfg = GameConfig(rule="connect6", board_size=19)
+    state = State(game_cfg)
+    agent = RandomMCTSAgent(
+        game_cfg,
+        seed=321,
+        candidate_radius=2,
+        initial_radius=3,
+        rollout_limit=10,
+    )
+    action = agent.select_action(state, num_simulations=2)
+    assert action in state.legal_actions()
