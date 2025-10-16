@@ -40,6 +40,12 @@
 * ルールを切り替えると推奨盤面サイズと座標軸が自動補完されます。connect6 ではデフォルトで 19×19、座標軸は `Aa` 形式になります。
 * `tests/test_game_state.py` で 19x19 の盤面を用いた connect6 のターン処理と勝利判定を検証しています。
 
+## 棋譜保存とビューア
+
+* 自己対戦ループは `training.save_game_records` が `true` のとき、`training.game_record_interval` の間隔（デフォルトで 5 局ごと、1 局目を含む）で棋譜を JSON 形式で保存します。
+* 棋譜は `training.artifacts_dir` 配下の `training.game_record_dirname` ディレクトリ（デフォルト `artifacts/game_records`）に `game_0001.json` のようなファイル名で出力されます。
+* `app.record_viewer.launch_game_record_viewer()` を呼び出すか、`python -m app.record_viewer` を実行すると Tkinter ベースのビューアが起動し、保存済みの棋譜を一覧から選択して盤面を確認できます。スライダーで途中の手数に移動し、最新手の座標を確認できます。
+
 ## ネットワーク構成の切り替え
 `config/config.yaml` の `network.architecture` で `"basic"`（従来）と `"katago"`（KataGo 風拡張）を切り替えられます。KataGo 風構成では以下の特徴を持ちます。
 

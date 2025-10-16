@@ -175,6 +175,18 @@ class TrainingConfig(BaseModel):
     metrics_filename: str = "training_metrics.csv"
     latest_checkpoint: str = "latest.pt"
     best_checkpoint: str = "best.pt"
+    save_game_records: bool = True
+    game_record_interval: int = 5
+    game_record_dirname: str = "game_records"
+
+    @field_validator("game_record_interval")
+    @classmethod
+    def _interval_positive(cls, v: int) -> int:
+        """棋譜保存間隔は 1 以上であることを検証する。"""
+
+        if v <= 0:
+            raise ValueError("game_record_interval は 1 以上に設定してください")
+        return v
 
 class AppConfig(BaseModel):
     game: GameConfig = Field(default_factory=GameConfig)
