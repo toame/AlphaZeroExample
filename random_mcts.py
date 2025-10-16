@@ -57,7 +57,7 @@ class RandomMCTSAgent:
         assert self._root.children, "子ノードが生成されていません。"
         best_action = max(
             self._root.children.items(),
-            key=lambda item: item[1].visits,
+            key=lambda item: self._child_value_from_parent(self._root, item[1]),
         )[0]
         return best_action
 
@@ -120,7 +120,7 @@ class RandomMCTSAgent:
         parent_visits = max(node.visits, 1)
 
         for action, child in node.children.items():
-            exploitation = child.value_sum / child.visits if child.visits > 0 else 0.0
+            exploitation = self._child_value_from_parent(node, child)
             exploration = self._c * math.sqrt(math.log(parent_visits + 1) / (child.visits + 1))
             score = exploitation + exploration
             if score > best_score:
@@ -129,6 +129,16 @@ class RandomMCTSAgent:
 
         assert best_action is not None, "UCT による子選択に失敗しました。"
         return best_action
+
+    def _child_value_from_parent(self, parent: RandomNode, child: RandomNode) -> float:
+        """親ノード視点で子ノードの平均価値を返す。"""
+
+        if child.visits == 0:
+            return 0.0
+        value = child.value_sum / child.visits
+        if parent.player != child.player:
+            value = -value
+        return value
 
     def _rollout(self, state: State, target_player: int) -> float:
         """終局までランダムに手を進め評価値を得る。"""
