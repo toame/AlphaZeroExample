@@ -40,6 +40,12 @@
 * 使い方の一例: `python -c "from config.loader import load_default_config; from app.random_match import play_random_mcts_vs_random; cfg = load_default_config(); print(play_random_mcts_vs_random(cfg, simulations=50, games=10))"`
 * UCT の評価値を手番視点で正規化し、高シミュレーション時でも探索が安定するよう調整しました。`simulations=2000`, `games=30` の条件で乱数プレイヤーに対して 9 割以上の勝率を確認しています。
 
+## MCTS 対人戦 GUI モード
+
+* `app.mcts_player_gui.launch_mcts_vs_player_gui()` を実行すると、Tkinter ベースの簡易 GUI が立ち上がり、人間プレイヤーと乱数 MCTS が対戦できます。
+* GUI 上で先手・後手を切り替えて新しい対局を開始でき、盤面をクリックして着手します。MCTS のシミュレーション回数は引数 `simulations` で調整可能です。
+* コマンドラインからは `python -m app.mcts_player_gui` を実行してください。初期設定では設定ファイルの `game.first_player` が人間の担当色になります。
+
 ## ゲーム設定の拡張
 
 * `config/config.yaml` の `game.rule` で「三目並べ (tic_tac_toe)」と「六目並べ (connect6)」を切り替えられるようになりました。
