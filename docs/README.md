@@ -40,11 +40,12 @@
 * 使い方の一例: `python -c "from config.loader import load_default_config; from app.random_match import play_random_mcts_vs_random; cfg = load_default_config(); print(play_random_mcts_vs_random(cfg, simulations=50, games=10))"`
 * UCT の評価値を手番視点で正規化し、高シミュレーション時でも探索が安定するよう調整しました。`simulations=2000`, `games=30` の条件で乱数プレイヤーに対して 9 割以上の勝率を確認しています。
 * `candidate_radius` と `initial_radius` を指定すると、既存の石の近傍や盤面中央に候補手を絞り込めます。19×19 の connect6 でも無駄な探索を抑えつつ、`rollout_limit` でロールアウトの最大手数を制御できます。
+* `RandomMCTSAgent.last_report` から直近探索の勝率（0〜100%）や訪問統計を取得でき、GUI 表示やログ出力に活用できます。
 
 ## MCTS 対人戦 GUI モード
 
 * `app.mcts_player_gui.launch_mcts_vs_player_gui()` を実行すると、Tkinter ベースの簡易 GUI が立ち上がり、人間プレイヤーと乱数 MCTS が対戦できます。
-* GUI 上で先手・後手を切り替えて新しい対局を開始でき、盤面をクリックして着手します。MCTS のシミュレーション回数は引数 `simulations` で調整可能です。
+* GUI 上で先手・後手や MCTS のシミュレーション回数を設定して新しい対局を開始でき、盤面をクリックして着手します。思考中の勝率（訪問統計）もラベルで確認できます。
 * connect6 ルール（19×19）を前提にしており、初手は 1 石、それ以降は 2 石を連続で配置する挙動に対応しました。既存の石から距離 2 以内や盤面中央付近に候補手を絞ることで、ニューラルネットワークなしでも 19×19 の探索を現実的な時間で行えます。
 * コマンドラインからは `python -m app.mcts_player_gui` を実行してください。初期設定では設定ファイルの `game.first_player` が人間の担当色になります。
 

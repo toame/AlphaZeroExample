@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import copy
 import random
 import tkinter as tk
 from typing import Optional
@@ -10,7 +9,7 @@ from typing import Optional
 from config import AppConfig, GameConfig
 from config.loader import load_default_config
 from game import State
-from random_mcts import RandomMCTSAgent
+from random_mcts import RandomMCTSAgent, RandomSearchReport
 
 
 class _MCTSMatchGUI:
@@ -25,13 +24,14 @@ class _MCTSMatchGUI:
         seed: Optional[int],
     ) -> None:
         self._config = config
-        self._simulations = simulations
+        self._simulations = max(1, simulations)
         self._seed = seed
         self._rng = random.Random(seed)
 
         self._state = State(config.game)
         self._human_color = human_color
         self._agent = self._create_agent()
+        self._last_ai_report = None
 
         self._input_enabled = True
 
@@ -41,6 +41,9 @@ class _MCTSMatchGUI:
         self._status_var = tk.StringVar(value="対局設定を選んでください")
         self._record_var = tk.StringVar(value="棋譜: なし")
         self._color_var = tk.IntVar(value=human_color)
+        self._simulation_var = tk.IntVar(value=self._simulations)
+        self._sim_label_var = tk.StringVar(value=self._format_simulation_label(self._simulations))
+        self._eval_var = tk.StringVar(value="AI 推定勝率: -")
 
         control_frame = tk.Frame(self._root)
         control_frame.pack(fill=tk.X, padx=4, pady=4)
@@ -58,6 +61,14 @@ class _MCTSMatchGUI:
             variable=self._color_var,
             value=-1,
         ).pack(side=tk.LEFT, padx=4)
+        tk.Label(control_frame, text="シミュレーション回数:").pack(side=tk.LEFT, padx=4)
+        tk.Spinbox(
+            control_frame,
+            from_=1,
+            to=10000,
+            textvariable=self._simulation_var,
+            width=6,
+        ).pack(side=tk.LEFT)
         tk.Button(control_frame, text="新しい対局を開始", command=self._on_restart).pack(side=tk.RIGHT)
 
         info_frame = tk.Frame(self._root)
@@ -65,11 +76,8 @@ class _MCTSMatchGUI:
 
         tk.Label(info_frame, textvariable=self._status_var, anchor="w").pack(fill=tk.X)
         tk.Label(info_frame, textvariable=self._record_var, anchor="w").pack(fill=tk.X)
-        tk.Label(
-            info_frame,
-            text=f"MCTS シミュレーション回数: {self._simulations}",
-            anchor="w",
-        ).pack(fill=tk.X)
+        tk.Label(info_frame, textvariable=self._sim_label_var, anchor="w").pack(fill=tk.X)
+        tk.Label(info_frame, textvariable=self._eval_var, anchor="w").pack(fill=tk.X)
 
         self._board_size_px = 640
         self._margin = 30
@@ -109,8 +117,11 @@ class _MCTSMatchGUI:
         self._state = State(self._config.game)
         self._agent = self._create_agent()
         self._input_enabled = True
+        self._last_ai_report = None
+        self._refresh_simulation_setting()
         self._update_board()
         self._update_status()
+        self._update_evaluation(None)
         self._maybe_trigger_ai()
 
     def _on_canvas_click(self, event) -> None:
@@ -133,6 +144,7 @@ class _MCTSMatchGUI:
         self._state.play(action)
         self._update_board()
         self._update_status()
+        self._update_evaluation(None)
         if self._state.terminal():
             return
         if self._state.color != self._human_color:
@@ -161,6 +173,7 @@ class _MCTSMatchGUI:
         if self._state.color == self._human_color:
             self._update_status()
             return
+        self._refresh_simulation_setting()
         self._input_enabled = False
         self._status_var.set("MCTS が思考中です...")
         self._root.after(150, self._run_ai_turn)
@@ -177,9 +190,11 @@ class _MCTSMatchGUI:
             self._update_status()
             return
 
-        action = self._agent.select_action(copy.deepcopy(self._state), self._simulations)
+        action = self._agent.select_action(self._state.copy(), self._simulations)
+        self._last_ai_report = self._agent.last_report
         self._state.play(action)
         self._update_board()
+        self._update_evaluation(self._last_ai_report)
         if self._state.terminal():
             self._input_enabled = True
             self._update_status()
@@ -189,6 +204,38 @@ class _MCTSMatchGUI:
             return
         self._input_enabled = True
         self._update_status()
+
+    def _refresh_simulation_setting(self) -> None:
+        """入力されたシミュレーション回数を正規化して保持する。"""
+
+        try:
+            value = int(self._simulation_var.get())
+        except (tk.TclError, ValueError):
+            value = self._simulations
+        if value <= 0:
+            value = 1
+        self._simulation_var.set(value)
+        self._simulations = value
+        self._sim_label_var.set(self._format_simulation_label(value))
+
+    def _format_simulation_label(self, value: int) -> str:
+        """ラベル表示用の文字列を生成する。"""
+
+        return f"MCTS シミュレーション回数: {value}"
+
+    def _update_evaluation(self, report: Optional[RandomSearchReport]) -> None:
+        """探索結果に基づいて勝率ラベルを更新する。"""
+
+        if report is None:
+            self._eval_var.set("AI 推定勝率: -")
+            return
+        percent = report.win_rate * 100
+        visit_text = (
+            f"訪問数 {report.visit_count}/{report.total_visits}"
+            if report.total_visits > 0
+            else "訪問数 0"
+        )
+        self._eval_var.set(f"AI 推定勝率: {percent:.1f}% ({visit_text})")
 
     def _update_board(self) -> None:
         """現在局面の盤面を描画する。"""
