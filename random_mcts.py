@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import itertools
 import math
 import random
 from dataclasses import dataclass, field
@@ -58,6 +59,9 @@ class RandomMCTSAgent:
         self._candidate_radius = candidate_radius
         self._initial_radius = initial_radius
         self._last_report: Optional[RandomSearchReport] = None
+        # 強制敗北判定は合法手が多すぎる局面で行うと計算量が跳ね上がるため、
+        # ある程度盤面が進んだ局面のみに限定して実行する。
+        self._forced_loss_check_limit = 30
 
     def select_action(self, state: State, num_simulations: int) -> int:
         """指定回数の探索から最善手を選択する。"""
@@ -68,6 +72,30 @@ class RandomMCTSAgent:
         self._root = self._create_node(state)
         for _ in range(num_simulations):
             self._run_simulation(state)
+
+        if not self._root.children:
+            legal_actions = state.legal_actions()
+            if not legal_actions:
+                raise ValueError("合法手が存在しない局面では探索できません。")
+            forced_value = self._detect_forced_outcome(state, self._root.player)
+            winning_actions = self._find_immediate_wins(state, legal_actions)
+            if winning_actions:
+                best_action = winning_actions[0]
+                win_rate = 1.0
+            else:
+                best_action = legal_actions[0]
+                if forced_value is None:
+                    win_rate = 0.5
+                else:
+                    win_rate = max(0.0, min(1.0, (forced_value + 1.0) / 2.0))
+            self._last_report = RandomSearchReport(
+                best_action=best_action,
+                win_rate=win_rate,
+                visit_count=0,
+                total_visits=0,
+                simulations=num_simulations,
+            )
+            return best_action
 
         assert self._root.children, "子ノードが生成されていません。"
         best_action, best_child = max(
@@ -106,6 +134,11 @@ class RandomMCTSAgent:
                 value = self._evaluate_terminal(state, node.player)
                 break
 
+            forced_value = self._detect_forced_outcome(state, node.player)
+            if forced_value is not None:
+                value = forced_value
+                break
+
             if node.untried_actions:
                 action = self._rng.choice(node.untried_actions)
                 node.untried_actions.remove(action)
@@ -117,7 +150,11 @@ class RandomMCTSAgent:
                 if state.terminal():
                     value = self._evaluate_terminal(state, node.player)
                 else:
-                    value = self._rollout(state, node.player)
+                    forced_value = self._detect_forced_outcome(state, node.player)
+                    if forced_value is not None:
+                        value = forced_value
+                    else:
+                        value = self._rollout(state, node.player)
                 break
 
             action = self._select_child_action(node)
@@ -178,6 +215,9 @@ class RandomMCTSAgent:
         rollout_state = state.copy()
         steps = 0
         while not rollout_state.terminal():
+            forced_value = self._detect_forced_outcome(rollout_state, target_player)
+            if forced_value is not None:
+                return forced_value
             action = self._select_random_action(rollout_state)
             if action is None:
                 break
@@ -265,3 +305,124 @@ class RandomMCTSAgent:
         if not candidates:
             candidates = legal
         return self._rng.choice(candidates)
+
+    def _detect_forced_outcome(self, state: State, target_player: int) -> Optional[float]:
+        """強制的な勝敗が決まっているかを判定し、値を返す。"""
+
+        if state.win_color != 0:
+            return 1.0 if state.win_color == target_player else -1.0
+
+        legal_actions = state.legal_actions()
+        if not legal_actions:
+            return None
+
+        winning_actions = self._find_immediate_wins(state, legal_actions)
+        if winning_actions:
+            return 1.0 if state.color == target_player else -1.0
+
+        if len(legal_actions) > self._forced_loss_check_limit:
+            return None
+
+        if self._is_forced_loss(state, target_player, legal_actions=legal_actions):
+            return -1.0 if state.color == target_player else 1.0
+        return None
+
+    def _find_immediate_wins(self, state: State, legal_actions: Sequence[int] | None = None) -> List[int]:
+        """現在手番が同一ターン内で確実に勝てる手を列挙する。"""
+
+        actions = list(legal_actions) if legal_actions is not None else state.legal_actions()
+        if not actions:
+            return []
+
+        winning_actions: List[int] = []
+        stones_to_place = getattr(state, "_stones_remaining", 1)
+
+        for action in actions:
+            next_state = state.copy()
+            next_state.play(action)
+            if next_state.win_color == state.color:
+                winning_actions.append(action)
+
+        if winning_actions or stones_to_place <= 1:
+            return winning_actions
+
+        winning_first_actions = set()
+        for action in actions:
+            if action in winning_first_actions:
+                continue
+            next_state = state.copy()
+            next_state.play(action)
+            remaining = stones_to_place - 1
+            if remaining <= 0:
+                continue
+            follow_actions = next_state.legal_actions()
+            if not follow_actions:
+                continue
+            for combo in itertools.combinations(follow_actions, remaining):
+                branch_state = next_state.copy()
+                for follow_action in combo:
+                    branch_state.play(follow_action)
+                    if branch_state.win_color == state.color:
+                        winning_first_actions.add(action)
+                        break
+                if action in winning_first_actions:
+                    break
+
+        for action in actions:
+            if action in winning_first_actions:
+                winning_actions.append(action)
+        return winning_actions
+
+    def _is_forced_loss(
+        self,
+        state: State,
+        target_player: int,
+        *,
+        legal_actions: Sequence[int] | None = None,
+        depth: int = 0,
+    ) -> bool:
+        """任意の応手でも相手に即勝される場合は必敗とみなす。"""
+
+        if state.win_color != 0:
+            return state.win_color != target_player
+
+        if state.color != target_player:
+            opponent_wins = self._find_immediate_wins(state)
+            return bool(opponent_wins)
+
+        actions = list(legal_actions) if legal_actions is not None else state.legal_actions()
+        if not actions:
+            return True
+
+        if depth >= 3:
+            # connect6 の同一ターン内で最大 2 手までを想定し、安全側に倒す。
+            return False
+
+        for action in actions:
+            next_state = state.copy()
+            next_state.play(action)
+
+            if next_state.win_color == target_player:
+                return False
+
+            if next_state.color == target_player:
+                next_legal = next_state.legal_actions()
+                if not next_legal:
+                    return True
+                if len(next_legal) > self._forced_loss_check_limit:
+                    return False
+                if not self._is_forced_loss(
+                    next_state,
+                    target_player,
+                    legal_actions=next_legal,
+                    depth=depth + 1,
+                ):
+                    return False
+            else:
+                opponent_legal = next_state.legal_actions()
+                if not opponent_legal:
+                    return False
+                if not self._find_immediate_wins(next_state, opponent_legal):
+                    return False
+
+        return True

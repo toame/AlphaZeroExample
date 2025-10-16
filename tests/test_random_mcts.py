@@ -48,3 +48,40 @@ def test_random_mcts_connect6_can_select_action() -> None:
     )
     action = agent.select_action(state, num_simulations=2)
     assert action in state.legal_actions()
+
+
+def test_random_mcts_detects_immediate_win() -> None:
+    """必勝手を検出して勝ち切り評価を返すことを確認する。"""
+
+    cfg = load_default_config()
+    state = State(cfg.game)
+    # X が二目並べの上段で 2 連を作った局面。
+    for action in [0, 3, 1, 4]:
+        state.play(action)
+
+    agent = RandomMCTSAgent(cfg.game, seed=0)
+    value = agent._detect_forced_outcome(state, state.color)
+    assert value == 1.0
+
+
+def test_random_mcts_detects_forced_loss() -> None:
+    """どの応手でも相手に即勝される局面を必敗として判定する。"""
+
+    cfg = load_default_config()
+    state = State(cfg.game)
+    # 白番 (X) が上段と左列で同時にリーチしており、黒番 (O) が片方しか受けられない局面を人工的に構成する。
+    state.board.fill(0)
+    state.board[0, 0] = -1
+    state.board[0, 1] = -1
+    state.board[1, 0] = -1
+    state.board[1, 1] = 1
+    state.board[2, 2] = 1
+    state.record = [4, 0, 8, 1, 3]
+    state.turn_index = len(state.record)
+    state.color = 1
+    state.win_color = 0
+    state._stones_remaining = 1
+
+    agent = RandomMCTSAgent(cfg.game, seed=0)
+    value = agent._detect_forced_outcome(state, state.color)
+    assert value == -1.0
