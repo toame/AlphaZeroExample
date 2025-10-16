@@ -100,7 +100,8 @@ class State:
         return self.win_color if self.color == BLACK else -self.win_color
 
     def legal_actions(self) -> List[int]:
-        return [a for a in range(self.size * self.size) if self.board[a // self.size, a % self.size] == 0]
+        # numpy を用いて空点の一次元インデックスを高速に取得する。
+        return np.flatnonzero(self.board == 0).astype(int).tolist()
 
     def feature(self) -> np.ndarray:
         """現在手番視点での特徴量（2×N×N、float32）を返す。"""
