@@ -1,9 +1,6 @@
 game:
-  board_size: 3
   rule: "tic_tac_toe"  # "connect6" で六目並べ
-  axes:
-    X: "ABC"
-    Y: "123"
+  board_size: null  # null または未設定でルール推奨値 (tic_tac_toe:3, connect6:19)
   symbols:
     empty: "_"
     black: "O"

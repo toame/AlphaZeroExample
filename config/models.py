@@ -1,11 +1,39 @@
 # config/models.py
 from __future__ import annotations
+
+import string
 from typing import Literal
-from pydantic import BaseModel, Field, field_validator
+
+from pydantic import BaseModel, Field, field_validator, model_validator
 
 class GameAxes(BaseModel):
     X: str = "ABC"
     Y: str = "123"
+
+    @classmethod
+    def auto(cls, board_size: int) -> "GameAxes":
+        """盤面サイズから推奨座標軸を自動生成する。"""
+
+        digits = "123456789"
+        letters_upper = string.ascii_uppercase
+        letters_lower = string.ascii_lowercase
+
+        if board_size > len(letters_upper):
+            raise ValueError(
+                "board_size が 26 を超える場合は axes.X を手動で設定してください"
+            )
+        x_axis = letters_upper[:board_size]
+
+        if board_size <= len(digits):
+            y_axis = digits[:board_size]
+        else:
+            if board_size > len(letters_lower):
+                raise ValueError(
+                    "board_size が 26 を超える場合は axes.Y を手動で設定してください"
+                )
+            y_axis = letters_lower[:board_size]
+
+        return cls(X=x_axis, Y=y_axis)
 
 class GameSymbols(BaseModel):
     empty: str = "_"
@@ -13,9 +41,9 @@ class GameSymbols(BaseModel):
     white: str = "X"
 
 class GameConfig(BaseModel):
-    board_size: int = 3
+    board_size: int | None = None
     rule: Literal["tic_tac_toe", "connect6"] = "tic_tac_toe"
-    axes: GameAxes = Field(default_factory=GameAxes)
+    axes: GameAxes | None = None
     symbols: GameSymbols = Field(default_factory=GameSymbols)
     first_player: Literal[-1, 1] = 1
 
@@ -23,18 +51,30 @@ class GameConfig(BaseModel):
     @classmethod
     def _board_size_rule_check(cls, v: int, info):
         """ルールごとの最小盤面サイズを検証する。"""
+        if v is None:
+            return v
         rule = info.data.get("rule", "tic_tac_toe")
         if rule == "connect6" and v < 6:
             raise ValueError("connect6 ルールでは board_size を 6 以上に設定してください")
         return v
 
-    @field_validator("axes")
-    @classmethod
-    def _axes_len_match_board(cls, v: GameAxes, info):
-        board_size = info.data.get("board_size", 3)
-        if len(v.X) != board_size or len(v.Y) != board_size:
+    @model_validator(mode="after")
+    def _apply_rule_defaults(self) -> "GameConfig":
+        """ルールに応じた推奨設定を適用し、座標軸を自動補完する。"""
+
+        default_board_size = 3 if self.rule == "tic_tac_toe" else 19
+        board_size = self.board_size or default_board_size
+
+        if self.rule == "connect6" and board_size < 6:
+            raise ValueError("connect6 ルールでは board_size を 6 以上に設定してください")
+
+        axes = self.axes or GameAxes.auto(board_size)
+        if len(axes.X) != board_size or len(axes.Y) != board_size:
             raise ValueError(f"axes.X/Y の長さは board_size={board_size} と一致させてください")
-        return v
+
+        self.board_size = board_size
+        self.axes = axes
+        return self
 
 class BasicNetworkConfig(BaseModel):
     """従来の AlphaZero 風ネットワーク設定。"""
