@@ -60,3 +60,8 @@ training:
   metrics_filename: "training_metrics.csv"
   latest_checkpoint: "latest.pt"
   best_checkpoint: "best.pt"
+  replay_buffer:
+    capacity: 500
+    warmup_size: 128
+    sample_size: 256
+    recent_ratio: 0.2

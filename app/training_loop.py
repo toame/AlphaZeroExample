@@ -22,6 +22,7 @@ from training import (
     create_scheduler_factory,
     vs_random,
 )
+from replay_buffer import ReplayBuffer
 
 logger = logging.getLogger(__name__)
 
@@ -62,6 +63,7 @@ def self_play_and_train(cfg: AppConfig) -> Net:
         train_cfg.metrics_filename,
         enable_tensorboard=train_cfg.enable_tensorboard,
     )
+    replay_cfg = train_cfg.replay_buffer
     trainer = Trainer(
         game_cfg,
         train_cfg,
@@ -75,7 +77,10 @@ def self_play_and_train(cfg: AppConfig) -> Net:
         train_cfg.latest_checkpoint,
         train_cfg.best_checkpoint,
     )
-    episodes: List[Episode] = []
+    replay_buffer = ReplayBuffer(
+        capacity=replay_cfg.capacity,
+        recent_ratio=replay_cfg.recent_ratio,
+    )
     result_distribution: Dict[int, int] = {1: 0, 0: 0, -1: 0}
 
     logger.info(
@@ -118,7 +123,7 @@ def self_play_and_train(cfg: AppConfig) -> Net:
             winner = state.win_color
             for step, player in zip(steps, players):
                 step.value_target = _value_from_perspective(player, winner)
-            episodes.append(Episode(steps=steps, winner=winner))
+            replay_buffer.add_episode(Episode(steps=steps, winner=winner))
 
             result_key = int(_value_from_perspective(game_cfg.first_player, winner))
             result_distribution[result_key] += 1
@@ -135,12 +140,36 @@ def self_play_and_train(cfg: AppConfig) -> Net:
             should_train = (game_index + 1) % num_train_steps == 0
             is_last_game = game_index + 1 == num_games
             if should_train or is_last_game:
+                buffer_stats = replay_buffer.stats()
                 logger.info(
-                    "学習を実行します: episodes=%d result_distribution=%s",
-                    len(episodes),
+                    "学習を実行します: buffer_size=%d total_added=%d result_distribution=%s",
+                    buffer_stats.size,
+                    buffer_stats.total_added,
                     _format_result_distribution(result_distribution),
                 )
-                result = trainer.fit(episodes)
+                if buffer_stats.size < replay_cfg.warmup_size:
+                    if not is_last_game:
+                        logger.info(
+                            "リプレイバッファのウォームアップが未完了のため学習をスキップします: size=%d warmup=%d",
+                            buffer_stats.size,
+                            replay_cfg.warmup_size,
+                        )
+                        continue
+                    logger.info(
+                        "最終ゲームのためウォームアップ未達でも学習を実行します: size=%d warmup=%d",
+                        buffer_stats.size,
+                        replay_cfg.warmup_size,
+                    )
+
+                sample_size = min(replay_cfg.sample_size, buffer_stats.size)
+                sampled_episodes = replay_buffer.sample(sample_size)
+                logger.info(
+                    "サンプリング完了: sample_size=%d recent_ratio=%.2f",
+                    len(sampled_episodes),
+                    replay_buffer.recent_ratio,
+                )
+
+                result = trainer.fit(sampled_episodes)
                 checkpoint_manager.save(net, result.value_loss)
                 best_value = checkpoint_manager.best_metric
                 logger.info(
