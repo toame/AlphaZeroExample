@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import copy
 import math
 import random
 from dataclasses import dataclass, field
@@ -28,6 +27,17 @@ class RandomNode:
         self.children[action] = child
 
 
+@dataclass
+class RandomSearchReport:
+    """探索結果の概要をまとめたデータ構造。"""
+
+    best_action: int
+    win_rate: float
+    visit_count: int
+    total_visits: int
+    simulations: int
+
+
 class RandomMCTSAgent:
     """乱数ロールアウトで評価するシンプルなモンテカルロ木探索プレイヤー。"""
 
@@ -47,6 +57,7 @@ class RandomMCTSAgent:
         self._root: Optional[RandomNode] = None
         self._candidate_radius = candidate_radius
         self._initial_radius = initial_radius
+        self._last_report: Optional[RandomSearchReport] = None
 
     def select_action(self, state: State, num_simulations: int) -> int:
         """指定回数の探索から最善手を選択する。"""
@@ -59,17 +70,34 @@ class RandomMCTSAgent:
             self._run_simulation(state)
 
         assert self._root.children, "子ノードが生成されていません。"
-        best_action = max(
+        best_action, best_child = max(
             self._root.children.items(),
             key=lambda item: self._child_value_from_parent(self._root, item[1]),
-        )[0]
+        )
+
+        total_visits = sum(child.visits for child in self._root.children.values())
+        best_value = self._child_value_from_parent(self._root, best_child)
+        win_rate = max(0.0, min(1.0, (best_value + 1.0) / 2.0))
+        self._last_report = RandomSearchReport(
+            best_action=best_action,
+            win_rate=win_rate,
+            visit_count=best_child.visits,
+            total_visits=total_visits,
+            simulations=num_simulations,
+        )
         return best_action
+
+    @property
+    def last_report(self) -> Optional[RandomSearchReport]:
+        """直近の探索結果を返す。未探索時は ``None``。"""
+
+        return self._last_report
 
     def _run_simulation(self, root_state: State) -> None:
         """1 回分のシミュレーションを実行する。"""
 
         assert self._root is not None
-        state = copy.deepcopy(root_state)
+        state = root_state.copy()
         node = self._root
         path: List[tuple[RandomNode, RandomNode]] = []
 
@@ -147,7 +175,7 @@ class RandomMCTSAgent:
     def _rollout(self, state: State, target_player: int) -> float:
         """終局までランダムに手を進め評価値を得る。"""
 
-        rollout_state = copy.deepcopy(state)
+        rollout_state = state.copy()
         steps = 0
         while not rollout_state.terminal():
             action = self._select_random_action(rollout_state)

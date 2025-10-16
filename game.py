@@ -49,6 +49,18 @@ class State:
         s += "record = " + self.record_string()
         return s
 
+    def copy(self) -> "State":
+        """現在の盤面状態をディープコピーして返す。"""
+
+        new_state = State(self._config)
+        new_state.board = self.board.copy()
+        new_state.color = self.color
+        new_state.win_color = self.win_color
+        new_state.record = list(self.record)
+        new_state.turn_index = self.turn_index
+        new_state._stones_remaining = self._stones_remaining
+        return new_state
+
     # --- 盤面更新 ---
     def play(self, action: int | str) -> "State":
         if self.win_color != 0:

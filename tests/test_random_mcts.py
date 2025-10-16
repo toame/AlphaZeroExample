@@ -17,6 +17,12 @@ def test_random_mcts_selects_legal_action() -> None:
     agent = RandomMCTSAgent(cfg.game, seed=123)
     action = agent.select_action(state, num_simulations=5)
     assert action in state.legal_actions()
+    report = agent.last_report
+    assert report is not None
+    assert report.best_action == action
+    assert 0.0 <= report.win_rate <= 1.0
+    assert report.total_visits >= report.visit_count >= 0
+    assert report.simulations == 5
 
 
 def test_play_random_mcts_vs_random_runs() -> None:
